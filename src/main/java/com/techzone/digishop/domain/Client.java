@@ -20,7 +20,7 @@ import javax.persistence.OneToMany;
 public class Client implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
@@ -32,7 +32,7 @@ public class Client implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "CLIENT_PHONE")
 	Set<String> phones = new HashSet<>();
-	
+
 	@OneToMany(mappedBy = "client")
 	List<ClientAddress> adresses = new ArrayList<>();
 
@@ -40,12 +40,15 @@ public class Client implements Serializable {
 	@JoinColumn(name = "company_id")
 	Company company;
 
-	public Client(Object object, String string, String string2, String string3, String string4, ClientType pessoaFisica, Company c) {
+	@OneToMany(mappedBy = "client")
+	List<Order> orders = new ArrayList<>();
+
+	public Client(Object object, String string, String string2, String string3, String string4, ClientType pessoaFisica,
+			Company c) {
 
 	}
 
-	public Client(Integer id, String name, String cpfCnpj, String email, ClientType clientType,
-			Company company) {
+	public Client(Integer id, String name, String cpfCnpj, String email, ClientType clientType, Company company) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -119,6 +122,14 @@ public class Client implements Serializable {
 		this.adresses = adresses;
 	}
 
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -146,8 +157,8 @@ public class Client implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Client [id=" + id + ", name=" + name + ", cpfCnpj=" + cpfCnpj + ", email=" + email
-				+ ", phones=" + phones + ", company=" + company + "]";
+		return "Client [id=" + id + ", name=" + name + ", cpfCnpj=" + cpfCnpj + ", email=" + email + ", phones="
+				+ phones + ", company=" + company + "]";
 	}
 
 }
