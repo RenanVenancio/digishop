@@ -37,10 +37,10 @@ public abstract class CompanyAbstract implements Serializable {
 	private String email;
 	
     @CreatedDate
-    private Date createdDate;
+    private Date creationDate;
 
     @LastModifiedDate
-    private Date lastModifiedDate;
+    private Date modifiedDate;
 
 
 	public CompanyAbstract() {

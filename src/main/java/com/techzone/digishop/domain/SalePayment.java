@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class OrderPayment implements Serializable {
+public class SalePayment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -22,8 +22,21 @@ public class OrderPayment implements Serializable {
 	private Double value;
 	private Date paydDate;
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "order_id")
-	private Order order;
+	@JoinColumn(name = "sale_id")
+	private Sale sale;
+
+	public SalePayment() {
+
+	}
+
+	public SalePayment(Integer id, Date dueDate, Double value, Date paydDate, Sale sale) {
+		super();
+		this.id = id;
+		this.dueDate = dueDate;
+		this.value = value;
+		this.paydDate = paydDate;
+		this.sale = sale;
+	}
 
 	public Integer getId() {
 		return id;
@@ -57,12 +70,12 @@ public class OrderPayment implements Serializable {
 		this.paydDate = paydDate;
 	}
 
-	public Order getOrder() {
-		return order;
+	public Sale getSale() {
+		return sale;
 	}
 
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setSale(Sale order) {
+		this.sale = order;
 	}
 
 	@Override
@@ -81,7 +94,7 @@ public class OrderPayment implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		OrderPayment other = (OrderPayment) obj;
+		SalePayment other = (SalePayment) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -89,7 +102,5 @@ public class OrderPayment implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
 }

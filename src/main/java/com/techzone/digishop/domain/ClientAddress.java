@@ -30,6 +30,10 @@ public class ClientAddress implements Serializable {
 	@JoinColumn(name = "client_id")
 	private Client client;
 
+	public ClientAddress() {
+
+	}
+
 	public ClientAddress(Integer id, String description, String address, String number, String additional,
 			String neightbohood, String zipcode, String city, String uf, Client client) {
 		super();

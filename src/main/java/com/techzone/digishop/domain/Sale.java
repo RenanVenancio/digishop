@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Order implements Serializable {
+public class Sale implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -34,10 +34,16 @@ public class Order implements Serializable {
 	private ClientAddress address;
 	private Double discount;
 
-	@OneToMany(mappedBy = "order")
-	List<OrderPayment> orderPayments = new ArrayList<>();
+	@OneToMany(mappedBy = "sale")
+	List<SalePayment> orderPayments = new ArrayList<>();
 
-	public Order(Integer id, Date date, Boolean cancelled, Boolean delivered, Company company, Client client,
+	List<SaleItem> itens = new ArrayList<>();
+
+	public Sale() {
+
+	}
+
+	public Sale(Integer id, Date date, Boolean cancelled, Boolean delivered, Company company, Client client,
 			ClientAddress address, Double discount) {
 		this.id = id;
 		this.date = date;
@@ -113,6 +119,22 @@ public class Order implements Serializable {
 		this.discount = discount;
 	}
 
+	public List<SalePayment> getOrderPayments() {
+		return orderPayments;
+	}
+
+	public void setOrderPayments(List<SalePayment> orderPayments) {
+		this.orderPayments = orderPayments;
+	}
+
+	public List<SaleItem> getItens() {
+		return itens;
+	}
+
+	public void setItens(List<SaleItem> itens) {
+		this.itens = itens;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -129,7 +151,7 @@ public class Order implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Order other = (Order) obj;
+		Sale other = (Sale) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

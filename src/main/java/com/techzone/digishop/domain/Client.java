@@ -41,15 +41,13 @@ public class Client implements Serializable {
 	Company company;
 
 	@OneToMany(mappedBy = "client")
-	List<Order> orders = new ArrayList<>();
+	List<Sale> sales = new ArrayList<>();
 
-	public Client(Object object, String string, String string2, String string3, String string4, ClientType pessoaFisica,
-			Company c) {
+	public Client() {
 
 	}
 
 	public Client(Integer id, String name, String cpfCnpj, String email, ClientType clientType, Company company) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.cpfCnpj = cpfCnpj;
@@ -122,12 +120,12 @@ public class Client implements Serializable {
 		this.adresses = adresses;
 	}
 
-	public List<Order> getOrders() {
-		return orders;
+	public List<Sale> getSales() {
+		return sales;
 	}
 
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
+	public void setSales(List<Sale> sales) {
+		this.sales = sales;
 	}
 
 	@Override
