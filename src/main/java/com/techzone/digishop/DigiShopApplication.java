@@ -38,35 +38,35 @@ public class DigiShopApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		Company c = new Company("BURGTESTE", "53545343",
-				"RUA RIO DAS OESTRAS", "CENTRO", "3434342", "SAPE", "PB", "999908999", "bghse@gmail.com", "O melhor da região");
-		
-		companyRepository.save(c);
-		
-		Provider p = new Provider("ALEMEIDA", "D<WP", "RUA S TOME",
-				"ZUPADIGA", "53249000", "ESPERANCA", "PB", "542321", "almeida@gmail.com");
-		
-		providerRepository.save(p);
-		
-		Client cli = new Client(null, "RENAN", "1067429289", "renan_1419@hotmailcom",
-				ClientType.PESSOA_FISICA, c);
-	
-		cli.getPhones().addAll(Arrays.asList("9929392000", "8839300299"));
-		
-		ClientAddress addr = new ClientAddress(null, "Residencial",
-				"Rua Jose Lopes de Gusmao", "145", "Rua da escolinha", "Renato Ribeiro", "58340000", "Sape", "PB", cli);
-		
-		ClientAddress addr2 = new ClientAddress(null, "Alternativo",
-				"Rua Pç com Jose matias sobrinho", "130", "Lado ao antigo restaurante", "Abel Cavalcanti", "58340000", "Sape", "PB", cli);
-
-		cli.getAdresses().addAll(Arrays.asList(addr,addr2));
-		
-		cli.getAdresses().add(addr);
-		
-		clientRepository.save(cli);
-		
-		clientAddressRepository.saveAll(Arrays.asList(addr, addr2));
-		
+//		Company c = new Company("BURGTESTE", "53545343",
+//				"RUA RIO DAS OESTRAS", "CENTRO", "3434342", "SAPE", "PB", "999908999", "bghse@gmail.com", "O melhor da região");
+//		
+//		companyRepository.save(c);
+//		
+//		Provider p = new Provider("ALEMEIDA", "D<WP", "RUA S TOME",
+//				"ZUPADIGA", "53249000", "ESPERANCA", "PB", "542321", "almeida@gmail.com");
+//		
+//		providerRepository.save(p);
+//		
+//		Client cli = new Client(null, "RENAN", "1067429289", "renan_1419@hotmailcom",
+//				ClientType.PESSOA_FISICA, c);
+//	
+//		cli.getPhones().addAll(Arrays.asList("9929392000", "8839300299"));
+//		
+//		ClientAddress addr = new ClientAddress(null, "Residencial",
+//				"Rua Jose Lopes de Gusmao", "145", "Rua da escolinha", "Renato Ribeiro", "58340000", "Sape", "PB", cli);
+//		
+//		ClientAddress addr2 = new ClientAddress(null, "Alternativo",
+//				"Rua Pç com Jose matias sobrinho", "130", "Lado ao antigo restaurante", "Abel Cavalcanti", "58340000", "Sape", "PB", cli);
+//
+//		cli.getAdresses().addAll(Arrays.asList(addr,addr2));
+//		
+//		cli.getAdresses().add(addr);
+//		
+//		clientRepository.save(cli);
+//		
+//		clientAddressRepository.saveAll(Arrays.asList(addr, addr2));
+//		
 
 	}
 

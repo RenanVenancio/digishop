@@ -17,13 +17,13 @@ public class OrderPayment implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
-	Date dueDate;
-	Double value;
-	Date paydDate;
+	private Integer id;
+	private Date dueDate;
+	private Double value;
+	private Date paydDate;
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "order_id")
-	Order order;
+	private Order order;
 
 	public Integer getId() {
 		return id;

@@ -23,11 +23,11 @@ public class Client implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
-	String name;
-	String cpfCnpj;
-	String email;
-	Integer clientType;
+	private Integer id;
+	private String name;
+	private String cpfCnpj;
+	private String email;
+	private Integer clientType;
 
 	@ElementCollection
 	@CollectionTable(name = "CLIENT_PHONE")
