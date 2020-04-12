@@ -37,6 +37,7 @@ public class Sale implements Serializable {
 	@OneToMany(mappedBy = "sale")
 	List<SalePayment> orderPayments = new ArrayList<>();
 
+	@OneToMany(mappedBy = "id.sale")
 	List<SaleItem> itens = new ArrayList<>();
 
 	public Sale() {

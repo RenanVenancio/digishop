@@ -3,6 +3,7 @@ package com.techzone.digishop.domain;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
@@ -11,6 +12,7 @@ public class SaleItem implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	@EmbeddedId
 	private SaleItemPK id =  new SaleItemPK();
 	private Double discount = 0.00;
 	private Double quantity;

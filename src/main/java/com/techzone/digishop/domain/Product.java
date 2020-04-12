@@ -11,13 +11,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Product implements Serializable{
+public class Product implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -38,15 +39,43 @@ public class Product implements Serializable{
 	private Boolean sell = true;
 	private Double stock;
 	private String location;
-	
+
+	@OneToMany(mappedBy = "id.product")
 	List<SaleItem> itens = new ArrayList<>();
-	
+
 	@ManyToOne
 	@JoinColumn(name = "company_id")
 	private Company company;
-	
+
 	public Product() {
-		
+
+	}
+
+	public Product(Integer id, @NotNull String name, String barcode, String reference, String description,
+			@NotNull Double purchasePrice, @NotNull Double salePrice, @NotNull String un, @NotNull Double weight,
+			Boolean sell, Double stock, String location, Company company) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.barcode = barcode;
+		this.reference = reference;
+		this.description = description;
+		this.purchasePrice = purchasePrice;
+		this.salePrice = salePrice;
+		this.un = un;
+		this.weight = weight;
+		this.sell = sell;
+		this.stock = stock;
+		this.location = location;
+		this.company = company;
+	}
+
+	public List<Sale> getSales() {
+		List<Sale> salesList = new ArrayList<>();
+		for (SaleItem x : itens) {
+			salesList.add(x.getSale());
+		}
+		return salesList;
 	}
 
 	public Integer getId() {
@@ -177,6 +206,5 @@ public class Product implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
+
 }
