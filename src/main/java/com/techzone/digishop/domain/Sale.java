@@ -35,7 +35,7 @@ public class Sale implements Serializable {
 	private Double discount;
 
 	@OneToMany(mappedBy = "sale")
-	List<SalePayment> orderPayments = new ArrayList<>();
+	List<SalePayment> payments = new ArrayList<>();
 
 	@OneToMany(mappedBy = "id.sale")
 	List<SaleItem> itens = new ArrayList<>();
@@ -120,12 +120,12 @@ public class Sale implements Serializable {
 		this.discount = discount;
 	}
 
-	public List<SalePayment> getOrderPayments() {
-		return orderPayments;
+	public List<SalePayment> getPayments() {
+		return payments;
 	}
 
-	public void setOrderPayments(List<SalePayment> orderPayments) {
-		this.orderPayments = orderPayments;
+	public void setPayments(List<SalePayment> payments) {
+		this.payments = payments;
 	}
 
 	public List<SaleItem> getItens() {

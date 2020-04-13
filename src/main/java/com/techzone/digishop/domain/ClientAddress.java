@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ClientAddress implements Serializable {
 
@@ -28,6 +30,7 @@ public class ClientAddress implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "client_id")
+	@JsonIgnore
 	private Client client;
 
 	public ClientAddress() {

@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Client implements Serializable {
 
@@ -36,11 +38,13 @@ public class Client implements Serializable {
 	@OneToMany(mappedBy = "client")
 	List<ClientAddress> adresses = new ArrayList<>();
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "company_id")
 	Company company;
 
 	@OneToMany(mappedBy = "client")
+	@JsonIgnore
 	List<Sale> sales = new ArrayList<>();
 
 	public Client() {

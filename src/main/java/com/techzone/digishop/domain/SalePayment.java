@@ -3,13 +3,14 @@ package com.techzone.digishop.domain;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class SalePayment implements Serializable {
@@ -21,7 +22,8 @@ public class SalePayment implements Serializable {
 	private Date dueDate;
 	private Double value;
 	private Date paydDate;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
+	@ManyToOne
 	@JoinColumn(name = "sale_id")
 	private Sale sale;
 

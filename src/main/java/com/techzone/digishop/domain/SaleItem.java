@@ -7,11 +7,14 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class SaleItem implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	@JsonIgnore
 	@EmbeddedId
 	private SaleItemPK id =  new SaleItemPK();
 	private Double discount = 0.00;
@@ -53,6 +56,7 @@ public class SaleItem implements Serializable{
 		this.location = location;
 	}
 	
+	@JsonIgnore
 	public Sale getSale() {
 		return id.getSale();
 	}

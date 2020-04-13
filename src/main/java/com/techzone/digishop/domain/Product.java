@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Product implements Serializable {
 
@@ -40,8 +42,11 @@ public class Product implements Serializable {
 	private Double stock;
 	private String location;
 
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "id.product")
 	List<SaleItem> itens = new ArrayList<>();
+
 
 	@ManyToOne
 	@JoinColumn(name = "company_id")
@@ -69,7 +74,8 @@ public class Product implements Serializable {
 		this.location = location;
 		this.company = company;
 	}
-
+	
+	@JsonIgnore
 	public List<Sale> getSales() {
 		List<Sale> salesList = new ArrayList<>();
 		for (SaleItem x : itens) {
