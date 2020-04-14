@@ -48,7 +48,7 @@ public class Product implements Serializable {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "id.product")
-	List<Purchase> purchases = new ArrayList<>();
+	List<PurchaseItem> purchasesItens = new ArrayList<>();
 
 	@ManyToOne
 	@JoinColumn(name = "company_id")
@@ -84,6 +84,16 @@ public class Product implements Serializable {
 			salesList.add(x.getSale());
 		}
 		return salesList;
+	}
+	
+
+	@JsonIgnore
+	public List<Purchase> getPurchases() {
+		List<Purchase> purchasesList = new ArrayList<>();
+		for (PurchaseItem x : purchasesItens) {
+			purchasesList.add(x.getPurchase());
+		}
+		return purchasesList;
 	}
 
 	public Integer getId() {
@@ -188,14 +198,6 @@ public class Product implements Serializable {
 
 	public void setItens(List<SaleItem> itens) {
 		this.itens = itens;
-	}
-
-	public List<Purchase> getPurchases() {
-		return purchases;
-	}
-
-	public void setPurchases(List<Purchase> purchases) {
-		this.purchases = purchases;
 	}
 
 	public Company getCompany() {
