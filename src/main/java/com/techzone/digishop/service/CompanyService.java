@@ -20,4 +20,9 @@ public class CompanyService {
 		return company.orElseThrow(() -> new ObjectNotFoundException(Company.class.getName() + " not found"));
 	}
 	
+	public Company save(Company company) {
+		company.setId(null);
+		return companyRepository.save(company);
+	}
+	
 }

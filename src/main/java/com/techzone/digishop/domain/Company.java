@@ -13,7 +13,7 @@ public class Company extends CompanyAbstract {
 
 	private static final long serialVersionUID = 1L;
 	private String slogan;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "company")
 	private List<Client> clients = new ArrayList<>();
@@ -25,6 +25,10 @@ public class Company extends CompanyAbstract {
 	@JsonIgnore
 	@OneToMany(mappedBy = "company")
 	private List<Product> products = new ArrayList<>();
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
+	private List<Employee> employees = new ArrayList<>();
 
 	public Company() {
 		super();
@@ -66,6 +70,14 @@ public class Company extends CompanyAbstract {
 
 	public void setProducts(List<Product> products) {
 		this.products = products;
+	}
+
+	public List<Employee> getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
 	}
 
 }

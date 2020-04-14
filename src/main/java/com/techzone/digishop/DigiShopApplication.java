@@ -13,6 +13,7 @@ import com.techzone.digishop.domain.Client;
 import com.techzone.digishop.domain.ClientAddress;
 import com.techzone.digishop.domain.ClientType;
 import com.techzone.digishop.domain.Company;
+import com.techzone.digishop.domain.Employee;
 import com.techzone.digishop.domain.Product;
 import com.techzone.digishop.domain.Provider;
 import com.techzone.digishop.domain.Sale;
@@ -21,6 +22,7 @@ import com.techzone.digishop.domain.SalePayment;
 import com.techzone.digishop.repository.ClientAddressRepository;
 import com.techzone.digishop.repository.ClientRepository;
 import com.techzone.digishop.repository.CompanyRepository;
+import com.techzone.digishop.repository.EmployeeRepository;
 import com.techzone.digishop.repository.ProductRepository;
 import com.techzone.digishop.repository.ProviderRepository;
 import com.techzone.digishop.repository.SaleItemRepository;
@@ -54,6 +56,9 @@ public class DigiShopApplication implements CommandLineRunner{
 	@Autowired
 	SalePaymentRepository salePaymentRepository;
 	
+	@Autowired
+	EmployeeRepository employeeRepository;
+	
 
 	public static void main(String[] args) {
 		SpringApplication.run(DigiShopApplication.class, args);
@@ -79,13 +84,14 @@ public class DigiShopApplication implements CommandLineRunner{
 		
 		// CRIANDO CLIENTES
 		
-		Client cli = new Client(null, "RENAN VENANCIO", "1067429289", "renan_1419@hotmail.com",
+		
+		Client cli = new Client(null, "RENAN VENANCIO", "1067429289", "renan_1419@hotmail.com", "%#2&&%", new Date(),
 				ClientType.PESSOA_FISICA, c);
 		
-		Client cli1 = new Client(null, "MURILO BENICIO", "8045429282", "moriloo@bol.com.br",
+		Client cli1 = new Client(null, "MURILO BENICIO", "8045429282", "moriloo@bol.com.br", "moo8f99fd", new Date(),
 				ClientType.PESSOA_FISICA, c);
 		
-		Client cli2 = new Client(null, "MARCUS VINICIUS", "9067425283", "mvpb33@gmail.com",
+		Client cli2 = new Client(null, "MARCUS VINICIUS", "9067425283", "mvpb33@gmail.com", "8899s09d6", new Date(),
 				ClientType.PESSOA_FISICA, c);
 	
 		cli.getPhones().addAll(Arrays.asList("9929392000", "8839300299"));
@@ -191,6 +197,14 @@ public class DigiShopApplication implements CommandLineRunner{
 		s2.getItens().addAll(Arrays.asList(sItem2, sItem3));
 		saleRepository.save(s2);
 		saleItemRepository.saveAll(Arrays.asList(sItem2, sItem3));
+		
+		Employee emp = new Employee(null, "ADALBERTO PESSOA", "299200010", "bertop@gmail.com", "-0e09e-", new Date(), 
+				c, "Rua Milton neves", "890a", "", "Centro", "839300000", "São Paulo", "SP", new Date(), true);
+		emp.getPhones().addAll(Arrays.asList("994084738", "8899403057", "9903930022"));
+		
+		employeeRepository.save(emp);
+		
 	}
+	
 
 }
