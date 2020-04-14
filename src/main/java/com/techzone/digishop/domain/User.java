@@ -3,6 +3,7 @@ package com.techzone.digishop.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,6 +28,7 @@ public abstract class User implements Serializable {
 	private String cpfCnpj;
 	@NotNull
 	private String email;
+	@Column(unique = true)
 	@NotNull
 	private String password;
 

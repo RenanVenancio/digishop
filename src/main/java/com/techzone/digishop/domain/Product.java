@@ -42,11 +42,13 @@ public class Product implements Serializable {
 	private Double stock;
 	private String location;
 
-	
 	@JsonIgnore
 	@OneToMany(mappedBy = "id.product")
 	List<SaleItem> itens = new ArrayList<>();
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "id.product")
+	List<Purchase> purchases = new ArrayList<>();
 
 	@ManyToOne
 	@JoinColumn(name = "company_id")
@@ -74,7 +76,7 @@ public class Product implements Serializable {
 		this.location = location;
 		this.company = company;
 	}
-	
+
 	@JsonIgnore
 	public List<Sale> getSales() {
 		List<Sale> salesList = new ArrayList<>();
@@ -186,6 +188,22 @@ public class Product implements Serializable {
 
 	public void setItens(List<SaleItem> itens) {
 		this.itens = itens;
+	}
+
+	public List<Purchase> getPurchases() {
+		return purchases;
+	}
+
+	public void setPurchases(List<Purchase> purchases) {
+		this.purchases = purchases;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	@Override

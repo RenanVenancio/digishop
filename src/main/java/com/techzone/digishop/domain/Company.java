@@ -29,6 +29,10 @@ public class Company extends CompanyAbstract {
 	@JsonIgnore
 	@OneToMany(mappedBy = "company")
 	private List<Employee> employees = new ArrayList<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
+	private List<Purchase> purchases = new ArrayList<>();
 
 	public Company() {
 		super();
@@ -79,5 +83,15 @@ public class Company extends CompanyAbstract {
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
 	}
+
+	public List<Purchase> getPurchases() {
+		return purchases;
+	}
+
+	public void setPurchases(List<Purchase> purchases) {
+		this.purchases = purchases;
+	}
+	
+	
 
 }

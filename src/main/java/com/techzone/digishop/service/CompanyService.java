@@ -24,7 +24,11 @@ public class CompanyService {
 	
 	public Company save(Company company) {
 		company.setId(null);
-		return companyRepository.save(company);
+		try {
+			return companyRepository.save(company);			
+		}catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Company already registered");
+		}
 	}
 	
 	public Company update(Company company) {
