@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 public class PurchaseItemPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "purchase_id")
 	private Purchase purchase;
@@ -64,4 +64,5 @@ public class PurchaseItemPK implements Serializable {
 			return false;
 		return true;
 	}
+
 }
