@@ -19,7 +19,7 @@ public class SaleResource {
 	
 	@GetMapping
 	@RequestMapping(value = "/{id}")
-	public ResponseEntity<?> findById(@PathVariable Integer id){
+	public ResponseEntity<Sale> findById(@PathVariable Integer id){
 		Sale sale = saleService.findById(id);
 		return ResponseEntity.ok().body(sale);
 	}

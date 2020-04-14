@@ -19,7 +19,7 @@ public class EmployeeResource {
 
 	@GetMapping
 	@RequestMapping(value = "/{id}")
-	public ResponseEntity<?> findById(@PathVariable Integer id){
+	public ResponseEntity<Employee> findById(@PathVariable Integer id){
 		Employee employee = employeeService.findById(id);
 		return ResponseEntity.ok().body(employee);
 	}
