@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.techzone.digishop.domain.ProductCategory;
+import com.techzone.digishop.dto.ProductCategoryDTO;
 import com.techzone.digishop.repository.ProductCategoryRepository;
 import com.techzone.digishop.service.exception.DataIntegrityException;
 import com.techzone.digishop.service.exception.ObjectNotFoundException;
@@ -58,5 +59,8 @@ public class ProductCategoryService {
 		return categoryRepository.findAll(pageRequest);
 	}
 
+	public ProductCategory fromDTO(ProductCategoryDTO categoryDTO) {
+		return new ProductCategory(categoryDTO.getId(), categoryDTO.getName());
+	}
 
 }

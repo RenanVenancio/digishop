@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +35,8 @@ public class ProductCategoryResource {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> save(@RequestBody ProductCategory category) {
+	public ResponseEntity<Void> save(@Valid @RequestBody ProductCategoryDTO categoryDTO) {
+		ProductCategory category = productCategoryService.fromDTO(categoryDTO);
 		productCategoryService.save(category);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(category.getId())
 				.toUri();
