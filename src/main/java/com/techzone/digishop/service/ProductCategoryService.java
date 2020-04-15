@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.techzone.digishop.domain.ProductCategory;
@@ -36,6 +39,10 @@ public class ProductCategoryService {
 		findById(category.getId());
 		return categoryRepository.save(category);
 	}
+	
+	public List<ProductCategory> findAll() {
+		return categoryRepository.findAll();
+	}
 
 	public void delete(Integer id) {
 		findById(id);
@@ -45,8 +52,11 @@ public class ProductCategoryService {
 			throw new DataIntegrityException("This category cannot be deleted because it has related data");
 		}
 	}
-
-	public List<ProductCategory> findAll() {
-		return categoryRepository.findAll();
+	
+	public Page<ProductCategory> findPage(Integer page, Integer itensPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
+		return categoryRepository.findAll(pageRequest);
 	}
+
+
 }
