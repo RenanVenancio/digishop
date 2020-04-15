@@ -1,5 +1,6 @@
 package com.techzone.digishop.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,11 @@ public class CompanyService {
 		}catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("This company cannot be deleted because it has related data");
 		}
-		
+	}
+	
+	
+	public List<Company> findAll(){
+		return companyRepository.findAll();
 	}
 	
 }
