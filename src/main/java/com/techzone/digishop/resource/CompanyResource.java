@@ -37,8 +37,7 @@ public class CompanyResource {
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(company.getId())
-				.toUri();
-		
+				.toUri();		
 		return ResponseEntity.created(uri).build();
 	}
 	
