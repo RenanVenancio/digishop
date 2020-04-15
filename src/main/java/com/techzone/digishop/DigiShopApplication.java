@@ -14,12 +14,13 @@ import com.techzone.digishop.domain.ClientAddress;
 import com.techzone.digishop.domain.ClientType;
 import com.techzone.digishop.domain.Company;
 import com.techzone.digishop.domain.Employee;
+import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.Product;
 import com.techzone.digishop.domain.ProductCategory;
 import com.techzone.digishop.domain.Provider;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.SaleItem;
-import com.techzone.digishop.domain.SalePayment;
+import com.techzone.digishop.domain.enums.PaymentType;
 import com.techzone.digishop.repository.ClientAddressRepository;
 import com.techzone.digishop.repository.ClientRepository;
 import com.techzone.digishop.repository.CompanyRepository;
@@ -193,7 +194,7 @@ public class DigiShopApplication implements CommandLineRunner{
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		SalePayment s1Payment = new SalePayment(null, sdf.parse("15/04/2020"), 40.00, null, s1);
+		Payment s1Payment = new Payment(null, new Date(), 52.05, 0.00, null, null, "78982/2", PaymentType.REVENUE, "Troco pra 50", s1, null);
 		s1.getItens().addAll(Arrays.asList(sItem, sItem1));
 		s1.getPayments().add(s1Payment);
 		saleRepository.save(s1);

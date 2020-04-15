@@ -36,6 +36,9 @@ public class Purchase implements Serializable {
 	@OneToMany(mappedBy = "id.purchase")
 	List<PurchaseItem> itens = new ArrayList<>();
 
+	@OneToMany(mappedBy = "purchase")
+	List<Payment> payments = new ArrayList<>();
+
 	public Purchase() {
 
 	}
@@ -123,6 +126,14 @@ public class Purchase implements Serializable {
 
 	public void setItens(List<PurchaseItem> itens) {
 		this.itens = itens;
+	}
+
+	public List<Payment> getPayments() {
+		return payments;
+	}
+
+	public void setPayments(List<Payment> payments) {
+		this.payments = payments;
 	}
 
 	@Override
