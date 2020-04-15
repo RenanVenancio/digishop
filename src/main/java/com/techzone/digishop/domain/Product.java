@@ -48,11 +48,15 @@ public class Product implements Serializable {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "id.product")
-	List<PurchaseItem> purchasesItens = new ArrayList<>();
+	List<PurchaseItem> purchaseItens = new ArrayList<>();
 
 	@ManyToOne
 	@JoinColumn(name = "company_id")
 	private Company company;
+	
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	private ProductCategory category;
 
 	public Product() {
 
@@ -60,7 +64,7 @@ public class Product implements Serializable {
 
 	public Product(Integer id, @NotNull String name, String barcode, String reference, String description,
 			@NotNull Double purchasePrice, @NotNull Double salePrice, @NotNull String un, @NotNull Double weight,
-			Boolean sell, Double stock, String location, Company company) {
+			Boolean sell, Double stock, String location, Company company, ProductCategory category) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -75,6 +79,7 @@ public class Product implements Serializable {
 		this.stock = stock;
 		this.location = location;
 		this.company = company;
+		this.category = category;
 	}
 
 	@JsonIgnore
@@ -90,7 +95,7 @@ public class Product implements Serializable {
 	@JsonIgnore
 	public List<Purchase> getPurchases() {
 		List<Purchase> purchasesList = new ArrayList<>();
-		for (PurchaseItem x : purchasesItens) {
+		for (PurchaseItem x : purchaseItens) {
 			purchasesList.add(x.getPurchase());
 		}
 		return purchasesList;
@@ -206,6 +211,14 @@ public class Product implements Serializable {
 
 	public void setCompany(Company company) {
 		this.company = company;
+	}
+
+	public ProductCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(ProductCategory category) {
+		this.category = category;
 	}
 
 	@Override

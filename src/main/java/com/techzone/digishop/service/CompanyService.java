@@ -44,8 +44,7 @@ public class CompanyService {
 		}catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("This company cannot be deleted because it has related data");
 		}
-	}
-	
+	}	
 	
 	public List<Company> findAll(){
 		return companyRepository.findAll();

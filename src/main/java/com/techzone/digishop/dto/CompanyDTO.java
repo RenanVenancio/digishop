@@ -2,9 +2,6 @@ package com.techzone.digishop.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotNull;
-
 import com.techzone.digishop.domain.Company;
 
 public class CompanyDTO implements Serializable {
