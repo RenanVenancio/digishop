@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +24,7 @@ import com.techzone.digishop.service.CompanyService;
 public class CompanyResource {
 
 	@Autowired
-	CompanyService companyService;
-	
+	CompanyService companyService;	
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Company> findById(@PathVariable Integer id) {
@@ -32,7 +33,8 @@ public class CompanyResource {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> save(@RequestBody Company company){
+	public ResponseEntity<Void> save(@Valid @RequestBody CompanyDTO companyDTO){
+		Company company = companyService.fromDTO(companyDTO);
 		company = companyService.save(company);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
@@ -42,7 +44,8 @@ public class CompanyResource {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody Company company, @PathVariable Integer id){
+	public ResponseEntity<Void> update(@RequestBody CompanyDTO companyDTO, @PathVariable Integer id){
+		Company company = companyService.fromDTO(companyDTO);
 		company.setId(id);
 		company = companyService.update(company);
 		return ResponseEntity.noContent().build();

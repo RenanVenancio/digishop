@@ -44,7 +44,8 @@ public class ProductCategoryResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody ProductCategory category, @PathVariable Integer id) {
+	public ResponseEntity<Void> update(@Valid @RequestBody ProductCategoryDTO categoryDTO, @PathVariable Integer id) {
+		ProductCategory category = productCategoryService.fromDTO(categoryDTO);
 		category.setId(id);
 		productCategoryService.update(category);
 		return ResponseEntity.noContent().build();

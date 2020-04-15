@@ -2,6 +2,10 @@ package com.techzone.digishop.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.techzone.digishop.domain.Company;
 
 public class CompanyDTO implements Serializable {
@@ -9,13 +13,24 @@ public class CompanyDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
+	@NotEmpty(message = "Campo não pode ser vazio")
+	@Length(min = 2, max = 80, message = "O tamanho deve conter entre 2 e 80 caracteres")
 	private String name;
+	@NotEmpty(message = "Campo não pode ser vazio")
+	@Length(min = 11, max = 14, message = "O tamanho deve conter entre 11 e 14 caracteres")
 	private String cpfCnpj;
+	@NotEmpty(message = "Campo não pode ser vazio")
 	private String adress;
+	@NotEmpty(message = "Campo não pode ser vazio")
 	private String neighborhood;
+	@NotEmpty(message = "Campo não pode ser vazio")
 	private String zipcode;
+	@NotEmpty(message = "Campo não pode ser vazio")
 	private String city;
+	@NotEmpty(message = "Campo não pode ser vazio")
+	@Length(min = 2, max = 2, message = "O tamanho deve conter 2 caracteres")
 	private String state;
+	@NotEmpty(message = "Campo não pode ser vazio")
 	private String phone;
 	private String email;
 	private String slogan;
