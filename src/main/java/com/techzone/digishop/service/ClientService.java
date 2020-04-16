@@ -20,26 +20,27 @@ import com.techzone.digishop.service.exception.ObjectNotFoundException;
 public class ClientService {
 
     @Autowired
-    ClientRepository clientRepository;
+    ClientRepository repository;
 
     public Client findById(Integer id){
-        Optional<Client> client = clientRepository.findById(id);
-        return client.orElseThrow(() -> new ObjectNotFoundException(Client.class.getName() + " not found"));
+        Optional<Client> object = repository.findById(id);
+        return object.orElseThrow(() -> new ObjectNotFoundException(Client.class.getName() + " not found"));
     }
     
-	public Client update(Client client) {
-		findById(client.getId());
-		return clientRepository.save(client);
+	public Client update(Client object) {
+		Client newObject = findById(object.getId());
+		updateData(newObject, object);
+		return repository.save(newObject);
 	}
 	
 	public List<Client> findAll() {
-		return clientRepository.findAll();
+		return repository.findAll();
 	}
 
 	public void delete(Integer id) {
 		findById(id);
 		try {
-			clientRepository.deleteById(id);
+			repository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("This client cannot be deleted because it has related data");
 		}
@@ -47,11 +48,16 @@ public class ClientService {
 	
 	public Page<Client> findPage(Integer page, Integer itensPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
-		return clientRepository.findAll(pageRequest);
+		return repository.findAll(pageRequest);
 	}
 
-	public Client fromDTO(ClientDTO clientDTO) {
-		return new Client(clientDTO.getId(), clientDTO.getName(), null, clientDTO.getEmail(), null, null, null, null);
+	public Client fromDTO(ClientDTO objectDTO) {
+		return new Client(objectDTO.getId(), objectDTO.getName(), null, objectDTO.getEmail(), null, null, null, null);
+	}
+	
+	private void updateData(Client newObject, Client object) {
+		newObject.setName(object.getName());
+		newObject.setEmail(object.getEmail());
 	}
 
 }
