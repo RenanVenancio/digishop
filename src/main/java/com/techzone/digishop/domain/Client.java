@@ -38,7 +38,7 @@ public class Client extends User {
 	public Client(Integer id, String name, String cpfCnpj, String email, String password, Date birthDate, ClientType clientType,
 			Company company) {
 		super(id, name, cpfCnpj, email, password, birthDate, company);
-		this.clientType = clientType.getCod();
+		this.clientType = (clientType == null ? null : clientType.getCod());
 	}
 
 	public Set<String> getPhones() {
