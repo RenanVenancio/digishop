@@ -20,47 +20,47 @@ import com.techzone.digishop.service.exception.ObjectNotFoundException;
 public class ProductCategoryService {
 
 	@Autowired
-	ProductCategoryRepository categoryRepository;
+	ProductCategoryRepository repository;
 
 	public ProductCategory findById(Integer id) {
-		Optional<ProductCategory> category = categoryRepository.findById(id);
-		return category.orElseThrow(() -> new ObjectNotFoundException(ProductCategory.class.getName() + " not found"));
+		Optional<ProductCategory> object = repository.findById(id);
+		return object.orElseThrow(() -> new ObjectNotFoundException(ProductCategory.class.getName() + " not found"));
 	}
 
-	public ProductCategory save(ProductCategory category) {
-		category.setId(null);
+	public ProductCategory save(ProductCategory object) {
+		object.setId(null);
 		try {
-			return categoryRepository.save(category);
+			return repository.save(object);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Error");
 		}
 	}
 
-	public ProductCategory update(ProductCategory category) {
-		findById(category.getId());
-		return categoryRepository.save(category);
+	public ProductCategory update(ProductCategory object) {
+		findById(object.getId());
+		return repository.save(object);
 	}
 	
 	public List<ProductCategory> findAll() {
-		return categoryRepository.findAll();
+		return repository.findAll();
 	}
 
 	public void delete(Integer id) {
 		findById(id);
 		try {
-			categoryRepository.deleteById(id);
+			repository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("This category cannot be deleted because it has related data");
+			throw new DataIntegrityException("This object cannot be deleted because it has related data");
 		}
 	}
 	
 	public Page<ProductCategory> findPage(Integer page, Integer itensPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
-		return categoryRepository.findAll(pageRequest);
+		return repository.findAll(pageRequest);
 	}
 
-	public ProductCategory fromDTO(ProductCategoryDTO categoryDTO) {
-		return new ProductCategory(categoryDTO.getId(), categoryDTO.getName());
+	public ProductCategory fromDTO(ProductCategoryDTO objectDTO) {
+		return new ProductCategory(objectDTO.getId(), objectDTO.getName());
 	}
 
 }

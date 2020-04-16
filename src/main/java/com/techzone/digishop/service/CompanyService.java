@@ -20,49 +20,49 @@ import com.techzone.digishop.service.exception.ObjectNotFoundException;
 public class CompanyService {
 
 	@Autowired
-	CompanyRepository companyRepository;
+	CompanyRepository repository;
 
 	public Company findById(Integer id) {
-		Optional<Company> company = companyRepository.findById(id);
-		return company.orElseThrow(() -> new ObjectNotFoundException(Company.class.getName() + " not found"));
+		Optional<Company> object = repository.findById(id);
+		return object.orElseThrow(() -> new ObjectNotFoundException(Company.class.getName() + " not found"));
 	}
 
-	public Company save(Company company) {
-		company.setId(null);
+	public Company save(Company object) {
+		object.setId(null);
 		try {
-			return companyRepository.save(company);
+			return repository.save(object);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Company already registered");
 		}
 	}
 
-	public Company update(Company company) {
-		findById(company.getId());
-		return companyRepository.save(company);
+	public Company update(Company object) {
+		findById(object.getId());
+		return repository.save(object);
 	}
 
 	public void delete(Integer id) {
 		findById(id);
 		try {
-			companyRepository.deleteById(id);
+			repository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("This company cannot be deleted because it has related data");
+			throw new DataIntegrityException("This object cannot be deleted because it has related data");
 		}
 	}
 
 	public List<Company> findAll() {
-		return companyRepository.findAll();
+		return repository.findAll();
 	}
 
 	public Page<Company> findPage(Integer page, Integer itensPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
-		return companyRepository.findAll(pageRequest);
+		return repository.findAll(pageRequest);
 	}
 
-	public Company fromDTO(CompanyDTO companyDTO) {
-		return new Company(companyDTO.getName(), companyDTO.getCpfCnpj(), companyDTO.getAdress(),
-				companyDTO.getNeighborhood(), companyDTO.getZipcode(), companyDTO.getCity(), companyDTO.getState(),
-				companyDTO.getPhone(), companyDTO.getEmail(), companyDTO.getSlogan());
+	public Company fromDTO(CompanyDTO objectDTO) {
+		return new Company(objectDTO.getName(), objectDTO.getCpfCnpj(), objectDTO.getAdress(),
+				objectDTO.getNeighborhood(), objectDTO.getZipcode(), objectDTO.getCity(), objectDTO.getState(),
+				objectDTO.getPhone(), objectDTO.getEmail(), objectDTO.getSlogan());
 	}
 
 }

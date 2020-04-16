@@ -27,8 +27,8 @@ public abstract class User implements Serializable {
 	@NotNull
 	private String cpfCnpj;
 	@NotNull
-	private String email;
 	@Column(unique = true)
+	private String email;
 	@NotNull
 	private String password;
 
@@ -36,7 +36,7 @@ public abstract class User implements Serializable {
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "company_id")
-	Company company;
+	private Company company;
 
 	public User() {
 
