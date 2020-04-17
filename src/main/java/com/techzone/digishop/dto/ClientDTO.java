@@ -8,7 +8,9 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.techzone.digishop.domain.Client;
+import com.techzone.digishop.service.validation.ClientUpdate;
 
+@ClientUpdate
 public class ClientDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -31,6 +33,17 @@ public class ClientDTO implements Serializable{
 		this.email = client.getEmail();
 	}
 	
+	
+	
+	public ClientDTO(Integer id,
+			@NotEmpty(message = "Campo obrigatório") @Length(min = 5, max = 80, message = "Deve conter entre 5 e 80 caracteres") String name,
+			@NotEmpty(message = "Campo obrigatório") @Email(message = "O email informado não é válido") String email) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+	}
+
 	public Integer getId() {
 		return id;
 	}
