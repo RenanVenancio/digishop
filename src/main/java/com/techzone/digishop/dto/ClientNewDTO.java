@@ -5,38 +5,61 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.techzone.digishop.domain.ClientType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.validator.constraints.Length;
+
+import com.techzone.digishop.domain.ClientType;
+import com.techzone.digishop.service.validation.ClientInsert;
+
+@ClientInsert
 public class ClientNewDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	@NotEmpty(message = "Campo obrigatório")
+	@Length(min = 5, max = 80, message = "Deve conter entre 5 e 80 caracteres")
 	private String name;
+	@NotEmpty(message = "Campo obrigatório")
 	private String cpfCnpj;
+	@NotEmpty(message = "Campo obrigatório")
+	@Email(message = "O email informado não é válido")
 	private String email;
+	@NotEmpty(message = "Campo obrigatório")
 	private String password;
 	private Date birthDate;
+	
 	private Integer company;
+	@NotEmpty(message = "Campo obrigatório")
 	private String phone;
+	@NotEmpty(message = "Campo obrigatório")
 	private String description;
+	@NotEmpty(message = "Campo obrigatório")
 	private String address;
+	@NotEmpty(message = "Campo obrigatório")
 	private String number;
 	private String additional;
+	@NotEmpty(message = "Campo obrigatório")
 	private String neightbohood;
+	@NotEmpty(message = "Campo obrigatório")
 	private String zipcode;
+	@NotEmpty(message = "Campo obrigatório")
 	private String city;
+	@NotEmpty(message = "Campo obrigatório")
 	private String uf;
+	
 	private Integer type;
 
 	public ClientNewDTO() {
 
 	}
 
+	
 	public ClientNewDTO(String name, String cpfCnpj, String email, String password, String birthDate, Integer company,
 			String phone, String description, String address, String number, String additional, String neightbohood,
 			String zipcode, String city, String uf, ClientType type) {
 		super();
-				
+
 		this.name = name;
 		this.cpfCnpj = cpfCnpj;
 		this.email = email;

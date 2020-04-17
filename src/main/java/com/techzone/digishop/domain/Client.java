@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ public class Client extends User {
 	@CollectionTable(name = "CLIENT_PHONE")
 	Set<String> phones = new HashSet<>();
 
-	@OneToMany(mappedBy = "client")
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
 	List<ClientAddress> adresses = new ArrayList<>();
 
 	@OneToMany(mappedBy = "client")
