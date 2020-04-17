@@ -1,6 +1,8 @@
 package com.techzone.digishop.dto;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.techzone.digishop.domain.ClientType;
@@ -30,15 +32,16 @@ public class ClientNewDTO implements Serializable {
 
 	}
 
-	public ClientNewDTO(String name, String cpfCnpj, String email, String password, Date birthDate, Integer company,
+	public ClientNewDTO(String name, String cpfCnpj, String email, String password, String birthDate, Integer company,
 			String phone, String description, String address, String number, String additional, String neightbohood,
 			String zipcode, String city, String uf, ClientType type) {
 		super();
+				
 		this.name = name;
 		this.cpfCnpj = cpfCnpj;
 		this.email = email;
 		this.password = password;
-		this.birthDate = birthDate;
+		this.birthDate = formatBirth(birthDate);
 		this.company = company;
 		this.phone = phone;
 		this.description = description;
@@ -52,6 +55,17 @@ public class ClientNewDTO implements Serializable {
 		this.type = type.getCod();
 	}
 
+	private Date formatBirth(String birth) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date date;
+		try {
+			date = sdf.parse(birth);
+			return date;
+		} catch (ParseException e) {			
+			throw new RuntimeException("Data inválida");
+		}
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -88,8 +102,8 @@ public class ClientNewDTO implements Serializable {
 		return birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
+	public void setBirthDate(String birthDate) {
+		this.birthDate = formatBirth(birthDate);
 	}
 
 	public Integer getCompany() {

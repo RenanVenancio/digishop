@@ -1,5 +1,6 @@
 package com.techzone.digishop.resource;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.techzone.digishop.domain.Client;
+import com.techzone.digishop.domain.ProductCategory;
 import com.techzone.digishop.dto.ClientDTO;
+import com.techzone.digishop.dto.ClientNewDTO;
+import com.techzone.digishop.dto.ProductCategoryDTO;
 import com.techzone.digishop.service.ClientService;
 
 @RestController
@@ -30,6 +35,15 @@ public class ClientResource {
 	public ResponseEntity<Client> findById(@PathVariable Integer id){
 		Client client = clientService.findById(id);
 		return ResponseEntity.ok().body(client);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> save(@Valid @RequestBody ClientNewDTO objectDTO) {
+		Client client = clientService.fromDTO(objectDTO);
+		clientService.save(client);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(client.getId())
+				.toUri();
+		return ResponseEntity.created(uri).build();
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
