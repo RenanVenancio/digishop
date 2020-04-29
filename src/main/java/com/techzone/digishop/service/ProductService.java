@@ -48,7 +48,7 @@ public class ProductService {
 
 	public void delete(Integer id) {
 		findById(id);
-		repository.deleteById(object.getId());
+		repository.deleteById(id);
 	}
 
 	public List<Product> findAll() {
