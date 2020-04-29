@@ -9,13 +9,11 @@ public class Provider extends CompanyAbstract {
 
 	public Provider() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Provider(String name, String cpfCnpj, String adress, String neighborhood, String zipcode, String city,
 			String state, String phone, String email) {
 		super(name, cpfCnpj, adress, neighborhood, zipcode, city, state, phone, email);
-		// TODO Auto-generated constructor stub
 	}
 	
 	
