@@ -18,10 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.techzone.digishop.domain.Client;
-import com.techzone.digishop.domain.ProductCategory;
 import com.techzone.digishop.dto.ClientDTO;
 import com.techzone.digishop.dto.ClientNewDTO;
-import com.techzone.digishop.dto.ProductCategoryDTO;
 import com.techzone.digishop.service.ClientService;
 
 @RestController
