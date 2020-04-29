@@ -79,7 +79,7 @@ public class DigiShopApplication implements CommandLineRunner{
 		ProductCategory cat2 = new ProductCategory(null, "Bebidas");
 		ProductCategory cat3 = new ProductCategory(null, "Acompanhamentos");
 		ProductCategory cat4 = new ProductCategory(null, "Doces");
-		ProductCategory cat5 = new ProductCategory(null, "Salgados");
+		ProductCategory cat5 = new ProductCategory(null, "Sanduiches e Salgados");
 		ProductCategory cat6 = new ProductCategory(null, "Frituras");
 		ProductCategory cat7 = new ProductCategory(null, "Enlatados");
 		ProductCategory cat8 = new ProductCategory(null, "Saudavel");
@@ -111,7 +111,7 @@ public class DigiShopApplication implements CommandLineRunner{
 		
 		Client cli1 = new Client(null, "MURILO BENICIO", "8045429282", "moriloo@bol.com.br", "moo8f99fd", new Date(),
 				ClientType.PESSOA_FISICA, c);
-		
+				
 		Client cli2 = new Client(null, "MARCUS VINICIUS", "9067425283", "mvpb33@gmail.com", "8899s09d6", new Date(),
 				ClientType.PESSOA_FISICA, c);
 	
@@ -158,21 +158,27 @@ public class DigiShopApplication implements CommandLineRunner{
 		// CRIANDO PRODUTOS
 
 		Product prod1 = new Product(null, "COCA COLA 2l", "789866657904",
-				"", "Bebida com caramelo IV", 5.49, 7.77, "UN", 0.4430, true, 16.0, "Preateleira 3", c, cat1);
+				"", "Bebida com caramelo IV", 5.49, 7.77, "UN", 0.4430, true, 16.0, "Preateleira 3", c, cat2);
 		
 		Product prod2 = new Product(null, "HAMBURGUER CHEDDAR 100G", "789866657902",
-				"", "100G carne artesanal cebola e molho", 5.49, 11.99, "UN", 0.778, true, 12.00, "Preateleira 3", c, cat2);
+				"", "100G carne artesanal cebola e molho", 5.49, 11.99, "UN", 0.778, true, 12.00, "Preateleira 3", c, cat5);
 		
 		Product prod3 = new Product(null, "CACHORRO QUENTE COMPLETO", "789866657955",
-				"", "Tamanho de 15Cm", 3.49, 8.50, "UN", 0.334, true, 4.9, "Cozinha 3", c, cat3);
+				"", "Tamanho de 15Cm", 3.49, 8.50, "UN", 0.334, true, 4.9, "Cozinha 3", c, cat5);
 		
 		Product prod4 = new Product(null, "MISTO QUENTE SIMPLES", "789866653434",
-				"", "Mussarela Presunto Cheddar Molho especial alface Bacon", 6.75, 9.99, "UN", 0.340, true, 4.9, "Container 94", c, cat1);
+				"", "Mussarela Presunto Cheddar Molho especial alface Bacon", 6.75, 9.99, "UN", 0.340, true, 4.9, "Container 94", c, cat5);
 		
 		Product prod5 = new Product(null, "PEPSI LATA 350ML", "723234554688",
-				"", "Bebida com caramelo IV", 1.25, 2.53, "UN", 0.533, true, 22.0, "Preateleira 3", c, cat1);
+				"", "Bebida com caramelo IV", 1.25, 2.53, "UN", 0.533, true, 22.0, "Preateleira 3", c, cat2);
 		
-		productRepository.saveAll(Arrays.asList(prod1, prod2, prod3, prod4, prod5));
+		Product prod6 = new Product(null, "PUDIM 120G", "", "P003", "PUDIM COM NATA", 3.45, 4.55, "UN", 100.00, true, 12.0, "COZINHA", c, cat4);
+
+		Product prod7 = new Product(null, "CAFÉ PEQUENO", "", "P00$", "CAFÉ PRETO COM AÇUCAR", 1.43, 2.50, "UN", 1000.00, true, 16.0, "COZINHA", c, cat2);
+
+		Product prod8 = new Product(null, "COXINHA DE FRANGO COM CHEDDAR", "", "P003", "COXINHA RECHEADA", 4.56, 6.77, "UN", 100.00, true, 19.0, "COZINHA", c, cat5);
+
+		productRepository.saveAll(Arrays.asList(prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8));
 		
 		
 		// CRIANDO VENDAS
