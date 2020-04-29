@@ -1,6 +1,5 @@
 package com.techzone.digishop;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -197,8 +196,6 @@ public class DigiShopApplication implements CommandLineRunner{
 				prod2.getBarcode(), prod2.getReference(), 
 				prod2.getDescription(), prod2.getPurchasePrice(), prod2.getSalePrice(), 
 				prod2.getUn(), prod2.getWeight(), prod2.getLocation());
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
 		Payment s1Payment = new Payment(null, new Date(), 52.05, 0.00, null, null, "78982/2", PaymentType.REVENUE, "Troco pra 50", s1, null);
 		s1.getItens().addAll(Arrays.asList(sItem, sItem1));
