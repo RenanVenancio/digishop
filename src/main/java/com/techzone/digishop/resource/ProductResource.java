@@ -16,9 +16,9 @@ import javax.validation.Valid;
 import com.techzone.digishop.domain.Product;
 import com.techzone.digishop.dto.ProductDTO;
 import com.techzone.digishop.service.ProductService;
-import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequestMapping(value = "products/")
