@@ -56,6 +56,10 @@ public class SaleItem implements Serializable{
 		this.location = location;
 	}
 	
+	public Double getSubtotal(){
+		return (salePrice - discount) * quantity;
+	}
+
 	@JsonIgnore
 	public Sale getSale() {
 		return id.getSale();
