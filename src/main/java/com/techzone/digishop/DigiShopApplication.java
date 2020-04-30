@@ -171,9 +171,9 @@ public class DigiShopApplication implements CommandLineRunner{
 		Product prod5 = new Product(null, "PEPSI LATA 350ML", "723234554688",
 				"", "Bebida com caramelo IV", 1.25, 2.53, "UN", 0.533, true, 22.0, "Preateleira 3", c, cat2);
 		
-		Product prod6 = new Product(null, "PUDIM 120G", "", "P003", "PUDIM COM NATA", 3.45, 4.55, "UN", 100.00, true, 12.0, "COZINHA", c, cat4);
+		Product prod6 = new Product(null, "PUDIM 120G", "0887890999", "P003", "PUDIM COM NATA", 3.45, 4.55, "UN", 100.00, true, 12.0, "COZINHA", c, cat4);
 
-		Product prod7 = new Product(null, "CAFÉ PEQUENO", "", "P00$", "CAFÉ PRETO COM AÇUCAR", 1.43, 2.50, "UN", 1000.00, true, 16.0, "COZINHA", c, cat2);
+		Product prod7 = new Product(null, "CAFÉ PEQUENO", "78889790000", "P00$", "CAFÉ PRETO COM AÇUCAR", 1.43, 2.50, "UN", 1000.00, true, 16.0, "COZINHA", c, cat2);
 
 		Product prod8 = new Product(null, "COXINHA DE FRANGO COM CHEDDAR", "", "P003", "COXINHA RECHEADA", 4.56, 6.77, "UN", 100.00, true, 19.0, "COZINHA", c, cat5);
 
@@ -184,7 +184,7 @@ public class DigiShopApplication implements CommandLineRunner{
 		
 			// VENDA 1
 		
-		Sale s1 = new Sale(null, new Date(), false, false, c, cli, cli.getAdresses().get(0) ,0.00);
+		Sale s1 = new Sale(null, new Date(), false, false, c, cli, cli.getAdresses().get(0) ,0.00, 3.00);
 		
 		
 		SaleItem sItem = new SaleItem(s1, prod1, 0.00, 2.0, prod1.getName(), 
@@ -205,7 +205,7 @@ public class DigiShopApplication implements CommandLineRunner{
 		salePaymentRepository.save(s1Payment);
 		
 		
-		Sale s2 = new Sale(null, new Date(), false, false, c, cli2, cli2.getAdresses().get(1) ,0.00);
+		Sale s2 = new Sale(null, new Date(), false, false, c, cli2, cli2.getAdresses().get(1) ,0.00, 2.32);
 		
 		
 		SaleItem sItem2 = new SaleItem(s2, prod5, 2.50, 5.0, prod5.getName(), 
