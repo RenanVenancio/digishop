@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.techzone.digishop.domain.enums.PaymentMethod;
+
 @Entity
 public class Sale implements Serializable {
 
@@ -33,6 +35,10 @@ public class Sale implements Serializable {
 	@JoinColumn(name = "address_id")
 	private ClientAddress address;
 	private Double discount;
+	private Double freightCost;
+	private Integer parcelNumber;
+	private Date firstPayment;
+	private Integer paymentMethod;
 
 	@OneToMany(mappedBy = "sale")
 	List<Payment> payments = new ArrayList<>();
@@ -41,11 +47,11 @@ public class Sale implements Serializable {
 	List<SaleItem> itens = new ArrayList<>();
 
 	public Sale() {
-
+		this.parcelNumber = 1;
 	}
 
 	public Sale(Integer id, Date date, Boolean cancelled, Boolean delivered, Company company, Client client,
-			ClientAddress address, Double discount) {
+			ClientAddress address, Double discount, Double freightCost) {
 		this.id = id;
 		this.date = date;
 		this.cancelled = cancelled;
@@ -54,6 +60,33 @@ public class Sale implements Serializable {
 		this.client = client;
 		this.address = address;
 		this.discount = discount;
+		this.freightCost = freightCost;
+	}
+
+	public Sale(Integer id, Date date, Boolean cancelled, Boolean delivered, Company company, Client client,
+			ClientAddress address, Double discount, Double freightCost, Integer parcelNumber, Date firstPayment,
+			PaymentMethod paymentMethod) {
+		this.id = id;
+		this.date = date;
+		this.cancelled = cancelled;
+		this.delivered = delivered;
+		this.company = company;
+		this.client = client;
+		this.address = address;
+		this.discount = discount;
+		this.freightCost = freightCost;
+		this.parcelNumber = parcelNumber;
+		this.firstPayment = firstPayment;
+		this.paymentMethod = paymentMethod.getCod();
+	}
+
+	public Double getTotalValue() {
+		Double value = 0.00;
+		for (SaleItem item : itens) {
+			value += item.getSubtotal();
+		}
+
+		return (value - this.discount) + this.freightCost;
 	}
 
 	public Integer getId() {
@@ -134,6 +167,38 @@ public class Sale implements Serializable {
 
 	public void setItens(List<SaleItem> itens) {
 		this.itens = itens;
+	}
+
+	public Double getFreightCost() {
+		return this.freightCost;
+	}
+
+	public void setFreightCost(Double freightCost) {
+		this.freightCost = freightCost;
+	}
+
+	public Integer getParcelNumber() {
+		return this.parcelNumber;
+	}
+
+	public void setParcelNumber(Integer parcelNumber) {
+		this.parcelNumber = parcelNumber;
+	}
+
+	public Date getFirstPayment() {
+		return this.firstPayment;
+	}
+
+	public void setFirstPayment(Date firstPayment) {
+		this.firstPayment = firstPayment;
+	}
+
+	public PaymentMethod getPaymentMethod() {
+		return PaymentMethod.toEnum(this.paymentMethod);
+	}
+
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
+		this.paymentMethod = paymentMethod.getCod();
 	}
 
 	@Override
