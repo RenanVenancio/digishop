@@ -55,9 +55,10 @@ public class ProductService {
 		return repository.findAll();
 	}
 
-	public Page<Product> findPage(Integer page, Integer itensPerPage, String orderBy, String direction) {
+	public Page<Product> search(String name, List<Integer> ids, Integer page, Integer itensPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
-		return repository.findAll(pageRequest);
+		List<ProductCategory> categories = categoryRepository.findAllById(ids);
+		return repository.findDistinctByNameContainingIgnoreCaseAndCategoryIn(name, categories, pageRequest);
 	}
 
 	public Product fromDTO(ProductDTO object) {
