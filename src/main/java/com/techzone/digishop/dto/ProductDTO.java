@@ -2,6 +2,8 @@ package com.techzone.digishop.dto;
 
 import java.io.Serializable;
 
+import com.techzone.digishop.domain.Product;
+
 public class ProductDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -19,6 +21,22 @@ public class ProductDTO implements Serializable {
 	private String location;
 	private Integer category;
 	private Integer company;
+
+	public ProductDTO(Product product){
+		this.name = product.getName();
+		this.barcode = product.getBarcode();
+		this.reference = product.getReference();
+		this.description = product.getDescription();
+		this.purchasePrice = product.getPurchasePrice();
+		this.salePrice = product.getSalePrice();
+		this.un = product.getUn();
+		this.weight = product.getWeight();
+		this.sell = product.getSell();
+		this.stock = product.getStock();
+		this.location = product.getLocation();
+		this.category = product.getCategory().getId();
+		this.company = product.getCompany().getId();
+	}
 
 	public ProductDTO(String name, String barcode, String reference, String description, Double purchasePrice,
 			Double salePrice, String un, Double weight, Boolean sell, Double stock, String location,
