@@ -2,6 +2,7 @@ package com.techzone.digishop.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class Sale implements Serializable {
 	private Integer parcelNumber;
 	private Date firstPayment;
 	private Integer paymentMethod;
+	private String paydayInterval;
 
 	@OneToMany(mappedBy = "sale")
 	List<Payment> payments = new ArrayList<>();
@@ -48,6 +50,14 @@ public class Sale implements Serializable {
 
 	public Sale() {
 		this.parcelNumber = 1;
+		this.paymentMethod = PaymentMethod.PENDENT.getCod();
+		this.paydayInterval = "15";
+		this.date = new Date();
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(this.date);
+		calendar.add(Calendar.DATE, 15);
+		this.setFirstPayment(calendar.getTime());
 	}
 
 	public Sale(Integer id, Date date, Boolean cancelled, Boolean delivered, Company company, Client client,
@@ -201,6 +211,14 @@ public class Sale implements Serializable {
 		this.paymentMethod = paymentMethod.getCod();
 	}
 
+	public String getPaydayInterval() {
+		return this.paydayInterval;
+	}
+
+	public void setPaydayInterval(String paydayInterval) {
+		this.paydayInterval = paydayInterval;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -224,6 +242,16 @@ public class Sale implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "{" + " id='" + id + "'" + ", date='" + date + "'" + ", cancelled='" + cancelled + "'" + ", delivered='"
+				+ delivered + "'" + ", company='" + company + "'" + ", client='" + client + "'" + ", address='"
+				+ address + "'" + ", discount='" + discount + "'" + ", freightCost='" + freightCost + "'"
+				+ ", parcelNumber='" + parcelNumber + "'" + ", firstPayment='" + firstPayment + "'"
+				+ ", paymentMethod='" + paymentMethod + "'" + ", payments='" + payments + "'" + ", itens='" + itens
+				+ "'" + "}";
 	}
 
 }
