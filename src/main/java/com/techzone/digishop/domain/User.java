@@ -24,6 +24,8 @@ public abstract class User implements Serializable {
 	private Integer id;
 	@NotNull
 	private String name;
+
+	private String fantasyName;
 	@NotNull
 	private String cpfCnpj;
 	@NotNull
@@ -39,7 +41,7 @@ public abstract class User implements Serializable {
 	private Company company;
 
 	public User() {
-
+		this.fantasyName = this.name;
 	}
 
 	public User(Integer id, @NotNull String name, @NotNull String cpfCnpj, @NotNull String email,
@@ -51,6 +53,18 @@ public abstract class User implements Serializable {
 		this.password = password;
 		this.birthDate = birthDate;
 		this.company = company;
+	}
+
+	public User(Integer id, @NotNull String name, @NotNull String cpfCnpj, @NotNull String email,
+			@NotNull String password, Date birthDate, Company company, String fantasyName) {
+		this.id = id;
+		this.name = name;
+		this.cpfCnpj = cpfCnpj;
+		this.email = email;
+		this.password = password;
+		this.birthDate = birthDate;
+		this.company = company;
+		this.fantasyName = fantasyName;
 	}
 
 	public Integer getId() {
@@ -108,6 +122,16 @@ public abstract class User implements Serializable {
 	public void setCompany(Company company) {
 		this.company = company;
 	}
+
+
+	public String getFantasyName() {
+		return this.fantasyName;
+	}
+
+	public void setFantasyName(String fantasyName) {
+		this.fantasyName = fantasyName;
+	}
+
 
 	@Override
 	public int hashCode() {
