@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.techzone.digishop.service.exception.BusinessRuleException;
 import com.techzone.digishop.service.exception.DataIntegrityException;
 import com.techzone.digishop.service.exception.ObjectNotFoundException;
 
@@ -25,6 +26,12 @@ public class ResourceExceptionHandler {
 	
 	@ExceptionHandler(DataIntegrityException.class)
 	public ResponseEntity<StandardError> dataIntegrity(DataIntegrityException e, HttpServletRequest request){
+		StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+	}
+
+	@ExceptionHandler(BusinessRuleException.class)
+	public ResponseEntity<StandardError> businessRule(BusinessRuleException e, HttpServletRequest request){
 		StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
