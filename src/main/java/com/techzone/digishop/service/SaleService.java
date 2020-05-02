@@ -1,9 +1,5 @@
 package com.techzone.digishop.service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -11,12 +7,9 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.Product;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.SaleItem;
-import com.techzone.digishop.domain.enums.PaymentMethod;
-import com.techzone.digishop.domain.enums.PaymentType;
 import com.techzone.digishop.repository.PaymentRepository;
 import com.techzone.digishop.repository.SaleItemRepository;
 import com.techzone.digishop.repository.SaleRepository;
