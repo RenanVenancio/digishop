@@ -32,7 +32,7 @@ public class PaymentDTO implements Serializable {
         this.paymentType = payment.getPaymentType().getCod();
         this.observation = payment.getObservation();
         this.sale = payment.getSale().getId();
-        this.purchase = payment.getPurchase().getId();
+        this.purchase = payment.getPurchase() == null ? null : payment.getPurchase().getId();
     }
 
     public PaymentDTO(Integer id, Date dueDate, Double value, Double amountPaid, Date paydDate, String barCode,
