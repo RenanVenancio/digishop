@@ -24,19 +24,14 @@ public class Product implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@NotNull
 	private String name;
 	@Column(unique = true)
 	private String barcode;
 	private String reference;
 	private String description;
-	@NotNull
 	private Double purchasePrice;
-	@NotNull
 	private Double salePrice;
-	@NotNull
 	private String un = "UN";
-	@NotNull
 	private Double weight = 0.00;
 	private Boolean sell = true;
 	private Double stock;
@@ -62,8 +57,8 @@ public class Product implements Serializable {
 
 	}
 
-	public Product(Integer id, @NotNull String name, String barcode, String reference, String description,
-			@NotNull Double purchasePrice, @NotNull Double salePrice, @NotNull String un, @NotNull Double weight,
+	public Product(Integer id, String name, String barcode, String reference, String description,
+			Double purchasePrice, Double salePrice, String un, Double weight,
 			Boolean sell, Double stock, String location, Company company, ProductCategory category) {
 		super();
 		this.id = id;
@@ -245,5 +240,29 @@ public class Product implements Serializable {
 			return false;
 		return true;
 	}
+
+
+	@Override
+	public String toString() {
+		return "{" +
+			" id='" + id + "'" +
+			", name='" + name + "'" +
+			", barcode='" + barcode + "'" +
+			", reference='" + reference + "'" +
+			", description='" + description + "'" +
+			", purchasePrice='" + purchasePrice + "'" +
+			", salePrice='" + salePrice + "'" +
+			", un='" + un + "'" +
+			", weight='" + weight + "'" +
+			", sell='" + sell + "'" +
+			", stock='" + stock + "'" +
+			", location='" + location + "'" +
+			", itens='" + itens + "'" +
+			", purchaseItens='" + purchaseItens + "'" +
+			", company='" + company + "'" +
+			", category='" + category + "'" +
+			"}";
+	}
+
 
 }
