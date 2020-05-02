@@ -2,7 +2,7 @@ package com.techzone.digishop.domain.enums;
 
 public enum PaymentMethod {
     
-	COMPANY_CREDIT(0), CREDIT_CARD(1), BANK_SLIP(3);
+	PENDENT(0), CREDIT_CARD(1), BANK_SLIP(3);
 
 	private int cod;
 
