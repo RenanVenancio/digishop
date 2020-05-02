@@ -109,7 +109,7 @@ public class DigiShopApplication implements CommandLineRunner{
 				ClientType.PESSOA_FISICA, c);
 		
 		Client cli1 = new Client(null, "MURILO BENICIO", "8045429282", "moriloo@bol.com.br", "moo8f99fd", new Date(),
-				ClientType.PESSOA_FISICA, c);
+				ClientType.PESSOA_FISICA, c, "MORILO");
 				
 		Client cli2 = new Client(null, "MARCUS VINICIUS", "9067425283", "mvpb33@gmail.com", "8899s09d6", new Date(),
 				ClientType.PESSOA_FISICA, c);
