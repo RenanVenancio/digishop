@@ -28,7 +28,7 @@ import com.techzone.digishop.repository.ProductCategoryRepository;
 import com.techzone.digishop.repository.ProductRepository;
 import com.techzone.digishop.repository.ProviderRepository;
 import com.techzone.digishop.repository.SaleItemRepository;
-import com.techzone.digishop.repository.SalePaymentRepository;
+import com.techzone.digishop.repository.PaymentRepository;
 import com.techzone.digishop.repository.SaleRepository;
 
 @SpringBootApplication
@@ -56,7 +56,7 @@ public class DigiShopApplication implements CommandLineRunner{
 	SaleItemRepository saleItemRepository;
 	
 	@Autowired
-	SalePaymentRepository salePaymentRepository;
+	PaymentRepository salePaymentRepository;
 	
 	@Autowired
 	EmployeeRepository employeeRepository;
