@@ -1,9 +1,13 @@
 package com.techzone.digishop.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.Sale;
+import com.techzone.digishop.domain.SaleItem;
 
 public class SaleDTO implements Serializable {
 
@@ -14,7 +18,7 @@ public class SaleDTO implements Serializable {
     private Boolean cancelled;
     private Boolean delivered;
     private Integer company;
-    private Integer client;
+    private ClientDTO client;
     private Integer address;
     private Double discount;
     private Double freightCost;
@@ -22,22 +26,34 @@ public class SaleDTO implements Serializable {
     private Date firstPayment;
     private Integer paymentMethod;
 
+	List<PaymentDTO> payments = new ArrayList<>();
+
+	List<SaleItemDTO> itens = new ArrayList<>();
+
     public SaleDTO(Sale sale) {
         this.id = sale.getId();
         this.date = sale.getDate();
         this.cancelled = sale.getCancelled();
         this.delivered = sale.getDelivered();
         this.company = sale.getCompany().getId();
-        this.client = sale.getClient().getId();
+        this.client = new ClientDTO(sale.getClient());
         this.address = sale.getAddress().getId();
         this.discount = sale.getDiscount();
         this.freightCost = sale.getFreightCost();
         this.parcelNumber = sale.getParcelNumber();
         this.firstPayment = sale.getFirstPayment();
         this.paymentMethod = sale.getPaymentMethod().getCod();
+
+        for(SaleItem si : sale.getItens()){
+            this.itens.add(new SaleItemDTO(si));
+        }
+
+        for(Payment p : sale.getPayments()){
+            this.payments.add(new PaymentDTO(p));
+        }
     }
 
-    public SaleDTO(Integer id, Date date, Boolean cancelled, Boolean delivered, Integer company, Integer client,
+    public SaleDTO(Integer id, Date date, Boolean cancelled, Boolean delivered, Integer company, ClientDTO client,
             Integer address, Double discount, Double freightCost, Integer parcelNumber, Date firstPayment,
             Integer paymentMethod) {
         this.id = id;
@@ -57,6 +73,15 @@ public class SaleDTO implements Serializable {
     public Integer getId() {
         return this.id;
     }
+
+    public Double getTotalValue() {
+		Double value = 0.00;
+		for (SaleItemDTO item : itens) {
+			value += item.getSubtotal();
+		}
+
+		return (value - this.discount) + this.freightCost;
+	}
 
     public void setId(Integer id) {
         this.id = id;
@@ -102,11 +127,11 @@ public class SaleDTO implements Serializable {
         this.company = company;
     }
 
-    public Integer getClient() {
+    public ClientDTO getClient() {
         return this.client;
     }
 
-    public void setClient(Integer client) {
+    public void setClient(ClientDTO client) {
         this.client = client;
     }
 
@@ -157,5 +182,23 @@ public class SaleDTO implements Serializable {
     public void setPaymentMethod(Integer paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
+
+
+    public List<PaymentDTO> getPayments() {
+        return this.payments;
+    }
+
+    public void setPayments(List<PaymentDTO> payments) {
+        this.payments = payments;
+    }
+
+    public List<SaleItemDTO> getItens() {
+        return this.itens;
+    }
+
+    public void setItens(List<SaleItemDTO> itens) {
+        this.itens = itens;
+    }
+
 
 }
