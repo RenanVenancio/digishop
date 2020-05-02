@@ -12,9 +12,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
-import javax.validation.Valid;
-
 import com.techzone.digishop.domain.Sale;
+import com.techzone.digishop.dto.SaleDTO;
 import com.techzone.digishop.service.SaleService;
 
 @RestController
@@ -26,9 +25,10 @@ public class SaleResource {
 	
 	@GetMapping
 	@RequestMapping(value = "/{id}")
-	public ResponseEntity<Sale> findById(@PathVariable Integer id){
+	public ResponseEntity<SaleDTO> findById(@PathVariable Integer id){
 		Sale sale = saleService.findById(id);
-		return ResponseEntity.ok().body(sale);
+		
+		return ResponseEntity.ok().body(new SaleDTO(sale));
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
