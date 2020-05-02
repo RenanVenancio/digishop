@@ -32,8 +32,10 @@ public class Client extends User {
 	@JsonIgnore
 	List<Sale> sales = new ArrayList<>();
 
-	public Client() {
+	public Double creditLimit;
 
+	public Client() {
+		this.creditLimit = 0.00;
 	}
 
 	public Client(Integer id, String name, String cpfCnpj, String email, String password, Date birthDate, ClientType clientType,
@@ -73,5 +75,14 @@ public class Client extends User {
 	public void setSales(List<Sale> sales) {
 		this.sales = sales;
 	}
+
+	public Double getCreditLimit() {
+		return this.creditLimit;
+	}
+
+	public void setCreditLimit(Double creditLimit) {
+		this.creditLimit = creditLimit;
+	}
+
 
 }
