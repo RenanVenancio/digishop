@@ -15,7 +15,5 @@ public class Provider extends CompanyAbstract {
 			String state, String phone, String email) {
 		super(name, cpfCnpj, adress, neighborhood, zipcode, city, state, phone, email);
 	}
-	
-	
 
 }
