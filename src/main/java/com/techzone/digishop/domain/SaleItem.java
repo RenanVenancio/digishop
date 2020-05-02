@@ -10,36 +10,30 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class SaleItem implements Serializable{
+public class SaleItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
 	@JsonIgnore
 	@EmbeddedId
-	private SaleItemPK id =  new SaleItemPK();
+	private SaleItemPK id = new SaleItemPK();
 	private Double discount = 0.00;
 	private Double quantity;
 	private String name;
-	@Column(unique = true)
 	private String barcode;
 	private String reference;
 	private String description;
-	@NotNull
 	private Double purchasePrice;
-	@NotNull
 	private Double salePrice;
-	@NotNull
 	private String un = "UN";
-	@NotNull
 	private Double weight = 0.00;
 	private String location;
-	
+
 	public SaleItem() {
 	}
 
-	public SaleItem(Sale sale, Product product, Double discount, Double quantity, String name, String barcode, String reference,
-			String description, @NotNull Double purchasePrice, @NotNull Double salePrice, @NotNull String un,
-			@NotNull Double weight, String location) {
+	public SaleItem(Sale sale, Product product, Double discount, Double quantity, String name, String barcode,
+			String reference, String description, Double purchasePrice, Double salePrice, String un, Double weight,
+			String location) {
 		super();
 		this.id.setSale(sale);
 		this.id.setProduct(product);
@@ -55,8 +49,8 @@ public class SaleItem implements Serializable{
 		this.weight = weight;
 		this.location = location;
 	}
-	
-	public Double getSubtotal(){
+
+	public Double getSubtotal() {
 		return (salePrice - discount) * quantity;
 	}
 
@@ -64,9 +58,17 @@ public class SaleItem implements Serializable{
 	public Sale getSale() {
 		return id.getSale();
 	}
-	
+
+	public void setSale(Sale sale){
+		this.id.setSale(sale);
+	}
+
 	public Product getProduct() {
 		return id.getProduct();
+	}
+
+	public void setProduct(Product product) {
+		this.id.setProduct(product);
 	}
 
 	public SaleItemPK getId() {
@@ -189,8 +191,13 @@ public class SaleItem implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "{" + " id='" + id + "'" + ", discount='" + discount + "'" + ", quantity='" + quantity + "'" + ", name='"
+				+ name + "'" + ", barcode='" + barcode + "'" + ", reference='" + reference + "'" + ", description='"
+				+ description + "'" + ", purchasePrice='" + purchasePrice + "'" + ", salePrice='" + salePrice + "'"
+				+ ", un='" + un + "'" + ", weight='" + weight + "'" + ", location='" + location + "'" + "}";
+	}
 
 }
