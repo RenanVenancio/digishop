@@ -38,9 +38,15 @@ public class Client extends User {
 		this.creditLimit = 0.00;
 	}
 
-	public Client(Integer id, String name, String cpfCnpj, String email, String password, Date birthDate, ClientType clientType,
-			Company company) {
+	public Client(Integer id, String name, String cpfCnpj, String email, String password, Date birthDate,
+			ClientType clientType, Company company) {
 		super(id, name, cpfCnpj, email, password, birthDate, company);
+		this.clientType = (clientType == null ? null : clientType.getCod());
+	}
+
+	public Client(Integer id, String name, String cpfCnpj, String email, String password, Date birthDate,
+			ClientType clientType, Company company, String fantasyName) {
+		super(id, name, cpfCnpj, email, password, birthDate, company, fantasyName);
 		this.clientType = (clientType == null ? null : clientType.getCod());
 	}
 
@@ -83,6 +89,5 @@ public class Client extends User {
 	public void setCreditLimit(Double creditLimit) {
 		this.creditLimit = creditLimit;
 	}
-
 
 }
