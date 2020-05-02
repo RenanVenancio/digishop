@@ -2,7 +2,7 @@ package com.techzone.digishop.dto;
 
 import java.io.Serializable;
 
-import com.techzone.digishop.domain.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techzone.digishop.domain.SaleItem;
 import com.techzone.digishop.domain.SaleItemPK;
 
@@ -42,12 +42,21 @@ public class SaleItemDTO implements Serializable {
         this.location = saleItem.getLocation();
     }
 
-    public Product getProduct(){
-        return this.id.getProduct();
+    public Integer getProductId(){
+        return this.id.getProduct().getId();
     }
 
+    public Double getSubtotal() {
+		return (salePrice - discount) * quantity;
+	}
+
+    @JsonIgnore
     public SaleItemPK getId() {
         return this.id;
+    }
+
+    public Integer getSaleId(){
+        return this.id.getSale().getId();
     }
 
     public void setId(SaleItemPK id) {
@@ -102,6 +111,7 @@ public class SaleItemDTO implements Serializable {
         this.description = description;
     }
 
+    @JsonIgnore
     public Double getPurchasePrice() {
         return this.purchasePrice;
     }
