@@ -4,13 +4,16 @@ public enum PaymentMethod {
     
 	PENDENT(0), CREDIT_CARD(1), BANK_SLIP(3);
 
-	private int cod;
+	private Integer cod;
 
 	private PaymentMethod(int cod) {
 		this.cod = cod;
 	}
 
-	public int getCod() {
+	public Integer getCod() {
+		if(this.cod == null){
+			return null;
+		}
 		return this.cod;
 	}
 
