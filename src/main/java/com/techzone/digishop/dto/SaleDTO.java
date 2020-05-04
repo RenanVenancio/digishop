@@ -19,7 +19,7 @@ public class SaleDTO implements Serializable {
     private Boolean delivered;
     private Integer company;
     private ClientDTO client;
-    private Integer address;
+    private ClientAddressDTO address;
     private Double discount;
     private Double freightCost;
     private Integer parcelNumber;
@@ -37,7 +37,7 @@ public class SaleDTO implements Serializable {
         this.delivered = sale.getDelivered();
         this.company = sale.getCompany().getId();
         this.client = new ClientDTO(sale.getClient());
-        this.address = sale.getAddress().getId();
+        this.address = new ClientAddressDTO(sale.getAddress());
         this.discount = sale.getDiscount();
         this.freightCost = sale.getFreightCost();
         this.parcelNumber = sale.getParcelNumber();
@@ -54,7 +54,7 @@ public class SaleDTO implements Serializable {
     }
 
     public SaleDTO(Integer id, Date date, Boolean cancelled, Boolean delivered, Integer company, ClientDTO client,
-            Integer address, Double discount, Double freightCost, Integer parcelNumber, Date firstPayment,
+            ClientAddressDTO address, Double discount, Double freightCost, Integer parcelNumber, Date firstPayment,
             Integer paymentMethod) {
         this.id = id;
         this.date = date;
@@ -135,11 +135,11 @@ public class SaleDTO implements Serializable {
         this.client = client;
     }
 
-    public Integer getAddress() {
+    public ClientAddressDTO getAddress() {
         return this.address;
     }
 
-    public void setAddress(Integer address) {
+    public void setAddress(ClientAddressDTO address) {
         this.address = address;
     }
 
