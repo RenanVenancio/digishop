@@ -1,5 +1,6 @@
 package com.techzone.digishop.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,10 +13,12 @@ import org.springframework.stereotype.Service;
 import com.techzone.digishop.domain.Company;
 import com.techzone.digishop.domain.Product;
 import com.techzone.digishop.domain.ProductCategory;
+import com.techzone.digishop.domain.SaleItem;
 import com.techzone.digishop.dto.ProductDTO;
 import com.techzone.digishop.repository.CompanyRepository;
 import com.techzone.digishop.repository.ProductCategoryRepository;
 import com.techzone.digishop.repository.ProductRepository;
+import com.techzone.digishop.repository.SaleItemRepository;
 import com.techzone.digishop.service.exception.ObjectNotFoundException;
 
 @Service
@@ -29,6 +32,9 @@ public class ProductService {
 
 	@Autowired
 	CompanyRepository companyRepository;
+
+	@Autowired
+	SaleItemRepository saleItemRepository;
 
 	public Product findById(Integer id) {
 		Optional<Product> product = repository.findById(id);
@@ -59,6 +65,15 @@ public class ProductService {
 		PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
 		List<ProductCategory> categories = categoryRepository.findAllById(ids);
 		return repository.findDistinctByNameContainingIgnoreCaseAndCategoryIn(name, categories, pageRequest);
+	}
+
+	public void updateStock(List<Integer> ids){
+		
+		List<SaleItem> itens = saleItemRepository.countItens(ids);
+
+		for(SaleItem si : itens){
+			System.out.println(si);
+		}
 	}
 
 	public Product fromDTO(ProductDTO object) {

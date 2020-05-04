@@ -1,5 +1,6 @@
 package com.techzone.digishop.service;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -33,6 +34,7 @@ public class SaleService {
 
 	@Autowired 
 	PaymentService paymentService;
+
 	
 	public Sale findById(Integer id) {
 		Optional<Sale> sale = saleRepository.findById(id);
@@ -69,6 +71,8 @@ public class SaleService {
 		saleItemRepository.saveAll(sale.getItens());
 
 		paymentRepository.saveAll(paymentService.generateRevenueOfSale(sale));
+
+		productService.updateStock(Arrays.asList(2,3));
 
 		return sale;
 
