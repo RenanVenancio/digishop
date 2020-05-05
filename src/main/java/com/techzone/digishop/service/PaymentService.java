@@ -8,6 +8,7 @@ import java.util.List;
 import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.enums.PaymentMethod;
+import com.techzone.digishop.domain.enums.PaymentStatus;
 import com.techzone.digishop.domain.enums.PaymentType;
 import com.techzone.digishop.repository.PaymentRepository;
 
@@ -24,9 +25,12 @@ public class PaymentService {
         List<Payment> payments = new ArrayList<>();
 
         Boolean paid = false;
+        Integer status = PaymentStatus.PENDENT.getCod();
+
         if(sale.getPaymentMethod() == PaymentMethod.CREDIT_CARD){
             sale.setParcelNumber(1);
             paid = true;
+            status = PaymentStatus.PAID.getCod();
         }
 
         if(sale.getFirstPayment() == null) {
@@ -50,8 +54,9 @@ public class PaymentService {
                 paid == true ? c.getTime() : null, 
                 null, 
                 sale.getId() + "/" + (i+1), 
-                PaymentType.REVENUE, 
+                PaymentType.REVENUE,
                 null, 
+                PaymentStatus.toEnum(status),
                 sale, 
                 null
             )
