@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PaymentService {
+
     @Autowired
     PaymentRepository paymentRepository;
 
@@ -69,5 +70,9 @@ public class PaymentService {
         }
 
         return payments;
+    }
+
+    public List<Payment> find(Integer clientId, PaymentStatus status){
+        return paymentRepository.findBySaleClientAndStatus(clientId, status.getCod());
     }
 }
