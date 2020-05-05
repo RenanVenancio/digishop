@@ -19,6 +19,7 @@ import com.techzone.digishop.domain.ProductCategory;
 import com.techzone.digishop.domain.Provider;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.SaleItem;
+import com.techzone.digishop.domain.enums.PaymentStatus;
 import com.techzone.digishop.domain.enums.PaymentType;
 import com.techzone.digishop.repository.ClientAddressRepository;
 import com.techzone.digishop.repository.ClientRepository;
@@ -197,7 +198,7 @@ public class DigiShopApplication implements CommandLineRunner{
 				prod2.getDescription(), prod2.getPurchasePrice(), prod2.getSalePrice(), 
 				prod2.getUn(), prod2.getWeight(), prod2.getLocation());
 		
-		Payment s1Payment = new Payment(null, new Date(), 52.05, 0.00, null, null, "78982/2", PaymentType.REVENUE, "Troco pra 50", s1, null);
+		Payment s1Payment = new Payment(null, new Date(), 52.05, 0.00, null, null, "78982/2", PaymentType.REVENUE, "Troco pra 50", PaymentStatus.toEnum(1), s1, null);
 		s1.getItens().addAll(Arrays.asList(sItem, sItem1));
 		s1.getPayments().add(s1Payment);
 		saleRepository.save(s1);

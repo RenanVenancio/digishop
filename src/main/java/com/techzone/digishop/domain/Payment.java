@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.techzone.digishop.domain.enums.PaymentStatus;
 import com.techzone.digishop.domain.enums.PaymentType;
 
 @Entity
@@ -28,6 +29,7 @@ public class Payment implements Serializable {
 	private String documentNumber;
 	private Integer paymentType;
 	private String observation;
+	private Integer status;
 
 	@JsonIgnore
 	@ManyToOne
@@ -44,7 +46,7 @@ public class Payment implements Serializable {
 	}
 
 	public Payment(Integer id, Date dueDate, Double value, Double amountPaid, Date paydDate, String barCode,
-			String documentNumber, PaymentType paymentType, String observation, Sale sale, Purchase purchase) {
+			String documentNumber, PaymentType paymentType, String observation, PaymentStatus status, Sale sale, Purchase purchase) {
 		this.id = id;
 		this.dueDate = dueDate;
 		this.value = value;
@@ -54,6 +56,7 @@ public class Payment implements Serializable {
 		this.documentNumber = documentNumber;
 		this.paymentType = paymentType.getCod();
 		this.observation = observation;
+		this.status = status.getCod();
 		this.sale = sale;
 		this.purchase = purchase;
 	}
@@ -129,6 +132,16 @@ public class Payment implements Serializable {
 	public void setObservation(String observation) {
 		this.observation = observation;
 	}
+
+
+	public PaymentStatus getStatus() {
+		return PaymentStatus.toEnum(this.status);
+	}
+
+	public void setStatus(PaymentStatus status) {
+		this.status = status.getCod();
+	}
+
 
 	public Sale getSale() {
 		return sale;

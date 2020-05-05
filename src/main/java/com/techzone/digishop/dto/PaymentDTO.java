@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.techzone.digishop.domain.Payment;
+import com.techzone.digishop.domain.enums.PaymentStatus;
 
 public class PaymentDTO implements Serializable {
 
@@ -20,6 +21,7 @@ public class PaymentDTO implements Serializable {
     private String observation;
     private Integer sale;
     private Integer purchase;
+    private Integer status;
 
     public PaymentDTO(Payment payment) {
         this.id = payment.getId();
@@ -33,10 +35,11 @@ public class PaymentDTO implements Serializable {
         this.observation = payment.getObservation();
         this.sale = payment.getSale().getId();
         this.purchase = payment.getPurchase() == null ? null : payment.getPurchase().getId();
+        this.status = payment.getStatus().getCod();
     }
 
     public PaymentDTO(Integer id, Date dueDate, Double value, Double amountPaid, Date paydDate, String barCode,
-            String documentNumber, Integer paymentType, String observation, Integer sale, Integer purchase) {
+            String documentNumber, Integer paymentType, String observation, Integer sale, Integer purchase, Integer status) {
         this.id = id;
         this.dueDate = dueDate;
         this.value = value;
@@ -48,6 +51,7 @@ public class PaymentDTO implements Serializable {
         this.observation = observation;
         this.sale = sale;
         this.purchase = purchase;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -137,5 +141,14 @@ public class PaymentDTO implements Serializable {
     public void setPurchase(Integer purchase) {
         this.purchase = purchase;
     }
+
+    public PaymentStatus getStatus() {
+        return PaymentStatus.toEnum(this.status);
+    }
+
+    public void setStatus(PaymentStatus status) {
+        this.status = status.getCod();
+    }
+
 
 }
