@@ -72,8 +72,6 @@ public class SaleService {
 
 		paymentRepository.saveAll(paymentService.generateRevenueOfSale(sale));
 
-		productService.updateStock(Arrays.asList(2,3));
-
 		return sale;
 
 	}
