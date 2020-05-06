@@ -72,7 +72,7 @@ public class PaymentService {
         return payments;
     }
 
-    public List<Payment> find(Integer clientId, PaymentStatus status){
-        return paymentRepository.findBySaleClientAndStatus(clientId, status.getCod());
+    public List<Payment> findRevenue(Integer clientId, PaymentStatus status){
+        return paymentRepository.findBySaleClientAndStatus(clientId, status.getCod(), PaymentType.REVENUE.getCod());
     }
 }
