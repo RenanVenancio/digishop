@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.techzone.digishop.domain.enums.PaymentMethod;
+import com.techzone.digishop.domain.enums.SaleStatus;
 
 @Entity
 public class Sale implements Serializable {
@@ -24,8 +25,6 @@ public class Sale implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private Date date;
-	private Boolean cancelled;
-	private Boolean delivered;
 	@ManyToOne
 	@JoinColumn(name = "company_id")
 	private Company company;
@@ -41,6 +40,7 @@ public class Sale implements Serializable {
 	private Date firstPayment;
 	private Integer paymentMethod;
 	private String paydayInterval;
+	private Integer status;
 
 	@OneToMany(mappedBy = "sale")
 	List<Payment> payments = new ArrayList<>();
@@ -60,26 +60,23 @@ public class Sale implements Serializable {
 		this.setFirstPayment(calendar.getTime());
 	}
 
-	public Sale(Integer id, Date date, Boolean cancelled, Boolean delivered, Company company, Client client,
-			ClientAddress address, Double discount, Double freightCost) {
+	public Sale(Integer id, Date date, Company company, Client client,
+			ClientAddress address, Double discount, Double freightCost, SaleStatus status) {
 		this.id = id;
 		this.date = date;
-		this.cancelled = cancelled;
-		this.delivered = delivered;
 		this.company = company;
 		this.client = client;
 		this.address = address;
 		this.discount = discount;
 		this.freightCost = freightCost;
+		this.status = status.getCod();
 	}
 
-	public Sale(Integer id, Date date, Boolean cancelled, Boolean delivered, Company company, Client client,
+	public Sale(Integer id, Date date, Company company, Client client,
 			ClientAddress address, Double discount, Double freightCost, Integer parcelNumber, Date firstPayment,
-			PaymentMethod paymentMethod) {
+			PaymentMethod paymentMethod, SaleStatus status) {
 		this.id = id;
 		this.date = date;
-		this.cancelled = cancelled;
-		this.delivered = delivered;
 		this.company = company;
 		this.client = client;
 		this.address = address;
@@ -88,6 +85,7 @@ public class Sale implements Serializable {
 		this.parcelNumber = parcelNumber;
 		this.firstPayment = firstPayment;
 		this.paymentMethod = paymentMethod.getCod();
+		this.status = status.getCod();
 	}
 
 	public Double getTotalValue() {
@@ -113,22 +111,6 @@ public class Sale implements Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
-	}
-
-	public Boolean getCancelled() {
-		return cancelled;
-	}
-
-	public void setCancelled(Boolean cancelled) {
-		this.cancelled = cancelled;
-	}
-
-	public Boolean getDelivered() {
-		return delivered;
-	}
-
-	public void setDelivered(Boolean delivered) {
-		this.delivered = delivered;
 	}
 
 	public Company getCompany() {
@@ -219,6 +201,16 @@ public class Sale implements Serializable {
 		this.paydayInterval = paydayInterval;
 	}
 
+
+	public SaleStatus getStatus() {
+		return SaleStatus.toEnum(this.status);
+	}
+
+	public void setStatus(SaleStatus status) {
+		this.status = status.getCod();
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -242,16 +234,6 @@ public class Sale implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "{" + " id='" + id + "'" + ", date='" + date + "'" + ", cancelled='" + cancelled + "'" + ", delivered='"
-				+ delivered + "'" + ", company='" + company + "'" + ", client='" + client + "'" + ", address='"
-				+ address + "'" + ", discount='" + discount + "'" + ", freightCost='" + freightCost + "'"
-				+ ", parcelNumber='" + parcelNumber + "'" + ", firstPayment='" + firstPayment + "'"
-				+ ", paymentMethod='" + paymentMethod + "'" + ", payments='" + payments + "'" + ", itens='" + itens
-				+ "'" + "}";
 	}
 
 }
