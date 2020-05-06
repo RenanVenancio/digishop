@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.techzone.digishop.domain.enums.ClientType;
 
 @Entity
 public class Client extends User {

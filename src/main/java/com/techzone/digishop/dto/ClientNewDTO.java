@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.techzone.digishop.domain.ClientType;
+import com.techzone.digishop.domain.enums.ClientType;
 import com.techzone.digishop.service.validation.ClientInsert;
 
 @ClientInsert

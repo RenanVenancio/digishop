@@ -1,4 +1,4 @@
-package com.techzone.digishop.domain;
+package com.techzone.digishop.domain.enums;
 
 public enum ClientType {
 	PESSOA_FISICA(0, "Pessoa Física"),

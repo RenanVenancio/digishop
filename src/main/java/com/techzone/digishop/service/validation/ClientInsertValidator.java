@@ -9,7 +9,7 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.techzone.digishop.domain.Client;
-import com.techzone.digishop.domain.ClientType;
+import com.techzone.digishop.domain.enums.ClientType;
 import com.techzone.digishop.dto.ClientNewDTO;
 import com.techzone.digishop.repository.ClientRepository;
 import com.techzone.digishop.resource.exception.FieldMessage;
