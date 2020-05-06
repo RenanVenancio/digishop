@@ -15,8 +15,6 @@ public class SaleDTO implements Serializable {
 
     private Integer id;
     private Date date;
-    private Boolean cancelled;
-    private Boolean delivered;
     private Integer company;
     private ClientDTO client;
     private ClientAddressDTO address;
@@ -33,8 +31,6 @@ public class SaleDTO implements Serializable {
     public SaleDTO(Sale sale) {
         this.id = sale.getId();
         this.date = sale.getDate();
-        this.cancelled = sale.getCancelled();
-        this.delivered = sale.getDelivered();
         this.company = sale.getCompany().getId();
         this.client = new ClientDTO(sale.getClient());
         this.address = new ClientAddressDTO(sale.getAddress());
@@ -53,13 +49,11 @@ public class SaleDTO implements Serializable {
         }
     }
 
-    public SaleDTO(Integer id, Date date, Boolean cancelled, Boolean delivered, Integer company, ClientDTO client,
+    public SaleDTO(Integer id, Date date, Integer company, ClientDTO client,
             ClientAddressDTO address, Double discount, Double freightCost, Integer parcelNumber, Date firstPayment,
             Integer paymentMethod) {
         this.id = id;
         this.date = date;
-        this.cancelled = cancelled;
-        this.delivered = delivered;
         this.company = company;
         this.client = client;
         this.address = address;
@@ -93,30 +87,6 @@ public class SaleDTO implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public Boolean isCancelled() {
-        return this.cancelled;
-    }
-
-    public Boolean getCancelled() {
-        return this.cancelled;
-    }
-
-    public void setCancelled(Boolean cancelled) {
-        this.cancelled = cancelled;
-    }
-
-    public Boolean isDelivered() {
-        return this.delivered;
-    }
-
-    public Boolean getDelivered() {
-        return this.delivered;
-    }
-
-    public void setDelivered(Boolean delivered) {
-        this.delivered = delivered;
     }
 
     public Integer getCompany() {
