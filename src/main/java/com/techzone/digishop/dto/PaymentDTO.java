@@ -3,6 +3,7 @@ package com.techzone.digishop.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.enums.PaymentStatus;
 
@@ -110,6 +111,7 @@ public class PaymentDTO implements Serializable {
         this.documentNumber = documentNumber;
     }
 
+    @JsonIgnore
     public Integer getPaymentType() {
         return this.paymentType;
     }
