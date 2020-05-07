@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.enums.PaymentStatus;
 import com.techzone.digishop.dto.PaymentDTO;
-import com.techzone.digishop.repository.PaymentRepository;
 import com.techzone.digishop.service.PaymentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
