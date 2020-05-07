@@ -12,8 +12,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.dto.SaleDTO;
+import com.techzone.digishop.dto.SaleNewDTO;
 import com.techzone.digishop.service.SaleService;
 
 @RestController
@@ -32,8 +35,8 @@ public class SaleResource {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> save(@RequestBody Sale sale) {		
-		System.out.println(sale);
+	public ResponseEntity<Void> save(@Valid @RequestBody SaleNewDTO saleDTO) {		
+		Sale sale = saleService.fromDTO(saleDTO);
 		saleService.save(sale);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(sale.getId())
 				.toUri();
