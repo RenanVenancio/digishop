@@ -1,6 +1,5 @@
 package com.techzone.digishop.service;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -8,9 +7,15 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.techzone.digishop.domain.Client;
+import com.techzone.digishop.domain.ClientAddress;
+import com.techzone.digishop.domain.Company;
 import com.techzone.digishop.domain.Product;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.SaleItem;
+import com.techzone.digishop.domain.enums.SaleStatus;
+import com.techzone.digishop.dto.SaleItemNewDTO;
+import com.techzone.digishop.dto.SaleNewDTO;
 import com.techzone.digishop.repository.PaymentRepository;
 import com.techzone.digishop.repository.SaleItemRepository;
 import com.techzone.digishop.repository.SaleRepository;
@@ -31,6 +36,18 @@ public class SaleService {
 
 	@Autowired
 	ProductService productService;
+
+	@Autowired
+	ClientService clientService;
+
+	@Autowired 
+	SaleItemService saleItemService;
+
+	@Autowired
+	CompanyService companyService;
+
+	@Autowired
+	ClientAddressService clientAddressService;
 
 	@Autowired 
 	PaymentService paymentService;
@@ -71,6 +88,36 @@ public class SaleService {
 		saleItemRepository.saveAll(sale.getItens());
 
 		paymentRepository.saveAll(paymentService.generateRevenueOfSale(sale));
+
+		return sale;
+
+	}
+
+	public Sale fromDTO(SaleNewDTO itemDTO){
+
+		Client client = clientService.findById(itemDTO.getClient());
+		Company company = companyService.findById(itemDTO.getCompany());
+		ClientAddress address = clientAddressService.findById(itemDTO.getAddress()); 
+
+		Sale sale = new Sale(
+			null, 
+			null, 
+			company, 
+			client, 
+			address, 
+			itemDTO.getDiscount(),
+			itemDTO.getFreightCost(), 
+			itemDTO.getParcelNumber(), 
+			itemDTO.getFirstPayment(), 
+			itemDTO.getPaymentMethod(), 
+			SaleStatus.PENDENT
+		);
+
+		if (itemDTO.getItens().size() > 1){
+			for (SaleItemNewDTO item : itemDTO.getItens()){
+				sale.getItens().add(saleItemService.fromDTO(item));
+			}
+		}
 
 		return sale;
 
