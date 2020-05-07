@@ -30,7 +30,7 @@ public class SaleNewDTO implements Serializable {
 
 	List<PaymentDTO> payments = new ArrayList<>();
 
-	List<SaleItemDTO> itens = new ArrayList<>();
+	List<SaleItemNewDTO> itens = new ArrayList<>();
 
     public SaleNewDTO(Sale sale) {
         this.id = sale.getId();
@@ -44,8 +44,8 @@ public class SaleNewDTO implements Serializable {
         this.firstPayment = sale.getFirstPayment();
         this.paymentMethod = sale.getPaymentMethod().getCod();
 
-        for(SaleItem si : sale.getItens()){
-            this.itens.add(new SaleItemDTO(si));
+        for(SaleItemNewDTO si : this.itens){
+            this.itens.add(new SaleItemNewDTO(si));
         }
 
         for(Payment p : sale.getPayments()){
@@ -176,11 +176,11 @@ public class SaleNewDTO implements Serializable {
         this.payments = payments;
     }
 
-    public List<SaleItemDTO> getItens() {
+    public List<SaleItemNewDTO> getItens() {
         return this.itens;
     }
 
-    public void setItens(List<SaleItemDTO> itens) {
+    public void setItens(List<SaleItemNewDTO> itens) {
         this.itens = itens;
     }
 
