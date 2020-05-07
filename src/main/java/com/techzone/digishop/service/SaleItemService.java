@@ -17,11 +17,24 @@ public class SaleItemService {
     @Autowired
     ProductService productService;
 
-    public SaleItem fromDTO(SaleItemNewDTO item){
+    public SaleItem fromDTO(SaleItemNewDTO item) {
 
         Product p = productService.findById(item.getId());
 
-        return new SaleItem(null, p, item.getDiscount(), item.getQuantity(), p.getName(), p.getBarcode(), p.getReference(), p.getDescription(), p.getPurchasePrice(), p.getSalePrice(), p.getUn(), p.getWeight(), p.getLocation());
-
+        return new SaleItem(
+            null, 
+            p, 
+            item.getDiscount(), 
+            item.getQuantity(), 
+            p.getName(), 
+            p.getBarcode(),
+            p.getReference(), 
+            p.getDescription(), 
+            p.getPurchasePrice(), 
+            p.getSalePrice(), 
+            p.getUn(), 
+            p.getWeight(),
+            p.getLocation()
+        );
     }
 }
