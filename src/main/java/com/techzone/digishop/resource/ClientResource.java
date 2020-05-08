@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.techzone.digishop.domain.Client;
 import com.techzone.digishop.dto.ClientDTO;
 import com.techzone.digishop.dto.ClientNewDTO;
+import com.techzone.digishop.resource.util.URL;
 import com.techzone.digishop.service.ClientService;
 
 @RestController
@@ -65,13 +66,15 @@ public class ClientResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
-	@RequestMapping(value = "/page", method = RequestMethod.GET)
-	public ResponseEntity<Page<ClientDTO>> findPage(
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public ResponseEntity<Page<ClientDTO>> search(
+			@RequestParam(value = "q", defaultValue = "") String q,
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
 			@RequestParam(value = "itensPerPage" ,defaultValue = "24") Integer itensPerPage, 
 			@RequestParam(value = "orderBy" ,defaultValue = "name") String orderBy, 
 			@RequestParam(value = "direction" ,defaultValue = "ASC") String direction){
-		Page<Client> clientList = clientService.findPage(page, itensPerPage, orderBy, direction);
+			
+		Page<Client> clientList = clientService.search(URL.decodeParam(q), page, itensPerPage, orderBy, direction);
 		Page<ClientDTO> listDto = clientList.map((obj) -> new ClientDTO(obj));
 		return ResponseEntity.ok().body(listDto);
 	}

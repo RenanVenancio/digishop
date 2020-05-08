@@ -66,9 +66,9 @@ public class ClientService {
 		}
 	}
 
-	public Page<Client> findPage(Integer page, Integer itensPerPage, String orderBy, String direction) {
+	public Page<Client> search(String q, Integer page, Integer itensPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
-		return repository.findAll(pageRequest);
+		return repository.findByNameContainingIgnoreCaseOrFantasyNameContainingIgnoreCaseOrCpfCnpjContainingIgnoreCase(q, q, q, pageRequest);
 	}
 
 	public Client fromDTO(ClientDTO objectDTO) {
