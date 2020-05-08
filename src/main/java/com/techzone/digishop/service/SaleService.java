@@ -1,5 +1,6 @@
 package com.techzone.digishop.service;
 
+import java.util.Date;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -62,9 +63,10 @@ public class SaleService {
 	public Sale save(Sale sale) {
 		System.out.println(sale);
 		sale.setId(null);
+		sale.setDate(new Date());
 
-		if(sale.getParcelNumber() < 1){
-			throw new BusinessRuleException("O número de parcelas deve ser maior que 1");
+		if(!sale.getClient().getAdresses().contains(sale.getAddress())){
+			throw new BusinessRuleException("O endereço informado não pertence ao cliente");
 		}
 
 		saleRepository.save(sale);
