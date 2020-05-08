@@ -5,10 +5,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 import com.techzone.digishop.domain.enums.PaymentMethod;
+import com.techzone.digishop.service.validation.utils.FormatDate;
 
 public class SaleNewDTO implements Serializable {
 
@@ -21,17 +27,38 @@ public class SaleNewDTO implements Serializable {
     @NotNull(message = "Não pode ser nulo")
     private Integer client;
     private Integer address;
-    @Min(value = 0, message = "O valor deve ser maior que zero")
+    @PositiveOrZero(message = "O valor deve ser maior que zero")
     private Double discount;
-    @Min(value = 0, message = "O valor deve ser maior que zero")
+    @PositiveOrZero(message = "O valor deve ser maior que zero")
     private Double freightCost;
     private Integer parcelNumber;
+    @Future(message = "Informe uma data futura")
     private Date firstPayment;
     private Integer paymentMethod;
 
     List<PaymentDTO> payments = new ArrayList<>();
 
+    @Valid
+    @NotEmpty(message = "Carrinho de compras vazio")
     List<SaleItemNewDTO> itens = new ArrayList<>();
+
+    public SaleNewDTO(){
+        
+    }
+
+    public SaleNewDTO(Integer id, Date date, Integer company, Integer client, Integer address, Double discount,
+            Double freightCost, Integer parcelNumber, String firstPayment, Integer paymentMethod) {
+        this.id = id;
+        this.date = date;
+        this.company = company;
+        this.client = client;
+        this.address = address;
+        this.discount = discount;
+        this.freightCost = freightCost;
+        this.parcelNumber = parcelNumber;
+        this.firstPayment = FormatDate.parse(firstPayment);
+        this.paymentMethod = paymentMethod;
+    }
 
     public SaleNewDTO(Integer id, Date date, Integer company, Integer client, Integer address, Double discount,
             Double freightCost, Integer parcelNumber, Date firstPayment, Integer paymentMethod) {
@@ -115,8 +142,8 @@ public class SaleNewDTO implements Serializable {
         return this.firstPayment;
     }
 
-    public void setFirstPayment(Date firstPayment) {
-        this.firstPayment = firstPayment;
+    public void setFirstPayment(String firstPayment) {
+        this.firstPayment = FormatDate.parse(firstPayment);
     }
 
     public PaymentMethod getPaymentMethod() {
