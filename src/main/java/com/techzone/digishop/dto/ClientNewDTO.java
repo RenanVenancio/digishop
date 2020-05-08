@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.techzone.digishop.domain.enums.ClientType;
 import com.techzone.digishop.service.validation.ClientInsert;
+import com.techzone.digishop.service.validation.utils.FormatDate;
 
 @ClientInsert
 public class ClientNewDTO implements Serializable {
@@ -64,7 +65,7 @@ public class ClientNewDTO implements Serializable {
 		this.cpfCnpj = cpfCnpj;
 		this.email = email;
 		this.password = password;
-		this.birthDate = formatBirth(birthDate);
+		this.birthDate = FormatDate.parse(birthDate);
 		this.company = company;
 		this.phone = phone;
 		this.description = description;
@@ -78,17 +79,6 @@ public class ClientNewDTO implements Serializable {
 		this.type = type.getCod();
 	}
 
-	private Date formatBirth(String birth) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		Date date;
-		try {
-			date = sdf.parse(birth);
-			return date;
-		} catch (ParseException e) {			
-			throw new RuntimeException("Data inválida");
-		}
-	}
-	
 	public String getName() {
 		return name;
 	}
@@ -126,7 +116,7 @@ public class ClientNewDTO implements Serializable {
 	}
 
 	public void setBirthDate(String birthDate) {
-		this.birthDate = formatBirth(birthDate);
+		this.birthDate = FormatDate.parse(birthDate);
 	}
 
 	public Integer getCompany() {
