@@ -1,9 +1,8 @@
 package com.techzone.digishop.dto;
 
 import java.io.Serializable;
-
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import com.techzone.digishop.domain.SaleItem;
 
@@ -14,11 +13,11 @@ public class SaleItemNewDTO implements Serializable {
     @NotNull(message = "Não pode ser nulo")
     private Integer id;
     @NotNull(message = "Não pode ser nulo")
-    @Min(value = 0, message = "O valor deve ser maior que zero")
+    @Positive(message = "O valor deve ser maior que zero")
     private Double quantity;
-    @Min(value = 0, message = "O valor deve ser maior que zero")
+    @Positive(message = "O valor deve ser maior que zero")
     private Double salePrice;
-    @Min(value = 0, message = "O valor deve ser maior que zero")
+    @Positive(message = "O valor deve ser maior que zero")
     private Double discount;
 
     public SaleItemNewDTO() {
