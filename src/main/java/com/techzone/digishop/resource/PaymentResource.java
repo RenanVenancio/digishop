@@ -1,5 +1,4 @@
 package com.techzone.digishop.resource;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,8 +6,8 @@ import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.enums.PaymentStatus;
 import com.techzone.digishop.dto.PaymentDTO;
 import com.techzone.digishop.service.PaymentService;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +28,22 @@ public class PaymentResource {
         List<PaymentDTO> paymentDTOs = payments.stream().map((x) -> new PaymentDTO(x)).collect(Collectors.toList());
         return ResponseEntity.ok().body(paymentDTOs);
     }
+
+    @RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<Page<PaymentDTO>> findPage(
+            @RequestParam(value = "status", defaultValue = "") Integer status,
+            @RequestParam(value = "paymentType", defaultValue = "") Integer paymentType,
+			@RequestParam(value = "start", defaultValue = "all") String start, 
+			@RequestParam(value = "end", defaultValue = "all") String end, 
+			@RequestParam(value = "page", defaultValue = "0") Integer page, 
+			@RequestParam(value = "itensPerPage" ,defaultValue = "24") Integer itensPerPage, 
+			@RequestParam(value = "orderBy" ,defaultValue = "id") String orderBy, 
+			@RequestParam(value = "direction" ,defaultValue = "ASC") String direction){
+
+		Page<Payment> paymentList = service.search(start, end, status, paymentType, page, itensPerPage, orderBy, direction);
+		Page<PaymentDTO> listDto = paymentList.map((obj) -> new PaymentDTO(obj));
+		return ResponseEntity.ok().body(listDto);
+	}
+
 
 }
