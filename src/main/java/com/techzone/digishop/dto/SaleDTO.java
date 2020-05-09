@@ -8,6 +8,7 @@ import java.util.List;
 import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.SaleItem;
+import com.techzone.digishop.domain.enums.PaymentMethod;
 
 public class SaleDTO implements Serializable {
 
@@ -38,7 +39,7 @@ public class SaleDTO implements Serializable {
         this.freightCost = sale.getFreightCost();
         this.parcelNumber = sale.getParcelNumber();
         this.firstPayment = sale.getFirstPayment();
-        this.paymentMethod = sale.getPaymentMethod().getCod();
+        this.paymentMethod = sale.getPaymentMethod() == null ? null : sale.getPaymentMethod().getCod();
 
         for(SaleItem si : sale.getItens()){
             this.itens.add(new SaleItemDTO(si));
@@ -145,12 +146,12 @@ public class SaleDTO implements Serializable {
         this.firstPayment = firstPayment;
     }
 
-    public Integer getPaymentMethod() {
-        return this.paymentMethod;
+    public PaymentMethod getPaymentMethod() {
+        return PaymentMethod.toEnum(this.paymentMethod);
     }
 
-    public void setPaymentMethod(Integer paymentMethod) {
-        this.paymentMethod = paymentMethod;
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod.getCod();
     }
 
 

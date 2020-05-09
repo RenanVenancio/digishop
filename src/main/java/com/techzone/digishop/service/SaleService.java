@@ -1,11 +1,15 @@
 package com.techzone.digishop.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.techzone.digishop.domain.Client;
@@ -22,6 +26,7 @@ import com.techzone.digishop.repository.SaleItemRepository;
 import com.techzone.digishop.repository.SaleRepository;
 import com.techzone.digishop.service.exception.BusinessRuleException;
 import com.techzone.digishop.service.exception.ObjectNotFoundException;
+import com.techzone.digishop.service.validation.utils.FormatDate;
 
 @Service
 public class SaleService {
@@ -123,6 +128,35 @@ public class SaleService {
 
 		return sale;
 
+	}
+
+	public Sale cancelById(Integer id){
+		Sale sale = findById(id);
+		sale.setStatus(SaleStatus.CANCELLED);
+		return saleRepository.save(sale);
+	}
+
+	public Page<Sale> search(Integer id, String start, String end, Integer page, Integer itensPerPage, String orderBy, String direction) {
+		
+		if(!(start.equals("all") && end.equals("all"))){
+			Date startDate = FormatDate.parse(start);
+			Date endDate = FormatDate.parse(end);
+
+			if(startDate.compareTo(endDate) > 0){
+				throw new BusinessRuleException("A data inicial deve ser menor que a final");
+			}
+
+			PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
+			return saleRepository.findByClientIdAndDateBetween(id, startDate, endDate, pageRequest);
+		}
+
+		if(!(start.equals("all") || end.equals("all"))){
+			throw new BusinessRuleException("Informe um período de datas válido");
+		}
+		
+
+		PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
+		return saleRepository.findByClientId(id, pageRequest);
 	}
 	
 }
