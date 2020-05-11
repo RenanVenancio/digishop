@@ -1,5 +1,7 @@
 package com.techzone.digishop.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,10 +15,10 @@ import com.techzone.digishop.domain.enums.PaymentStatus;
 import com.techzone.digishop.domain.enums.PaymentType;
 import com.techzone.digishop.dto.PaymentDTO;
 import com.techzone.digishop.repository.PaymentRepository;
+import com.techzone.digishop.repository.SaleRepository;
 import com.techzone.digishop.service.exception.BusinessRuleException;
 import com.techzone.digishop.service.exception.ObjectNotFoundException;
 import com.techzone.digishop.service.validation.utils.FormatDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +30,9 @@ public class PaymentService {
 
     @Autowired
     PaymentRepository paymentRepository;
+
+    @Autowired
+    SaleService saleService;
 
     public Payment findById(Integer id){
         Optional<Payment> payment = paymentRepository.findById(id);
@@ -58,13 +63,13 @@ public class PaymentService {
 
         Calendar c = Calendar.getInstance();
         c.setTime(sale.getFirstPayment());
-        Double parcelValue = sale.getTotalValue() / sale.getParcelNumber();
+        BigDecimal parcelValue = sale.getTotalValue().divide(new BigDecimal(String.valueOf(sale.getParcelNumber())) , RoundingMode.UP);
 
         for (int i = 0; i < sale.getParcelNumber(); i++){
             payments.add(new Payment(
                 null, c.getTime(), 
                 parcelValue, 
-                paid == true ? parcelValue : 0.00, 
+                paid == true ? parcelValue : new BigDecimal("0.00"), 
                 paid == true ? c.getTime() : null, 
                 null, 
                 sale.getId() + "/" + (i+1), 
@@ -111,22 +116,83 @@ public class PaymentService {
 		return paymentRepository.findByStatusAndPaymentType(status, paymentType, pageRequest);
     }
     
-    public Payment settlePayment(Integer id, Double amountPaid, String observation){
-        Payment payment = findById(id);
+    public Payment settlePayment(Payment payment){
+        Payment newPayment = payment;
+        payment = findById(payment.getId());
+        Sale sale = saleService.findById(payment.getSale().getId());
 
-        if(amountPaid < payment.getValue()){
+        if(newPayment.getAmountPaid().doubleValue() < payment.getValue().doubleValue()){
             List<Payment> payments = paymentRepository.findBySaleId(payment.getSale().getId());
-            Integer paydayInterval = 0;
+            Long paydayInterval = 0L;
             if(payments.size() > 1){
+                Date d1 = payments.get(payments.size() - 2).getDueDate();
+                Date d2 = payments.get(payments.size() - 1).getDueDate();
+                paydayInterval = Math.abs((d1.getTime()- d2.getTime()));
                 Calendar c = Calendar.getInstance();
-                c.
-                c.setTime(payments.get(payments.size()).getDueDate());
-                c.add(Calendar.DATE, Integer.parseInt(sale.getPaydayInterval()));
+                c.setTime(d2);
+                c.setTimeInMillis(c.getTimeInMillis() + paydayInterval);
 
+                BigDecimal difference = (payment.getValue().subtract(newPayment.getAmountPaid())).abs();
 
+                Payment p = new Payment(
+                    null, 
+                    c.getTime(), 
+                    difference, 
+                    new BigDecimal(0.00), 
+                    null, 
+                    payment.getBarCode(),
+                    payment.getDocumentNumber() + " Diff", 
+                    PaymentType.REVENUE,
+                    null, 
+                    PaymentStatus.PENDENT, 
+                    payment.getSale(), 
+                    null
+                );
+
+                payment.setStatus(PaymentStatus.PAID);
+                payment.setPaydDate(new Date());
+                payment.setAmountPaid(newPayment.getAmountPaid());
+
+                paymentRepository.save(payment);
+                paymentRepository.save(p);
+            
+                return payment;
             }
-            Payment p = new Payment(null, dueDate, value, amountPaid, paydDate, barCode, documentNumber, paymentType, observation, status, sale, purchase)
         }
+
+        Calendar c = Calendar.getInstance();
+        if(payment.getSale().getPaydayInterval().equalsIgnoreCase("M")){
+            c.add(Calendar.MONTH, 1);
+        }else{
+            c.add(Calendar.DATE, Integer.parseInt(sale.getPaydayInterval()));
+        }
+
+        payment.setStatus(PaymentStatus.PAID);
+        payment.setPaydDate(new Date());
+        return payment;
     }
+
+    public List<Payment> findBySaleId(Integer saleId){
+        return paymentRepository.findBySaleId(saleId);
+    }
+
+
+
+    // public Payment fromDTO(PaymentDTO paymentDTO){
+    //     return new Payment(
+    //         paymentDTO.getId(),
+    //         paymentDTO.getDueDate(),
+    //         paymentDTO.getValue(),
+    //         paymentDTO.getAmountPaid(),
+    //         paymentDTO.getPaydDate(),
+    //         paymentDTO.getBarCode(),
+    //         paymentDTO.getDocumentNumber(),
+    //         paymentDTO.getPaymentType(),
+    //         paymentDTO.getObservation(),
+    //         paymentDTO.getStatus(),
+    //         paymentDTO.getSale(),
+    //         paymentDTO.getPurchase()
+    //     );
+    // }
 
 }
