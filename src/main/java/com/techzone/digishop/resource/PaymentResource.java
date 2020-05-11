@@ -6,10 +6,13 @@ import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.enums.PaymentStatus;
 import com.techzone.digishop.dto.PaymentDTO;
 import com.techzone.digishop.service.PaymentService;
+
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,6 +47,20 @@ public class PaymentResource {
 		Page<PaymentDTO> listDto = paymentList.map((obj) -> new PaymentDTO(obj));
 		return ResponseEntity.ok().body(listDto);
 	}
+
+	@RequestMapping(value="settle/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Payment> settlePayment(@PathVariable Integer id, @RequestBody Payment payment){
+		payment.setId(id);
+		return ResponseEntity.ok().body(service.settlePayment(payment));
+
+	}
+
+	@RequestMapping(value="sale/{id}", method=RequestMethod.GET)
+	public ResponseEntity<List<Payment>> findBySaleId(@PathVariable Integer id){
+		return ResponseEntity.ok().body(service.findBySaleId(id));
+
+	}
+	
 
 
 }
