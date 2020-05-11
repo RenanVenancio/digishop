@@ -1,6 +1,7 @@
 package com.techzone.digishop.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -22,8 +23,8 @@ public class Payment implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private Date dueDate;
-	private Double value;
-	private Double amountPaid;
+	private BigDecimal value;
+	private BigDecimal amountPaid;
 	private Date paydDate;
 	private String barCode;
 	private String documentNumber;
@@ -45,8 +46,9 @@ public class Payment implements Serializable {
 
 	}
 
-	public Payment(Integer id, Date dueDate, Double value, Double amountPaid, Date paydDate, String barCode,
-			String documentNumber, PaymentType paymentType, String observation, PaymentStatus status, Sale sale, Purchase purchase) {
+	public Payment(Integer id, Date dueDate, BigDecimal value, BigDecimal amountPaid, Date paydDate, String barCode,
+			String documentNumber, PaymentType paymentType, String observation, PaymentStatus status, Sale sale,
+			Purchase purchase) {
 		this.id = id;
 		this.dueDate = dueDate;
 		this.value = value;
@@ -59,6 +61,21 @@ public class Payment implements Serializable {
 		this.status = status.getCod();
 		this.sale = sale;
 		this.purchase = purchase;
+	}
+
+	public Payment(Payment payment) {
+		this.id = payment.getId();
+		this.dueDate = payment.getDueDate();
+		this.value = payment.getValue();
+		this.amountPaid = payment.getAmountPaid();
+		this.paydDate = payment.getPaydDate();
+		this.barCode = payment.getBarCode();
+		this.documentNumber = payment.getDocumentNumber();
+		this.paymentType = payment.getPaymentType().getCod();
+		this.observation = payment.getObservation();
+		this.status = payment.getStatus().getCod();
+		this.sale = payment.getSale();
+		this.purchase = payment.getPurchase();
 	}
 
 	public Integer getId() {
@@ -77,19 +94,19 @@ public class Payment implements Serializable {
 		this.dueDate = dueDate;
 	}
 
-	public Double getValue() {
+	public BigDecimal getValue() {
 		return value;
 	}
 
-	public void setValue(Double value) {
+	public void setValue(BigDecimal value) {
 		this.value = value;
 	}
 
-	public Double getAmountPaid() {
+	public BigDecimal getAmountPaid() {
 		return amountPaid;
 	}
 
-	public void setAmountPaid(Double amountPaid) {
+	public void setAmountPaid(BigDecimal amountPaid) {
 		this.amountPaid = amountPaid;
 	}
 
@@ -133,7 +150,6 @@ public class Payment implements Serializable {
 		this.observation = observation;
 	}
 
-
 	public PaymentStatus getStatus() {
 		return PaymentStatus.toEnum(this.status);
 	}
@@ -141,7 +157,6 @@ public class Payment implements Serializable {
 	public void setStatus(PaymentStatus status) {
 		this.status = status.getCod();
 	}
-
 
 	public Sale getSale() {
 		return sale;
