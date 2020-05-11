@@ -1,6 +1,7 @@
 package com.techzone.digishop.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,8 +14,8 @@ public class PaymentDTO implements Serializable {
 
     private Integer id;
     private Date dueDate;
-    private Double value;
-    private Double amountPaid;
+    private BigDecimal value;
+    private BigDecimal amountPaid;
     private Date paydDate;
     private String barCode;
     private String documentNumber;
@@ -39,7 +40,7 @@ public class PaymentDTO implements Serializable {
         this.status = payment.getStatus().getCod();
     }
 
-    public PaymentDTO(Integer id, Date dueDate, Double value, Double amountPaid, Date paydDate, String barCode,
+    public PaymentDTO(Integer id, Date dueDate, BigDecimal value, BigDecimal amountPaid, Date paydDate, String barCode,
             String documentNumber, Integer paymentType, String observation, Integer sale, Integer purchase, Integer status) {
         this.id = id;
         this.dueDate = dueDate;
@@ -71,19 +72,19 @@ public class PaymentDTO implements Serializable {
         this.dueDate = dueDate;
     }
 
-    public Double getValue() {
+    public BigDecimal getValue() {
         return this.value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
-    public Double getAmountPaid() {
+    public BigDecimal getAmountPaid() {
         return this.amountPaid;
     }
 
-    public void setAmountPaid(Double amountPaid) {
+    public void setAmountPaid(BigDecimal amountPaid) {
         this.amountPaid = amountPaid;
     }
 

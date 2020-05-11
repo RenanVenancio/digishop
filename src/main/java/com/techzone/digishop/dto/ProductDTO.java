@@ -1,6 +1,7 @@
 package com.techzone.digishop.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import com.techzone.digishop.domain.Product;
 
@@ -12,12 +13,12 @@ public class ProductDTO implements Serializable {
 	private String barcode;
 	private String reference;
 	private String description;
-	private Double purchasePrice;
-	private Double salePrice;
+	private BigDecimal purchasePrice;
+	private BigDecimal salePrice;
 	private String un = "UN";
-	private Double weight = 0.00;
+	private BigDecimal weight;
 	private Boolean sell = true;
-	private Double stock;
+	private BigDecimal stock;
 	private String location;
 	private Integer category;
 	private Integer company;
@@ -38,8 +39,8 @@ public class ProductDTO implements Serializable {
 		this.company = product.getCompany().getId();
 	}
 
-	public ProductDTO(String name, String barcode, String reference, String description, Double purchasePrice,
-			Double salePrice, String un, Double weight, Boolean sell, Double stock, String location,
+	public ProductDTO(String name, String barcode, String reference, String description, BigDecimal purchasePrice,
+			BigDecimal salePrice, String un, BigDecimal weight, Boolean sell, BigDecimal stock, String location,
 			Integer category, Integer company) {
 		this.name = name;
 		this.barcode = barcode;
@@ -88,19 +89,19 @@ public class ProductDTO implements Serializable {
 		this.description = description;
 	}
 
-	public Double getPurchasePrice() {
+	public BigDecimal getPurchasePrice() {
 		return this.purchasePrice;
 	}
 
-	public void setPurchasePrice(Double purchasePrice) {
+	public void setPurchasePrice(BigDecimal purchasePrice) {
 		this.purchasePrice = purchasePrice;
 	}
 
-	public Double getSalePrice() {
+	public BigDecimal getSalePrice() {
 		return this.salePrice;
 	}
 
-	public void setSalePrice(Double salePrice) {
+	public void setSalePrice(BigDecimal salePrice) {
 		this.salePrice = salePrice;
 	}
 
@@ -112,11 +113,11 @@ public class ProductDTO implements Serializable {
 		this.un = un;
 	}
 
-	public Double getWeight() {
+	public BigDecimal getWeight() {
 		return this.weight;
 	}
 
-	public void setWeight(Double weight) {
+	public void setWeight(BigDecimal weight) {
 		this.weight = weight;
 	}
 
@@ -132,11 +133,11 @@ public class ProductDTO implements Serializable {
 		this.sell = sell;
 	}
 
-	public Double getStock() {
+	public BigDecimal getStock() {
 		return this.stock;
 	}
 
-	public void setStock(Double stock) {
+	public void setStock(BigDecimal stock) {
 		this.stock = stock;
 	}
 

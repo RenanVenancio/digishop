@@ -1,5 +1,6 @@
 package com.techzone.digishop;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -159,25 +160,25 @@ public class DigiShopApplication implements CommandLineRunner{
 		// CRIANDO PRODUTOS
 
 		Product prod1 = new Product(null, "COCA COLA 2l", "789866657904",
-				"", "Bebida com caramelo IV", 5.49, 7.77, "UN", 0.4430, true, 16.0, "Preateleira 3", c, cat2);
+				"", "Bebida com caramelo IV", new BigDecimal("5.49"), new BigDecimal("7.77"), "UN", new BigDecimal("0.4430"), true, new BigDecimal("6.0"), "Preateleira 3", c, cat2);
 		
 		Product prod2 = new Product(null, "HAMBURGUER CHEDDAR 100G", "789866657902",
-				"", "100G carne artesanal cebola e molho", 5.49, 11.99, "UN", 0.778, true, 12.00, "Preateleira 3", c, cat5);
+				"", "100G carne artesanal cebola e molho", new BigDecimal("5.49"), new BigDecimal("1.99"), "UN", new BigDecimal("0.778"), true, new BigDecimal("2.00"), "Preateleira 3", c, cat5);
 		
 		Product prod3 = new Product(null, "CACHORRO QUENTE COMPLETO", "789866657955",
-				"", "Tamanho de 15Cm", 3.49, 8.50, "UN", 0.334, true, 4.9, "Cozinha 3", c, cat5);
+				"", "Tamanho de 15Cm", new BigDecimal("3.49"), new BigDecimal("8.50"), "UN", new BigDecimal("0.334"), true, new BigDecimal("4.9"), "Cozinha 3", c, cat5);
 		
 		Product prod4 = new Product(null, "MISTO QUENTE SIMPLES", "789866653434",
-				"", "Mussarela Presunto Cheddar Molho especial alface Bacon", 6.75, 9.99, "UN", 0.340, true, 4.9, "Container 94", c, cat5);
+				"", "Mussarela Presunto Cheddar Molho especial alface Bacon", new BigDecimal("6.75"), new BigDecimal("9.99"), "UN", new BigDecimal("0.340"), true, new BigDecimal("4.9"), "Container 94", c, cat5);
 		
 		Product prod5 = new Product(null, "PEPSI LATA 350ML", "723234554688",
-				"", "Bebida com caramelo IV", 1.25, 2.53, "UN", 0.533, true, 22.0, "Preateleira 3", c, cat2);
+				"", "Bebida com caramelo IV", new BigDecimal("1.25"), new BigDecimal("2.53"), "UN", new BigDecimal("0.533"), true, new BigDecimal("2.0"), "Preateleira 3", c, cat2);
 		
-		Product prod6 = new Product(null, "PUDIM 120G", "0887890999", "P003", "PUDIM COM NATA", 3.45, 4.55, "UN", 100.00, true, 12.0, "COZINHA", c, cat4);
+		Product prod6 = new Product(null, "PUDIM 120G", "0887890999", "P003", "PUDIM COM NATA", new BigDecimal("3.45"), new BigDecimal("4.55"), "UN", new BigDecimal("0.00"), true, new BigDecimal("2.0"), "COZINHA", c, cat4);
 
-		Product prod7 = new Product(null, "CAFÉ PEQUENO", "78889790000", "P00$", "CAFÉ PRETO COM AÇUCAR", 1.43, 2.50, "UN", 1000.00, true, 16.0, "COZINHA", c, cat2);
+		Product prod7 = new Product(null, "CAFÉ PEQUENO", "78889790000", "P00$", "CAFÉ PRETO COM AÇUCAR", new BigDecimal("1.43"), new BigDecimal("2.50"), "UN", new BigDecimal("0.00"), true, new BigDecimal("6.0"), "COZINHA", c, cat2);
 
-		Product prod8 = new Product(null, "COXINHA DE FRANGO COM CHEDDAR", "", "P003", "COXINHA RECHEADA", 4.56, 6.77, "UN", 100.00, true, 19.0, "COZINHA", c, cat5);
+		Product prod8 = new Product(null, "COXINHA DE FRANGO COM CHEDDAR", "", "P003", "COXINHA RECHEADA", new BigDecimal("4.56"), new BigDecimal("6.77"), "UN", new BigDecimal("0.00"), true, new BigDecimal("9.0"), "COZINHA", c, cat5);
 
 		productRepository.saveAll(Arrays.asList(prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8));
 		
@@ -186,20 +187,20 @@ public class DigiShopApplication implements CommandLineRunner{
 		
 			// VENDA 1
 		
-		Sale s1 = new Sale(null, new Date(), c, cli, cli.getAdresses().get(0) ,0.00, 3.00, SaleStatus.DELIVERED);
+		Sale s1 = new Sale(null, new Date(), c, cli, cli.getAdresses().get(0) ,new BigDecimal("0.00"), new BigDecimal("3.00"), SaleStatus.DELIVERED);
 		
 		
-		SaleItem sItem = new SaleItem(s1, prod1, 0.00, 2.0, prod1.getName(), 
+		SaleItem sItem = new SaleItem(s1, prod1, new BigDecimal("0.00"), new BigDecimal("2.0"), prod1.getName(), 
 				prod1.getBarcode(), prod1.getReference(), 
 				prod1.getDescription(), prod1.getPurchasePrice(), prod1.getSalePrice(), 
 				prod1.getUn(), prod1.getWeight(), prod1.getLocation());
 		
-		SaleItem sItem1 = new SaleItem(s1, prod2, 0.00, 1.0, prod2.getName(), 
+		SaleItem sItem1 = new SaleItem(s1, prod2, new BigDecimal("0.00"), new BigDecimal("1.0"), prod2.getName(), 
 				prod2.getBarcode(), prod2.getReference(), 
 				prod2.getDescription(), prod2.getPurchasePrice(), prod2.getSalePrice(), 
 				prod2.getUn(), prod2.getWeight(), prod2.getLocation());
 		
-		Payment s1Payment = new Payment(null, new Date(), 52.05, 0.00, null, null, "78982/2", PaymentType.REVENUE, "Troco pra 50", PaymentStatus.toEnum(1), s1, null);
+		Payment s1Payment = new Payment(null, new Date(), new BigDecimal("2.05"), new BigDecimal("0.00"), null, null, "78982/2", PaymentType.REVENUE, "Troco pra 50", PaymentStatus.toEnum(1), s1, null);
 		s1.getItens().addAll(Arrays.asList(sItem, sItem1));
 		s1.getPayments().add(s1Payment);
 		saleRepository.save(s1);
@@ -207,15 +208,15 @@ public class DigiShopApplication implements CommandLineRunner{
 		salePaymentRepository.save(s1Payment);
 		
 		
-		Sale s2 = new Sale(null, new Date(), c, cli2, cli2.getAdresses().get(1) ,0.00, 2.32, SaleStatus.PENDENT);
+		Sale s2 = new Sale(null, new Date(), c, cli2, cli2.getAdresses().get(1) ,new BigDecimal("0.00"), new BigDecimal("2.32"), SaleStatus.PENDENT);
 		
 		
-		SaleItem sItem2 = new SaleItem(s2, prod5, 2.50, 5.0, prod5.getName(), 
+		SaleItem sItem2 = new SaleItem(s2, prod5, new BigDecimal("2.50"), new BigDecimal("5.0"), prod5.getName(), 
 				prod5.getBarcode(), prod5.getReference(), 
 				prod5.getDescription(), prod5.getPurchasePrice(), prod5.getSalePrice(), 
 				prod5.getUn(), prod5.getWeight(), prod5.getLocation());
 		
-		SaleItem sItem3 = new SaleItem(s2, prod3, 0.00, 1.0, prod3.getName(), 
+		SaleItem sItem3 = new SaleItem(s2, prod3, new BigDecimal("0.00"), new BigDecimal("1.0"), prod3.getName(), 
 				prod3.getBarcode(), prod3.getReference(), 
 				prod3.getDescription(), prod3.getPurchasePrice(), prod3.getSalePrice(), 
 				prod3.getUn(), prod3.getWeight(), prod3.getLocation());

@@ -1,6 +1,7 @@
 package com.techzone.digishop.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,8 +20,8 @@ public class SaleDTO implements Serializable {
     private Integer company;
     private ClientDTO client;
     private ClientAddressDTO address;
-    private Double discount;
-    private Double freightCost;
+    private BigDecimal discount;
+    private BigDecimal freightCost;
     private Integer parcelNumber;
     private Date firstPayment;
     private Integer paymentMethod;
@@ -51,7 +52,7 @@ public class SaleDTO implements Serializable {
     }
 
     public SaleDTO(Integer id, Date date, Integer company, ClientDTO client,
-            ClientAddressDTO address, Double discount, Double freightCost, Integer parcelNumber, Date firstPayment,
+            ClientAddressDTO address, BigDecimal discount, BigDecimal freightCost, Integer parcelNumber, Date firstPayment,
             Integer paymentMethod) {
         this.id = id;
         this.date = date;
@@ -69,13 +70,13 @@ public class SaleDTO implements Serializable {
         return this.id;
     }
 
-    public Double getTotalValue() {
-		Double value = 0.00;
+    public BigDecimal getTotalValue() {
+	 BigDecimal value = new BigDecimal("0.00");
 		for (SaleItemDTO item : itens) {
-			value += item.getSubtotal();
+			value = value.add(item.getSubtotal());
 		}
 
-		return (value - this.discount) + this.freightCost;
+		return (value.subtract(this.discount)).add(this.freightCost);
 	}
 
     public void setId(Integer id) {
@@ -114,19 +115,19 @@ public class SaleDTO implements Serializable {
         this.address = address;
     }
 
-    public Double getDiscount() {
+    public BigDecimal getDiscount() {
         return this.discount;
     }
 
-    public void setDiscount(Double discount) {
+    public void setDiscount (BigDecimal discount) {
         this.discount = discount;
     }
 
-    public Double getFreightCost() {
+    public BigDecimal getFreightCost() {
         return this.freightCost;
     }
 
-    public void setFreightCost(Double freightCost) {
+    public void setFreightCost (BigDecimal freightCost) {
         this.freightCost = freightCost;
     }
 

@@ -1,6 +1,7 @@
 package com.techzone.digishop.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techzone.digishop.domain.SaleItem;
@@ -11,16 +12,16 @@ public class SaleItemDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private SaleItemPK id = new SaleItemPK();
-    private Double discount = 0.00;
-    private Double quantity;
+    private BigDecimal discount;
+    private BigDecimal quantity;
     private String name;
     private String barcode;
     private String reference;
     private String description;
-    private Double purchasePrice;
-    private Double salePrice;
+    private BigDecimal purchasePrice;
+    private BigDecimal salePrice;
     private String un;
-    private Double weight;
+    private BigDecimal weight;
     private String location;
 
     public SaleItemDTO() {
@@ -46,8 +47,8 @@ public class SaleItemDTO implements Serializable {
         return this.id.getProduct().getId();
     }
 
-    public Double getSubtotal() {
-		return (salePrice - discount) * quantity;
+    public BigDecimal getSubtotal() {
+		return (salePrice.subtract(discount)).multiply(quantity);
 	}
 
     @JsonIgnore
@@ -63,19 +64,19 @@ public class SaleItemDTO implements Serializable {
         this.id = id;
     }
 
-    public Double getDiscount() {
+    public BigDecimal getDiscount() {
         return this.discount;
     }
 
-    public void setDiscount(Double discount) {
+    public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
 
-    public Double getQuantity() {
+    public BigDecimal getQuantity() {
         return this.quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
 
@@ -112,19 +113,19 @@ public class SaleItemDTO implements Serializable {
     }
 
     @JsonIgnore
-    public Double getPurchasePrice() {
+    public BigDecimal getPurchasePrice() {
         return this.purchasePrice;
     }
 
-    public void setPurchasePrice(Double purchasePrice) {
+    public void setPurchasePrice(BigDecimal purchasePrice) {
         this.purchasePrice = purchasePrice;
     }
 
-    public Double getSalePrice() {
+    public BigDecimal getSalePrice() {
         return this.salePrice;
     }
 
-    public void setSalePrice(Double salePrice) {
+    public void setSalePrice(BigDecimal salePrice) {
         this.salePrice = salePrice;
     }
 
@@ -136,11 +137,11 @@ public class SaleItemDTO implements Serializable {
         this.un = un;
     }
 
-    public Double getWeight() {
+    public BigDecimal getWeight() {
         return this.weight;
     }
 
-    public void setWeight(Double weight) {
+    public void setWeight(BigDecimal weight) {
         this.weight = weight;
     }
 

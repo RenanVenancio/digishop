@@ -1,6 +1,8 @@
 package com.techzone.digishop.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -14,11 +16,11 @@ public class SaleItemNewDTO implements Serializable {
     private Integer id;
     @NotNull(message = "Não pode ser nulo")
     @Positive(message = "O valor deve ser maior que zero")
-    private Double quantity;
+    private BigDecimal quantity;
     @Positive(message = "O valor deve ser maior que zero")
-    private Double salePrice;
+    private BigDecimal salePrice;
     @Positive(message = "O valor deve ser maior que zero")
-    private Double discount;
+    private BigDecimal discount;
 
     public SaleItemNewDTO() {
     }
@@ -30,7 +32,7 @@ public class SaleItemNewDTO implements Serializable {
         this.discount = item.getDiscount();
     }
 
-    public SaleItemNewDTO(Integer id, Double quantity, Double salePrice, Double discount) {
+    public SaleItemNewDTO(Integer id, BigDecimal quantity, BigDecimal salePrice, BigDecimal discount) {
         this.id = id;
         this.quantity = quantity;
         this.salePrice = salePrice;
@@ -45,27 +47,27 @@ public class SaleItemNewDTO implements Serializable {
         this.id = id;
     }
 
-    public Double getQuantity() {
+    public BigDecimal getQuantity() {
         return this.quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
 
-    public Double getSalePrice() {
+    public BigDecimal getSalePrice() {
         return this.salePrice;
     }
 
-    public void setSalePrice(Double salePrice) {
+    public void setSalePrice(BigDecimal salePrice) {
         this.salePrice = salePrice;
     }
 
-    public Double getDiscount() {
+    public BigDecimal getDiscount() {
         return this.discount;
     }
 
-    public void setDiscount(Double discount) {
+    public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
 

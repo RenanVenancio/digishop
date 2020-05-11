@@ -1,6 +1,7 @@
 package com.techzone.digishop.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,8 +35,8 @@ public class Sale implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "address_id")
 	private ClientAddress address;
-	private Double discount;
-	private Double freightCost;
+	private BigDecimal discount;
+	private BigDecimal freightCost;
 	private Integer parcelNumber;
 	private Date firstPayment;
 	private Integer paymentMethod;
@@ -61,7 +62,7 @@ public class Sale implements Serializable {
 	}
 
 	public Sale(Integer id, Date date, Company company, Client client,
-			ClientAddress address, Double discount, Double freightCost, SaleStatus status) {
+			ClientAddress address, BigDecimal discount, BigDecimal freightCost, SaleStatus status) {
 		this.id = id;
 		this.date = date;
 		this.company = company;
@@ -73,7 +74,7 @@ public class Sale implements Serializable {
 	}
 
 	public Sale(Integer id, Date date, Company company, Client client,
-			ClientAddress address, Double discount, Double freightCost, Integer parcelNumber, Date firstPayment,
+			ClientAddress address, BigDecimal discount, BigDecimal freightCost, Integer parcelNumber, Date firstPayment,
 			PaymentMethod paymentMethod, SaleStatus status) {
 		this.id = id;
 		this.date = date;
@@ -88,13 +89,13 @@ public class Sale implements Serializable {
 		this.status = status.getCod();
 	}
 
-	public Double getTotalValue() {
-		Double value = 0.00;
+	public BigDecimal getTotalValue() {
+		BigDecimal value = new BigDecimal("0.00");
 		for (SaleItem item : itens) {
-			value += item.getSubtotal();
+			value = value.add(item.getSubtotal());
 		}
 
-		return (value - this.discount) + this.freightCost;
+		return (value.subtract(this.discount).add(this.freightCost));
 	}
 
 	public Integer getId() {
@@ -137,11 +138,11 @@ public class Sale implements Serializable {
 		this.address = address;
 	}
 
-	public Double getDiscount() {
+	public BigDecimal getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(Double discount) {
+	public void setDiscount(BigDecimal discount) {
 		this.discount = discount;
 	}
 
@@ -161,11 +162,11 @@ public class Sale implements Serializable {
 		this.itens = itens;
 	}
 
-	public Double getFreightCost() {
+	public BigDecimal getFreightCost() {
 		return this.freightCost;
 	}
 
-	public void setFreightCost(Double freightCost) {
+	public void setFreightCost(BigDecimal freightCost) {
 		this.freightCost = freightCost;
 	}
 

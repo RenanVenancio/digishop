@@ -1,6 +1,7 @@
 package com.techzone.digishop.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -14,23 +15,23 @@ public class SaleItem implements Serializable {
 	@JsonIgnore
 	@EmbeddedId
 	private SaleItemPK id = new SaleItemPK();
-	private Double discount = 0.00;
-	private Double quantity;
+	private BigDecimal discount;
+	private BigDecimal quantity;
 	private String name;
 	private String barcode;
 	private String reference;
 	private String description;
-	private Double purchasePrice;
-	private Double salePrice;
+	private BigDecimal purchasePrice;
+	private BigDecimal salePrice;
 	private String un = "UN";
-	private Double weight = 0.00;
+	private BigDecimal weight;
 	private String location;
 
 	public SaleItem() {
 	}
 
-	public SaleItem(Sale sale, Product product, Double discount, Double quantity, String name, String barcode,
-			String reference, String description, Double purchasePrice, Double salePrice, String un, Double weight,
+	public SaleItem(Sale sale, Product product, BigDecimal discount, BigDecimal quantity, String name, String barcode,
+			String reference, String description, BigDecimal purchasePrice, BigDecimal salePrice, String un, BigDecimal weight,
 			String location) {
 		super();
 		this.id.setSale(sale);
@@ -48,8 +49,8 @@ public class SaleItem implements Serializable {
 		this.location = location;
 	}
 
-	public Double getSubtotal() {
-		return (salePrice - discount) * quantity;
+	public BigDecimal getSubtotal() {
+		return (salePrice.subtract(discount)).multiply(quantity);
 	}
 
 	@JsonIgnore
@@ -77,19 +78,19 @@ public class SaleItem implements Serializable {
 		this.id = id;
 	}
 
-	public Double getDiscount() {
+	public BigDecimal getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(Double discount) {
+	public void setDiscount(BigDecimal discount) {
 		this.discount = discount;
 	}
 
-	public Double getQuantity() {
+	public BigDecimal getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(Double quantity) {
+	public void setQuantity(BigDecimal quantity) {
 		this.quantity = quantity;
 	}
 
@@ -125,19 +126,19 @@ public class SaleItem implements Serializable {
 		this.description = description;
 	}
 
-	public Double getPurchasePrice() {
+	public BigDecimal getPurchasePrice() {
 		return purchasePrice;
 	}
 
-	public void setPurchasePrice(Double purchasePrice) {
+	public void setPurchasePrice(BigDecimal purchasePrice) {
 		this.purchasePrice = purchasePrice;
 	}
 
-	public Double getSalePrice() {
+	public BigDecimal getSalePrice() {
 		return salePrice;
 	}
 
-	public void setSalePrice(Double salePrice) {
+	public void setSalePrice(BigDecimal salePrice) {
 		this.salePrice = salePrice;
 	}
 
@@ -149,11 +150,11 @@ public class SaleItem implements Serializable {
 		this.un = un;
 	}
 
-	public Double getWeight() {
+	public BigDecimal getWeight() {
 		return weight;
 	}
 
-	public void setWeight(Double weight) {
+	public void setWeight(BigDecimal weight) {
 		this.weight = weight;
 	}
 

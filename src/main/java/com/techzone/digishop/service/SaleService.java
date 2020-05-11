@@ -1,5 +1,6 @@
 package com.techzone.digishop.service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Optional;
 
@@ -77,7 +78,7 @@ public class SaleService {
 
 		for(SaleItem item : sale.getItens()){
 			Product p = productService.findById(item.getProduct().getId());
-			item.setDiscount(0.00);
+			item.setDiscount(new BigDecimal("0.00"));
 			item.setName(p.getName());
 			item.setBarcode(p.getBarcode());
 			item.setReference(p.getReference());
