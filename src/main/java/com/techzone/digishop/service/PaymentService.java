@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.constraints.DecimalMax;
+
 import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.enums.PaymentMethod;
@@ -119,6 +121,11 @@ public class PaymentService {
     public Payment settlePayment(Payment payment){
         Payment newPayment = payment;
         payment = findById(payment.getId());
+
+        if(newPayment.getAmountPaid().compareTo(payment.getValue()) == 1){
+            throw new BusinessRuleException("O valor pago deve ser igual ou menor a " + payment.getValue());
+        }
+
         Sale sale = saleService.findById(payment.getSale().getId());
 
         if(newPayment.getAmountPaid().doubleValue() < payment.getValue().doubleValue()){
@@ -176,23 +183,21 @@ public class PaymentService {
         return paymentRepository.findBySaleId(saleId);
     }
 
-
-
-    // public Payment fromDTO(PaymentDTO paymentDTO){
-    //     return new Payment(
-    //         paymentDTO.getId(),
-    //         paymentDTO.getDueDate(),
-    //         paymentDTO.getValue(),
-    //         paymentDTO.getAmountPaid(),
-    //         paymentDTO.getPaydDate(),
-    //         paymentDTO.getBarCode(),
-    //         paymentDTO.getDocumentNumber(),
-    //         paymentDTO.getPaymentType(),
-    //         paymentDTO.getObservation(),
-    //         paymentDTO.getStatus(),
-    //         paymentDTO.getSale(),
-    //         paymentDTO.getPurchase()
-    //     );
-    // }
+    public Payment fromDTO(PaymentDTO paymentDTO){
+        return new Payment(
+            paymentDTO.getId(),
+            paymentDTO.getDueDate(),
+            paymentDTO.getValue(),
+            paymentDTO.getAmountPaid(),
+            paymentDTO.getPaydDate(),
+            paymentDTO.getBarCode(),
+            paymentDTO.getDocumentNumber(),
+            paymentDTO.getPaymentType(),
+            paymentDTO.getObservation(),
+            paymentDTO.getStatus(),
+            paymentDTO.getSale(),
+            paymentDTO.getPurchase()
+        );
+    }
 
 }
