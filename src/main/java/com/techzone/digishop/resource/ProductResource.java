@@ -64,7 +64,7 @@ public class ProductResource {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Page<ProductDTO>> findPage(
 			@RequestParam(value = "name", defaultValue = "") String name,
-			@RequestParam(value = "ids", defaultValue = "0") String categories, 
+			@RequestParam(value = "ids", defaultValue = "") String categories, 
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
 			@RequestParam(value = "itensPerPage" ,defaultValue = "24") Integer itensPerPage, 
 			@RequestParam(value = "orderBy" ,defaultValue = "name") String orderBy, 
