@@ -61,6 +61,9 @@ public class ProductService {
 
 	public Page<Product> search(String name, List<Integer> ids, Integer page, Integer itensPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
+		if(ids.isEmpty()){
+			return repository.findDistinctByNameContainingIgnoreCase(name, pageRequest);
+		}
 		List<ProductCategory> categories = categoryRepository.findAllById(ids);
 		return repository.findDistinctByNameContainingIgnoreCaseAndCategoryIn(name, categories, pageRequest);
 	}
