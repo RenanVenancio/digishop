@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.validation.constraints.DecimalMax;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.enums.PaymentStatus;
