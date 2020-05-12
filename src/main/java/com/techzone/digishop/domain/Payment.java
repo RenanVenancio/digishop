@@ -42,7 +42,11 @@ public class Payment implements Serializable {
 	@JoinColumn(name = "purchase_id")
 	private Purchase purchase;
 
-	public Payment() {
+	public Payment(){
+		
+	}
+
+	public Payment(Integer integer, Date date, BigDecimal bigDecimal, BigDecimal bigDecimal2, Date date2, String string, String string2, Integer integer2, String string3, PaymentStatus paymentStatus, Integer integer3, Integer integer4) {
 
 	}
 
