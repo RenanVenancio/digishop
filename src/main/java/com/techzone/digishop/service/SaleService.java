@@ -1,7 +1,9 @@
 package com.techzone.digishop.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -66,7 +68,6 @@ public class SaleService {
 
 	@Transactional
 	public Sale save(Sale sale) {
-		System.out.println(sale);
 		sale.setId(null);
 		sale.setDate(new Date());
 
@@ -76,7 +77,10 @@ public class SaleService {
 
 		saleRepository.save(sale);
 
+		List<SaleItem> items = new ArrayList<>();
+
 		for(SaleItem item : sale.getItens()){
+
 			Product p = productService.findById(item.getProduct().getId());
 			item.setDiscount(new BigDecimal("0.00"));
 			item.setName(p.getName());
@@ -89,8 +93,18 @@ public class SaleService {
 			item.setWeight(p.getWeight());
 			item.setLocation(p.getLocation());
 			item.setSale(sale);
+			item.setProduct(p);
+			p = null;
+
+			if(items.contains(item)){
+				int i = items.indexOf(item);
+				items.get(i).addQuantity(item.getQuantity());
+			}else{
+				items.add(item);
+			}
 
 		}
+		sale.setItens(items);
 		
 		saleItemRepository.saveAll(sale.getItens());
 
