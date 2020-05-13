@@ -49,6 +49,10 @@ public class SaleItem implements Serializable {
 		this.location = location;
 	}
 
+	public void addQuantity(BigDecimal value){
+		this.quantity = this.quantity.add(value);
+	}
+
 	public BigDecimal getSubtotal() {
 		return (salePrice.subtract(discount)).multiply(quantity);
 	}
