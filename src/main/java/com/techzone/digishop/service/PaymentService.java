@@ -2,6 +2,7 @@ package com.techzone.digishop.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -65,7 +66,7 @@ public class PaymentService {
 
         Calendar c = Calendar.getInstance();
         c.setTime(sale.getFirstPayment());
-        BigDecimal parcelValue = sale.getTotalValue().divide(new BigDecimal(String.valueOf(sale.getParcelNumber())) , RoundingMode.UP);
+        BigDecimal parcelValue = sale.getTotalValue().divide(new BigDecimal(String.valueOf(sale.getParcelNumber())).setScale(2, RoundingMode.HALF_EVEN));
 
         for (int i = 0; i < sale.getParcelNumber(); i++){
             payments.add(new Payment(
@@ -122,11 +123,14 @@ public class PaymentService {
         Payment newPayment = payment;
         payment = findById(payment.getId());
 
+        if(payment.getStatus() == PaymentStatus.PAID){
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            throw new BusinessRuleException("O pagamento já foi baixado em " + sdf.format(payment.getPaydDate()));
+        }
+
         if(newPayment.getAmountPaid().compareTo(payment.getValue()) == 1){
             throw new BusinessRuleException("O valor pago deve ser igual ou menor a " + payment.getValue());
         }
-
-        Sale sale = saleService.findById(payment.getSale().getId());
 
         if(newPayment.getAmountPaid().doubleValue() < payment.getValue().doubleValue()){
             List<Payment> payments = paymentRepository.findBySaleId(payment.getSale().getId());
@@ -167,15 +171,11 @@ public class PaymentService {
             }
         }
 
-        Calendar c = Calendar.getInstance();
-        if(payment.getSale().getPaydayInterval().equalsIgnoreCase("M")){
-            c.add(Calendar.MONTH, 1);
-        }else{
-            c.add(Calendar.DATE, Integer.parseInt(sale.getPaydayInterval()));
-        }
-
         payment.setStatus(PaymentStatus.PAID);
         payment.setPaydDate(new Date());
+        payment.setAmountPaid(payment.getValue());
+        paymentRepository.save(payment);
+
         return payment;
     }
 
