@@ -59,7 +59,7 @@ public class PurchaseItemDTO implements Serializable {
     }
 
     public BigDecimal getSubtotal() {
-        return (salePrice.subtract(discount)).multiply(quantity);
+        return (purchasePrice.subtract(discount)).multiply(quantity);
     }
 
     @JsonIgnore
@@ -123,7 +123,7 @@ public class PurchaseItemDTO implements Serializable {
         this.description = description;
     }
 
-    @JsonIgnore
+
     public BigDecimal getPurchasePrice() {
         return this.purchasePrice;
     }
@@ -132,6 +132,7 @@ public class PurchaseItemDTO implements Serializable {
         this.purchasePrice = purchasePrice;
     }
 
+    @JsonIgnore
     public BigDecimal getSalePrice() {
         return this.salePrice;
     }
