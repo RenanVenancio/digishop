@@ -89,11 +89,12 @@ public class PurchaseService {
 			null,
 			itemDTO.getDate(), 
 			itemDTO.getNfNumber(),
-			false, 
+			itemDTO.getCancelled(), 
 			itemDTO.getUpdateStock(),
 			company, 
 			provider, 
-			itemDTO.getDiscount()
+			itemDTO.getDiscount(),
+			itemDTO.getFreightCost()
 		);
 
 		if (itemDTO.getItens().size() > 1){
