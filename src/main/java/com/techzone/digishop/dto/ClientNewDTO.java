@@ -1,8 +1,6 @@
 package com.techzone.digishop.dto;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.validation.constraints.Email;

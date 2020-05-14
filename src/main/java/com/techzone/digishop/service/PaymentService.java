@@ -9,8 +9,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.constraints.DecimalMax;
-
 import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.enums.PaymentMethod;
@@ -18,7 +16,6 @@ import com.techzone.digishop.domain.enums.PaymentStatus;
 import com.techzone.digishop.domain.enums.PaymentType;
 import com.techzone.digishop.dto.PaymentDTO;
 import com.techzone.digishop.repository.PaymentRepository;
-import com.techzone.digishop.repository.SaleRepository;
 import com.techzone.digishop.service.exception.BusinessRuleException;
 import com.techzone.digishop.service.exception.ObjectNotFoundException;
 import com.techzone.digishop.service.validation.utils.FormatDate;
