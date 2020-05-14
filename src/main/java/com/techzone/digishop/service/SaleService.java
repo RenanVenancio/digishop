@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import com.techzone.digishop.domain.Client;
 import com.techzone.digishop.domain.ClientAddress;
 import com.techzone.digishop.domain.Company;
-import com.techzone.digishop.domain.Product;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.SaleItem;
 import com.techzone.digishop.domain.enums.SaleStatus;
@@ -81,20 +80,8 @@ public class SaleService {
 
 		for(SaleItem item : sale.getItens()){
 
-			Product p = productService.findById(item.getProduct().getId());
 			item.setDiscount(new BigDecimal("0.00"));
-			item.setName(p.getName());
-			item.setBarcode(p.getBarcode());
-			item.setReference(p.getReference());
-			item.setDescription(p.getDescription());
-			item.setPurchasePrice(p.getPurchasePrice());
-			item.setSalePrice(p.getSalePrice());
-			item.setUn(p.getUn());
-			item.setWeight(p.getWeight());
-			item.setLocation(p.getLocation());
 			item.setSale(sale);
-			item.setProduct(p);
-			p = null;
 
 			if(items.contains(item)){
 				int i = items.indexOf(item);
@@ -104,11 +91,13 @@ public class SaleService {
 			}
 
 		}
+
 		sale.setItens(items);
+		sale.setPayments(paymentService.generateRevenueOfSale(sale));
 		
 		saleItemRepository.saveAll(sale.getItens());
 
-		paymentRepository.saveAll(paymentService.generateRevenueOfSale(sale));
+		paymentRepository.saveAll(sale.getPayments());
 
 		return sale;
 
