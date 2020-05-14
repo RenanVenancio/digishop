@@ -1,6 +1,7 @@
 package com.techzone.digishop.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -18,9 +19,9 @@ public class PurchaseItem implements Serializable {
 	@EmbeddedId
 	private PurchaseItemPK id = new PurchaseItemPK();
 
-	private Double discount = 0.00;
+	private BigDecimal discount;
 
-	private Double quantity;
+	private BigDecimal quantity;
 
 	private String name;
 
@@ -31,18 +32,18 @@ public class PurchaseItem implements Serializable {
 
 	private String description;
 	@NotNull
-	private Double purchasePrice;
+	private BigDecimal purchasePrice;
 	@NotNull
-	private Double salePrice;
+	private BigDecimal salePrice;
 	@NotNull
 	private String un = "UN";
 
 	public PurchaseItem() {
 	}
 
-	public PurchaseItem(Purchase purchase, Product product, Double discount, Double quantity, String name,
-			String barcode, String reference, String description, @NotNull Double purchasePrice,
-			@NotNull Double salePrice, @NotNull String un) {
+	public PurchaseItem(Purchase purchase, Product product, BigDecimal discount, BigDecimal quantity, String name,
+			String barcode, String reference, String description, @NotNull BigDecimal purchasePrice,
+			@NotNull BigDecimal salePrice, @NotNull String un) {
 		super();
 		this.id.setPurchase(purchase);
 		this.id.setProduct(product);
@@ -57,13 +58,29 @@ public class PurchaseItem implements Serializable {
 		this.un = un;
 	}
 
+	public void addQuantity(BigDecimal value){
+		this.quantity = this.quantity.add(value);
+	}
+
+	public BigDecimal getSubtotal() {
+		return (purchasePrice.subtract(discount)).multiply(quantity);
+	}
+
 	@JsonIgnore
 	public Purchase getPurchase() {
-		return id.getPurchase();
+		return id.getPurchase(); 
+	}
+
+	public void setPurchase(Purchase purchase){
+		this.id.setPurchase(purchase);
 	}
 
 	public Product getProduct() {
 		return id.getProduct();
+	}
+
+	public void setProduct(Product product){
+		this.id.setProduct(product);
 	}
 
 	public PurchaseItemPK getId() {
@@ -74,19 +91,19 @@ public class PurchaseItem implements Serializable {
 		this.id = id;
 	}
 
-	public Double getDiscount() {
+	public BigDecimal getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(Double discount) {
+	public void setDiscount(BigDecimal discount) {
 		this.discount = discount;
 	}
 
-	public Double getQuantity() {
+	public BigDecimal getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(Double quantity) {
+	public void setQuantity(BigDecimal quantity) {
 		this.quantity = quantity;
 	}
 
@@ -122,19 +139,19 @@ public class PurchaseItem implements Serializable {
 		this.description = description;
 	}
 
-	public Double getPurchasePrice() {
+	public BigDecimal getPurchasePrice() {
 		return purchasePrice;
 	}
 
-	public void setPurchasePrice(Double purchasePrice) {
+	public void setPurchasePrice(BigDecimal purchasePrice) {
 		this.purchasePrice = purchasePrice;
 	}
 
-	public Double getSalePrice() {
+	public BigDecimal getSalePrice() {
 		return salePrice;
 	}
 
-	public void setSalePrice(Double salePrice) {
+	public void setSalePrice(BigDecimal salePrice) {
 		this.salePrice = salePrice;
 	}
 
