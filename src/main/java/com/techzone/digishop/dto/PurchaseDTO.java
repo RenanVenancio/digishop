@@ -34,7 +34,10 @@ public class PurchaseDTO implements Serializable {
 
 	public PurchaseDTO(Purchase purchase) {
         this.id = purchase.getId();
-        this.date = purchase.getDate();
+		this.date = purchase.getDate();
+		this.nfNumber = purchase.getNfNumber();
+		this.cancelled = purchase.getCancelled();
+		this.updateStock = purchase.getUpdateStock();
         this.company = purchase.getCompany().getId();
         this.provider = new ProviderDTO(purchase.getProvider());
         this.discount = purchase.getDiscount();
