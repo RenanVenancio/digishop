@@ -5,10 +5,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.Purchase;
 import com.techzone.digishop.domain.PurchaseItem;
+import com.techzone.digishop.service.validation.utils.FormatDate;
 
 public class PurchaseNewDTO implements Serializable {
 
@@ -33,24 +33,38 @@ public class PurchaseNewDTO implements Serializable {
 	}
 
 	public PurchaseNewDTO(Purchase purchase) {
-        this.id = purchase.getId();
-        this.date = purchase.getDate();
-        this.company = purchase.getCompany().getId();
-        this.provider = purchase.getProvider().getId();
-        this.discount = purchase.getDiscount();
-        this.freightCost = purchase.getFreightCost();
+		this.id = purchase.getId();
+		this.date = purchase.getDate();
+		this.company = purchase.getCompany().getId();
+		this.provider = purchase.getProvider().getId();
+		this.discount = purchase.getDiscount();
+		this.freightCost = purchase.getFreightCost();
 
-        for(PurchaseItem pi : purchase.getItens()){
-            this.itens.add(new PurchaseItemNewDTO(pi));
-        }
+		for (PurchaseItem pi : purchase.getItens()) {
+			this.itens.add(new PurchaseItemNewDTO(pi));
+		}
 
-        for(Payment p : purchase.getPayments()){
-            this.payments.add(new PaymentDTO(p));
-        }
-    }
+		for (Payment p : purchase.getPayments()) {
+			this.payments.add(new PaymentDTO(p));
+		}
+	}
 
-	public PurchaseNewDTO(Integer id, Date date, String nfNumber, Boolean cancelled, Boolean updateStock, Integer company,
-			Integer provider, BigDecimal discount) {
+	public PurchaseNewDTO(Integer id, String date, String nfNumber, Boolean cancelled, Boolean updateStock,
+			Integer company, Integer provider, BigDecimal discount) {
+		super();
+		this.id = id;
+		this.date = FormatDate.parse(date);
+		this.nfNumber = nfNumber;
+		this.cancelled = cancelled;
+		this.updateStock = updateStock;
+		this.company = company;
+		this.provider = provider;
+		this.discount = discount;
+	}
+
+	// Recebe tipo Date() no construtor
+	public PurchaseNewDTO(Integer id, Date date, String nfNumber, Boolean cancelled, Boolean updateStock,
+			Integer company, Integer provider, BigDecimal discount) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -72,6 +86,10 @@ public class PurchaseNewDTO implements Serializable {
 
 	public Date getDate() {
 		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = FormatDate.parse(date);
 	}
 
 	public void setDate(Date date) {
