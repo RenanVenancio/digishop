@@ -1,6 +1,7 @@
 package com.techzone.digishop.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +32,8 @@ public class Purchase implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "provider_id")
 	private Provider provider;
-	private Double discount;
+	private BigDecimal discount;
+	private BigDecimal freightCost;
 
 	@OneToMany(mappedBy = "id.purchase")
 	List<PurchaseItem> itens = new ArrayList<>();
@@ -44,7 +46,7 @@ public class Purchase implements Serializable {
 	}
 
 	public Purchase(Integer id, Date date, String nfNumber, Boolean cancelled, Boolean updateStock, Company company,
-			Provider provider, Double discount) {
+			Provider provider, BigDecimal discount) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -58,6 +60,15 @@ public class Purchase implements Serializable {
 
 	public Integer getId() {
 		return id;
+	}
+
+	public BigDecimal getTotalValue() {
+		BigDecimal value = new BigDecimal("0.00");
+		for (PurchaseItem item : itens) {
+			value = value.add(item.getSubtotal());
+		}
+
+		return (value.subtract(this.discount).add(this.freightCost));
 	}
 
 	public void setId(Integer id) {
@@ -112,11 +123,19 @@ public class Purchase implements Serializable {
 		this.provider = provider;
 	}
 
-	public Double getDiscount() {
+	public BigDecimal getFreightCost() {
+		return this.freightCost;
+	}
+
+	public void setFreightCost(BigDecimal freightCost) {
+		this.freightCost = freightCost;
+	}
+
+	public BigDecimal getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(Double discount) {
+	public void setDiscount(BigDecimal discount) {
 		this.discount = discount;
 	}
 
