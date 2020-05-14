@@ -17,12 +17,15 @@ import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.Product;
 import com.techzone.digishop.domain.ProductCategory;
 import com.techzone.digishop.domain.Provider;
+import com.techzone.digishop.domain.Purchase;
+import com.techzone.digishop.domain.PurchaseItem;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.SaleItem;
 import com.techzone.digishop.domain.enums.ClientType;
 import com.techzone.digishop.domain.enums.PaymentStatus;
 import com.techzone.digishop.domain.enums.PaymentType;
 import com.techzone.digishop.domain.enums.SaleStatus;
+import com.techzone.digishop.dto.PurchaseNewDTO;
 import com.techzone.digishop.repository.ClientAddressRepository;
 import com.techzone.digishop.repository.ClientRepository;
 import com.techzone.digishop.repository.CompanyRepository;
@@ -30,6 +33,8 @@ import com.techzone.digishop.repository.EmployeeRepository;
 import com.techzone.digishop.repository.ProductCategoryRepository;
 import com.techzone.digishop.repository.ProductRepository;
 import com.techzone.digishop.repository.ProviderRepository;
+import com.techzone.digishop.repository.PurchaseItemRepository;
+import com.techzone.digishop.repository.PurchaseRepository;
 import com.techzone.digishop.repository.SaleItemRepository;
 import com.techzone.digishop.repository.PaymentRepository;
 import com.techzone.digishop.repository.SaleRepository;
@@ -67,6 +72,12 @@ public class DigiShopApplication implements CommandLineRunner {
 	@Autowired
 	ProductCategoryRepository productCategoryRepository;
 
+	@Autowired
+	PurchaseRepository purchaseRepository;
+
+	@Autowired
+	PurchaseItemRepository purchaseItemRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(DigiShopApplication.class, args);
 	}
@@ -97,10 +108,13 @@ public class DigiShopApplication implements CommandLineRunner {
 
 		// CRIANDO FORNECEDORES
 
-		Provider p = new Provider("ALEMEIDA", "D<WP", "RUA S TOME", "ZUPADIGA", "53249000", "ESPERANCA", "PB", "542321",
+		Provider p = new Provider("ALEMEIDA", "DppWP", "RUA S TOME", "MAUA", "53249000", "ESPERANCA", "PB", "542321",
 				"almeida@gmail.com");
 
-		providerRepository.save(p);
+		Provider p1 = new Provider("JAGUARIBE MATERIAIS", "SLSLSLS", "RUA NOVA", "COBE", "53249000", "ESPERANCA", "PB",
+				"542321", "jaguaribe@gmail.com");
+
+		providerRepository.saveAll(Arrays.asList(p, p1));
 
 		// CRIANDO CLIENTES
 
@@ -165,25 +179,25 @@ public class DigiShopApplication implements CommandLineRunner {
 				new BigDecimal("43.49"), new BigDecimal("60.0"), "UN", new BigDecimal("8.334"), true,
 				new BigDecimal("174.0"), "Galpão 3", c, cat5);
 
-		Product prod4 = new Product(null, "TIJOLO 20X20 8 FUROS", "789866653434", "",
-				"Tijolo de barro comum", new BigDecimal("0.35"),
-				new BigDecimal("0.40"), "UN", new BigDecimal("0.340"), true, new BigDecimal("9874.0"), "Container 94", c,
-				cat5);
+		Product prod4 = new Product(null, "TIJOLO 20X20 8 FUROS", "789866653434", "", "Tijolo de barro comum",
+				new BigDecimal("0.35"), new BigDecimal("0.40"), "UN", new BigDecimal("0.340"), true,
+				new BigDecimal("9874.0"), "Container 94", c, cat5);
 
 		Product prod5 = new Product(null, "SUPERCAL EM PÓ 10KG", "723234554688", "", "Cal em pó branco para pintura",
 				new BigDecimal("10.25"), new BigDecimal("12.00"), "UN", new BigDecimal("10.00"), true,
 				new BigDecimal("452.0"), "Preateleira 3", c, cat2);
 
-		Product prod6 = new Product(null, "CARRINHO DE MÃO 50L", "0887890999", "P003", "Carrinho de mão galvonizado", new BigDecimal("83.45"),
-				new BigDecimal("120.00"), "UN", new BigDecimal("20.00"), true, new BigDecimal("12.0"), "Interior", c, cat4);
+		Product prod6 = new Product(null, "CARRINHO DE MÃO 50L", "0887890999", "P003", "Carrinho de mão galvonizado",
+				new BigDecimal("83.45"), new BigDecimal("120.00"), "UN", new BigDecimal("20.00"), true,
+				new BigDecimal("12.0"), "Interior", c, cat4);
 
 		Product prod7 = new Product(null, "AREIA LAVADA", "78889790000", "P00$", "Areia lavada para construção",
 				new BigDecimal("33.00"), new BigDecimal("40.00"), "MT", new BigDecimal("0.00"), true,
 				new BigDecimal("776.0"), "Galpão", c, cat2);
 
-		Product prod8 = new Product(null, "BRITA 19", "", "P003", "Brita tamanho 19",
-				new BigDecimal("84.56"), new BigDecimal("120.00"), "UN", new BigDecimal("0.00"), true,
-				new BigDecimal("59.0"), "Galpão", c, cat5);
+		Product prod8 = new Product(null, "BRITA 19", "", "P003", "Brita tamanho 19", new BigDecimal("84.56"),
+				new BigDecimal("120.00"), "UN", new BigDecimal("0.00"), true, new BigDecimal("59.0"), "Galpão", c,
+				cat5);
 
 		productRepository.saveAll(Arrays.asList(prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8));
 
@@ -230,6 +244,21 @@ public class DigiShopApplication implements CommandLineRunner {
 		emp.getPhones().addAll(Arrays.asList("994084738", "8899403057", "9903930022"));
 
 		employeeRepository.save(emp);
+
+		// CRIANDO COMPRAS
+
+		Purchase purchase = new Purchase(null, "16/03/2009", "562007", false, true, c, p, new BigDecimal("0.00"), new BigDecimal("0.00"));
+		PurchaseItem purchaseItem = new PurchaseItem(prod1);
+		purchaseItem.setQuantity(new BigDecimal("120.00"));
+		purchaseItem.setPurchase(purchase);
+
+		PurchaseItem purchaseItem1 = new PurchaseItem(prod2);
+		purchaseItem1.setQuantity(new BigDecimal("50.00"));
+		purchaseItem1.setPurchase(purchase);
+
+		purchase.getItens().addAll(Arrays.asList(purchaseItem, purchaseItem1));
+		purchaseRepository.save(purchase);
+		purchaseItemRepository.saveAll(Arrays.asList(purchaseItem, purchaseItem1));
 
 	}
 
