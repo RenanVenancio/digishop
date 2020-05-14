@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.techzone.digishop.service.validation.utils.FormatDate;
+
 @Entity
 public class Purchase implements Serializable {
 
@@ -42,12 +44,27 @@ public class Purchase implements Serializable {
 	List<Payment> payments = new ArrayList<>();
 
 	public Purchase() {
+		this.freightCost = new BigDecimal("0.00");
+		this.discount = new BigDecimal("0.00");
+		this.updateStock = true;
+		this.cancelled = false;
+	}
 
+	public Purchase(Integer id, String date, String nfNumber, Boolean cancelled, Boolean updateStock, Company company,
+			Provider provider, BigDecimal discount, BigDecimal freightCost) {
+		this.id = id;
+		this.date = FormatDate.parse(date);
+		this.nfNumber = nfNumber;
+		this.cancelled = cancelled;
+		this.updateStock = updateStock;
+		this.company = company;
+		this.provider = provider;
+		this.discount = discount;
+		this.freightCost = freightCost;
 	}
 
 	public Purchase(Integer id, Date date, String nfNumber, Boolean cancelled, Boolean updateStock, Company company,
-			Provider provider, BigDecimal discount) {
-		super();
+			Provider provider, BigDecimal discount, BigDecimal freightCost) {
 		this.id = id;
 		this.date = date;
 		this.nfNumber = nfNumber;
@@ -56,6 +73,7 @@ public class Purchase implements Serializable {
 		this.company = company;
 		this.provider = provider;
 		this.discount = discount;
+		this.freightCost = freightCost;
 	}
 
 	public Integer getId() {
@@ -79,8 +97,8 @@ public class Purchase implements Serializable {
 		return date;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate(String date) {
+		this.date = FormatDate.parse(date);
 	}
 
 	public String getNfNumber() {
