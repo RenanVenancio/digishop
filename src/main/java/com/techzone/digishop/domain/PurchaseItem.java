@@ -25,25 +25,37 @@ public class PurchaseItem implements Serializable {
 
 	private String name;
 
-	@Column(unique = true)
 	private String barcode;
 
 	private String reference;
 
 	private String description;
-	@NotNull
+
 	private BigDecimal purchasePrice;
-	@NotNull
+
 	private BigDecimal salePrice;
-	@NotNull
+
 	private String un = "UN";
 
 	public PurchaseItem() {
 	}
 
+	public PurchaseItem(Product p){
+		this.setProduct(p);
+		this.discount = new BigDecimal("0.00");
+		this.quantity = new BigDecimal("1.00");
+		this.name = p.getName();
+		this.barcode = p.getBarcode();
+		this.reference = p.getReference();
+		this.description = p.getDescription();
+		this.purchasePrice = p.getPurchasePrice();
+		this.salePrice = p.getSalePrice();
+		this.un = p.getUn();
+	}
+
 	public PurchaseItem(Purchase purchase, Product product, BigDecimal discount, BigDecimal quantity, String name,
-			String barcode, String reference, String description, @NotNull BigDecimal purchasePrice,
-			@NotNull BigDecimal salePrice, @NotNull String un) {
+			String barcode, String reference, String description, BigDecimal purchasePrice,
+		 BigDecimal salePrice, String un) {
 		super();
 		this.id.setPurchase(purchase);
 		this.id.setProduct(product);
