@@ -2,6 +2,7 @@ package com.techzone.digishop.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +35,9 @@ public class Product implements Serializable {
 	private String un = "UN";
 	private BigDecimal weight;
 	private Boolean sell = true;
-	private BigDecimal stock;
 	private String location;
+	private BigDecimal stockEntries;
+	private BigDecimal stockOutputs;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "id.product")
@@ -48,18 +50,21 @@ public class Product implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "company_id")
 	private Company company;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private ProductCategory category;
 
 	public Product() {
-
+		this.stockEntries = new BigDecimal("0.00");
+		this.stockOutputs = new BigDecimal("0.00");
+		this.purchasePrice = new BigDecimal("0.00");
+		this.salePrice = new BigDecimal("0.00");
 	}
 
 	public Product(Integer id, String name, String barcode, String reference, String description,
-			BigDecimal purchasePrice, BigDecimal salePrice, String un, BigDecimal weight,
-			Boolean sell, BigDecimal stock, String location, Company company, ProductCategory category) {
+			BigDecimal purchasePrice, BigDecimal salePrice, String un, BigDecimal weight, Boolean sell, String location,
+			Company company, ProductCategory category) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -71,10 +76,11 @@ public class Product implements Serializable {
 		this.un = un;
 		this.weight = weight;
 		this.sell = sell;
-		this.stock = stock;
 		this.location = location;
 		this.company = company;
 		this.category = category;
+		this.stockEntries = new BigDecimal("0.00");
+		this.stockOutputs = new BigDecimal("0.00");
 	}
 
 	@JsonIgnore
@@ -85,7 +91,6 @@ public class Product implements Serializable {
 		}
 		return salesList;
 	}
-	
 
 	@JsonIgnore
 	public List<Purchase> getPurchases() {
@@ -177,11 +182,7 @@ public class Product implements Serializable {
 	}
 
 	public BigDecimal getStock() {
-		return stock;
-	}
-
-	public void setStock(BigDecimal stock) {
-		this.stock = stock;
+		return stockEntries.subtract(stockOutputs);
 	}
 
 	public String getLocation() {
@@ -216,6 +217,22 @@ public class Product implements Serializable {
 		this.category = category;
 	}
 
+	public BigDecimal getStockEntries() {
+		return this.stockEntries;
+	}
+
+	public void setStockEntries(BigDecimal stockEntries) {
+		this.stockEntries = stockEntries;
+	}
+
+	public BigDecimal getStockOutputs() {
+		return this.stockOutputs;
+	}
+
+	public void setStockOutputs(BigDecimal stockOutputs) {
+		this.stockOutputs = stockOutputs;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -241,28 +258,14 @@ public class Product implements Serializable {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
-		return "{" +
-			" id='" + id + "'" +
-			", name='" + name + "'" +
-			", barcode='" + barcode + "'" +
-			", reference='" + reference + "'" +
-			", description='" + description + "'" +
-			", purchasePrice='" + purchasePrice + "'" +
-			", salePrice='" + salePrice + "'" +
-			", un='" + un + "'" +
-			", weight='" + weight + "'" +
-			", sell='" + sell + "'" +
-			", stock='" + stock + "'" +
-			", location='" + location + "'" +
-			", itens='" + itens + "'" +
-			", purchaseItens='" + purchaseItens + "'" +
-			", company='" + company + "'" +
-			", category='" + category + "'" +
-			"}";
+		return "{" + " id='" + id + "'" + ", name='" + name + "'" + ", barcode='" + barcode + "'" + ", reference='"
+				+ reference + "'" + ", description='" + description + "'" + ", purchasePrice='" + purchasePrice + "'"
+				+ ", salePrice='" + salePrice + "'" + ", un='" + un + "'" + ", weight='" + weight + "'" + ", sell='"
+				+ sell + "'" + ", stock='" + getStock() + "'" + ", location='" + location + "'" + ", itens='" + itens
+				+ "'" + ", purchaseItens='" + purchaseItens + "'" + ", company='" + company + "'" + ", category='"
+				+ category + "'" + "}";
 	}
-
 
 }
