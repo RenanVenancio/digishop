@@ -20,6 +20,7 @@ import com.techzone.digishop.domain.Product;
 import com.techzone.digishop.domain.PurchaseItem;
 import com.techzone.digishop.dto.ProductCountDTO;
 import com.techzone.digishop.dto.ProductDTO;
+import com.techzone.digishop.repository.ProductRepository;
 import com.techzone.digishop.repository.PurchaseItemRepository;
 import com.techzone.digishop.resource.util.URL;
 import com.techzone.digishop.service.ProductService;
@@ -33,6 +34,9 @@ public class ProductResource {
 
 	@Autowired
 	ProductService productService;
+
+	@Autowired
+	ProductRepository productRepository;
 
 	@Autowired
 	PurchaseItemRepository purchaseItemRepository;
@@ -84,7 +88,7 @@ public class ProductResource {
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public List<ProductCountDTO> count(){
-		return purchaseItemRepository.sumItems();
+		return productRepository.sumItems();
 	}
 
 	
