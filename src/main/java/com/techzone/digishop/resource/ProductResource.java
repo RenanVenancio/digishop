@@ -17,7 +17,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.techzone.digishop.domain.Product;
+import com.techzone.digishop.domain.PurchaseItem;
+import com.techzone.digishop.dto.ProductCountDTO;
 import com.techzone.digishop.dto.ProductDTO;
+import com.techzone.digishop.repository.PurchaseItemRepository;
 import com.techzone.digishop.resource.util.URL;
 import com.techzone.digishop.service.ProductService;
 
@@ -30,6 +33,9 @@ public class ProductResource {
 
 	@Autowired
 	ProductService productService;
+
+	@Autowired
+	PurchaseItemRepository purchaseItemRepository;
 
 	@GetMapping
 	@RequestMapping(value = "/{id}")
@@ -74,6 +80,11 @@ public class ProductResource {
 		Page<Product> productList = productService.search(URL.decodeParam(name), ids, page, itensPerPage, orderBy, direction);
 		Page<ProductDTO> listDto = productList.map((obj) -> new ProductDTO(obj));
 		return ResponseEntity.ok().body(listDto);
+	}
+
+	@RequestMapping(value = "/count", method = RequestMethod.GET)
+	public List<ProductCountDTO> count(){
+		return purchaseItemRepository.sumItems();
 	}
 
 	
