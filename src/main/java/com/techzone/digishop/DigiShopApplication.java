@@ -168,35 +168,30 @@ public class DigiShopApplication implements CommandLineRunner {
 		// CRIANDO PRODUTOS
 
 		Product prod1 = new Product(null, "CIMENTO 50KG", "789866657904", "", "Cimento CP II", new BigDecimal("15.49"),
-				new BigDecimal("20.00"), "SC", new BigDecimal("50.00"), true, new BigDecimal("100.00"), "Preateleira 3",
+				new BigDecimal("20.00"), "SC", new BigDecimal("50.00"), true, "Preateleira 3",
 				c, cat2);
 
 		Product prod2 = new Product(null, "ARGAMASSA COLA FORTE AC I", "789866657902", "", "Argamassa colante comum",
 				new BigDecimal("5.49"), new BigDecimal("7.00"), "UN", new BigDecimal("15.00"), true,
-				new BigDecimal("122.00"), "Preateleira 3", c, cat5);
+				"Preateleira 3", c, cat5);
 
 		Product prod3 = new Product(null, "TUBO ESGOTO 100MM", "789866657955", "", "Tubo para ligação predial esgoto",
-				new BigDecimal("43.49"), new BigDecimal("60.0"), "UN", new BigDecimal("8.334"), true,
-				new BigDecimal("174.0"), "Galpão 3", c, cat5);
+				new BigDecimal("43.49"), new BigDecimal("60.0"), "UN", new BigDecimal("8.334"), true, "Galpão 3", c, cat5);
 
 		Product prod4 = new Product(null, "TIJOLO 20X20 8 FUROS", "789866653434", "", "Tijolo de barro comum",
-				new BigDecimal("0.35"), new BigDecimal("0.40"), "UN", new BigDecimal("0.340"), true,
-				new BigDecimal("9874.0"), "Container 94", c, cat5);
+				new BigDecimal("0.35"), new BigDecimal("0.40"), "UN", new BigDecimal("0.340"), true, "Container 94", c, cat5);
 
 		Product prod5 = new Product(null, "SUPERCAL EM PÓ 10KG", "723234554688", "", "Cal em pó branco para pintura",
-				new BigDecimal("10.25"), new BigDecimal("12.00"), "UN", new BigDecimal("10.00"), true,
-				new BigDecimal("452.0"), "Preateleira 3", c, cat2);
+				new BigDecimal("10.25"), new BigDecimal("12.00"), "UN", new BigDecimal("10.00"), true, "Preateleira 3", c, cat2);
 
 		Product prod6 = new Product(null, "CARRINHO DE MÃO 50L", "0887890999", "P003", "Carrinho de mão galvonizado",
-				new BigDecimal("83.45"), new BigDecimal("120.00"), "UN", new BigDecimal("20.00"), true,
-				new BigDecimal("12.0"), "Interior", c, cat4);
+				new BigDecimal("83.45"), new BigDecimal("120.00"), "UN", new BigDecimal("20.00"), true, "Interior", c, cat4);
 
 		Product prod7 = new Product(null, "AREIA LAVADA", "78889790000", "P00$", "Areia lavada para construção",
-				new BigDecimal("33.00"), new BigDecimal("40.00"), "MT", new BigDecimal("0.00"), true,
-				new BigDecimal("776.0"), "Galpão", c, cat2);
+				new BigDecimal("33.00"), new BigDecimal("40.00"), "MT", new BigDecimal("0.00"), true, "Galpão", c, cat2);
 
 		Product prod8 = new Product(null, "BRITA 19", "", "P003", "Brita tamanho 19", new BigDecimal("84.56"),
-				new BigDecimal("120.00"), "UN", new BigDecimal("0.00"), true, new BigDecimal("59.0"), "Galpão", c,
+				new BigDecimal("120.00"), "UN", new BigDecimal("0.00"), true, "Galpão", c,
 				cat5);
 
 		productRepository.saveAll(Arrays.asList(prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8));
