@@ -84,7 +84,7 @@ public class ProductService {
 
 		return new Product(null, object.getName(), object.getBarcode(), object.getReference(), object.getDescription(),
 				object.getPurchasePrice(), object.getSalePrice(), object.getUn(), object.getWeight(), object.getSell(),
-				object.getStock(), object.getLocation(), company.get(), productCategory.get());
+				object.getLocation(), company.get(), productCategory.get());
 	}
 
 	private void updateData(Product oldObj, Product newObj) {
@@ -97,7 +97,6 @@ public class ProductService {
 		oldObj.setUn(newObj.getUn());
 		oldObj.setWeight(newObj.getWeight());
 		oldObj.setSell(newObj.getSell());
-		oldObj.setStock(newObj.getStock());
 		oldObj.setLocation(newObj.getLocation());
 		oldObj.setCompany(newObj.getCompany());
 		oldObj.setCategory(newObj.getCategory());
