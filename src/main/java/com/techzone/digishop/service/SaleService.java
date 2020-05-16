@@ -99,6 +99,8 @@ public class SaleService {
 
 		paymentRepository.saveAll(sale.getPayments());
 
+		productService.countStock();
+
 		return sale;
 
 	}
@@ -136,7 +138,10 @@ public class SaleService {
 	public Sale cancelById(Integer id){
 		Sale sale = findById(id);
 		sale.setStatus(SaleStatus.CANCELLED);
-		return saleRepository.save(sale);
+		sale = saleRepository.save(sale);
+		productService.countStock();
+
+		return sale;
 	}
 
 	public Page<Sale> search(Integer id, String start, String end, Integer page, Integer itensPerPage, String orderBy, String direction) {

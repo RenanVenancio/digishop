@@ -103,6 +103,8 @@ public class PurchaseService {
 			}
 		}
 
+		productService.countStock();
+
 		return purchase;
 
 	}
