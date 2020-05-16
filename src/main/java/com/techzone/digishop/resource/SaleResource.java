@@ -36,6 +36,12 @@ public class SaleResource {
 		return ResponseEntity.ok().body(new SaleDTO(sale));
 	}
 
+	@RequestMapping(value = "cancel/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id){
+		saleService.cancelById(id);
+		return ResponseEntity.noContent().build();
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> save(@Valid @RequestBody SaleNewDTO saleDTO) {		
 		Sale sale = saleService.fromDTO(saleDTO);
