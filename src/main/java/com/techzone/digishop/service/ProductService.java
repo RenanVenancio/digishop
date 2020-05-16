@@ -68,15 +68,6 @@ public class ProductService {
 		return repository.findDistinctByNameContainingIgnoreCaseAndCategoryIn(name, categories, pageRequest);
 	}
 
-	public void updateStock(List<Integer> ids){
-		
-		List<SaleItem> itens = saleItemRepository.countItens(ids);
-
-		for(SaleItem si : itens){
-			System.out.println(si);
-		}
-	}
-
 	public Product fromDTO(ProductDTO object) {
 
 		Optional<ProductCategory> productCategory = categoryRepository.findById(object.getCategory());
@@ -85,6 +76,12 @@ public class ProductService {
 		return new Product(null, object.getName(), object.getBarcode(), object.getReference(), object.getDescription(),
 				object.getPurchasePrice(), object.getSalePrice(), object.getUn(), object.getWeight(), object.getSell(),
 				object.getLocation(), company.get(), productCategory.get());
+	}
+
+	// TODO: Melhorar as contagens
+	public void countStock(){
+		repository.sumPurchases();
+		repository.sumSales();
 	}
 
 	private void updateData(Product oldObj, Product newObj) {
