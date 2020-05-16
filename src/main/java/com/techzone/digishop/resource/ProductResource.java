@@ -84,13 +84,6 @@ public class ProductResource {
 		Page<Product> productList = productService.search(URL.decodeParam(name), ids, page, itensPerPage, orderBy, direction);
 		Page<ProductDTO> listDto = productList.map((obj) -> new ProductDTO(obj));
 		return ResponseEntity.ok().body(listDto);
-	}
-
-	@RequestMapping(value = "/count", method = RequestMethod.GET)
-	public List<ProductCountDTO> count(){
-		return productRepository.sumItems();
-	}
-
-	
+	}	
 
 }
