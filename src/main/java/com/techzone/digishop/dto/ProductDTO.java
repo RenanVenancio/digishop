@@ -10,6 +10,7 @@ public class ProductDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private Integer id;
 	private String name;
 	private String barcode;
 	private String reference;
@@ -25,7 +26,7 @@ public class ProductDTO implements Serializable {
 	private BigDecimal stockEntries;
 	private BigDecimal stockOutputs;
 
-	public ProductDTO(){
+	public ProductDTO() {
 		this.stockEntries = new BigDecimal("0.00");
 		this.stockOutputs = new BigDecimal("0.00");
 		this.purchasePrice = new BigDecimal("0.00");
@@ -33,6 +34,7 @@ public class ProductDTO implements Serializable {
 	}
 
 	public ProductDTO(Product product) {
+		this.id = product.getId();
 		this.name = product.getName();
 		this.barcode = product.getBarcode();
 		this.reference = product.getReference();
@@ -47,11 +49,13 @@ public class ProductDTO implements Serializable {
 		this.company = product.getCompany().getId();
 		this.stockEntries = product.getStockEntries();
 		this.stockOutputs = product.getStockOutputs();
+
 	}
 
-	public ProductDTO(String name, String barcode, String reference, String description, BigDecimal purchasePrice,
-			BigDecimal salePrice, String un, BigDecimal weight, Boolean sell, String location, Integer category,
-			Integer company) {
+	public ProductDTO(Integer id, String name, String barcode, String reference, String description,
+			BigDecimal purchasePrice, BigDecimal salePrice, String un, BigDecimal weight, Boolean sell, String location,
+			Integer category, Integer company) {
+		this.id = id;
 		this.name = name;
 		this.barcode = barcode;
 		this.reference = reference;
@@ -64,6 +68,15 @@ public class ProductDTO implements Serializable {
 		this.location = location;
 		this.category = category;
 		this.company = company;
+
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {
