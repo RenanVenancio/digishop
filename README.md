@@ -11,7 +11,7 @@ Rest API </br>
 * Cadastro de funcionários
 * Vendas
 * Compras
-* Contas a pagar(**Em desenvilvimento**)
+* Contas a pagar(**Em desenvolvimento**)
 * Contas a receber
 * Cadastro de Produtos
 * Controle de Estoque
@@ -32,6 +32,6 @@ Rest API </br>
 
 * **Renan Venancio** - *Initial work* - [LinkedIn](https://www.linkedin.com/in/renan-ven%C3%A2ncio-176674175/)
 
-## Licensa
+## Licença
 
 Este projeto está licenciado sob a licença MIT
