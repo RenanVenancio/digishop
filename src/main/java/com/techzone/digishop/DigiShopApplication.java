@@ -4,28 +4,22 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import com.techzone.digishop.domain.Client;
 import com.techzone.digishop.domain.ClientAddress;
 import com.techzone.digishop.domain.Company;
 import com.techzone.digishop.domain.Employee;
-import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.Product;
 import com.techzone.digishop.domain.ProductCategory;
 import com.techzone.digishop.domain.Provider;
 import com.techzone.digishop.domain.Purchase;
 import com.techzone.digishop.domain.PurchaseItem;
+import com.techzone.digishop.domain.Revenue;
+import com.techzone.digishop.domain.RevenueList;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.SaleItem;
 import com.techzone.digishop.domain.enums.ClientType;
 import com.techzone.digishop.domain.enums.PaymentStatus;
-import com.techzone.digishop.domain.enums.PaymentType;
 import com.techzone.digishop.domain.enums.SaleStatus;
-import com.techzone.digishop.dto.PurchaseNewDTO;
 import com.techzone.digishop.repository.ClientAddressRepository;
 import com.techzone.digishop.repository.ClientRepository;
 import com.techzone.digishop.repository.CompanyRepository;
@@ -35,9 +29,15 @@ import com.techzone.digishop.repository.ProductRepository;
 import com.techzone.digishop.repository.ProviderRepository;
 import com.techzone.digishop.repository.PurchaseItemRepository;
 import com.techzone.digishop.repository.PurchaseRepository;
+import com.techzone.digishop.repository.RevenueListRepository;
+import com.techzone.digishop.repository.RevenueRepository;
 import com.techzone.digishop.repository.SaleItemRepository;
-import com.techzone.digishop.repository.PaymentRepository;
 import com.techzone.digishop.repository.SaleRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class DigiShopApplication implements CommandLineRunner {
@@ -64,7 +64,10 @@ public class DigiShopApplication implements CommandLineRunner {
 	SaleItemRepository saleItemRepository;
 
 	@Autowired
-	PaymentRepository salePaymentRepository;
+	RevenueListRepository revenueListRepository;
+	
+	@Autowired
+	RevenueRepository revenueRepository;
 
 	@Autowired
 	EmployeeRepository employeeRepository;
@@ -77,6 +80,8 @@ public class DigiShopApplication implements CommandLineRunner {
 
 	@Autowired
 	PurchaseItemRepository purchaseItemRepository;
+
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(DigiShopApplication.class, args);
@@ -211,13 +216,13 @@ public class DigiShopApplication implements CommandLineRunner {
 				prod2.getBarcode(), prod2.getReference(), prod2.getDescription(), prod2.getPurchasePrice(),
 				prod2.getSalePrice(), prod2.getUn(), prod2.getWeight(), prod2.getLocation());
 
-		Payment s1Payment = new Payment(null, new Date(), new BigDecimal("2.05"), new BigDecimal("0.00"), null, null,
-				"78982/2", PaymentType.REVENUE, "Troco pra 50", PaymentStatus.toEnum(1), s1, null);
+		RevenueList s1Payment = new RevenueList(null, new Date(), new BigDecimal("2.05"), new BigDecimal("0.00"), null, null,
+				"78982/2", "Troco pra 50", PaymentStatus.toEnum(1), s1, null);
 		s1.getItens().addAll(Arrays.asList(sItem, sItem1));
 		s1.getPayments().add(s1Payment);
 		saleRepository.save(s1);
 		saleItemRepository.saveAll(Arrays.asList(sItem, sItem1));
-		salePaymentRepository.save(s1Payment);
+		revenueListRepository.save(s1Payment);
 
 		Sale s2 = new Sale(null, new Date(), c, cli2, cli2.getAdresses().get(1), new BigDecimal("0.00"),
 				new BigDecimal("2.32"), SaleStatus.PENDENT);
@@ -255,6 +260,13 @@ public class DigiShopApplication implements CommandLineRunner {
 		purchaseRepository.save(purchase);
 		purchaseItemRepository.saveAll(Arrays.asList(purchaseItem, purchaseItem1));
 
-	}
+		// RECEITAS AVULSAS
+		Revenue r = new Revenue(null, 4, new Date(), "3", new BigDecimal("0.00") ,"4434/5", null, c, cli2);
+		RevenueList pay = new RevenueList(null, new Date(), new BigDecimal("88.00"), null, null, null, "33222/1", "", PaymentStatus.PENDENT, null, r);
+		RevenueList pay2 = new RevenueList(null, new Date(), new BigDecimal("67.00"), null, null, null, "33222/2", "", PaymentStatus.PENDENT, null, r);
+		r.getRevenues().addAll(Arrays.asList(pay, pay2));
 
+		revenueRepository.save(r);
+		revenueListRepository.saveAll(r.getRevenues());
+	}
 }
