@@ -34,6 +34,10 @@ public class Company extends CompanyAbstract {
 	@OneToMany(mappedBy = "company")
 	private List<Purchase> purchases = new ArrayList<>();
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
+	private List<Revenue> revenues = new ArrayList<>();
+
 	public Company() {
 		super();
 	}
@@ -91,6 +95,16 @@ public class Company extends CompanyAbstract {
 	public void setPurchases(List<Purchase> purchases) {
 		this.purchases = purchases;
 	}
+
+
+	public List<Revenue> getRevenues() {
+		return this.revenues;
+	}
+
+	public void setRevenues(List<Revenue> revenues) {
+		this.revenues = revenues;
+	}
+
 	
 	
 
