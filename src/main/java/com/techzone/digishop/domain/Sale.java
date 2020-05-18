@@ -44,7 +44,7 @@ public class Sale implements Serializable {
 	private Integer status;
 
 	@OneToMany(mappedBy = "sale")
-	List<Payment> payments = new ArrayList<>();
+	List<RevenueList> payments = new ArrayList<>();
 
 	@OneToMany(mappedBy = "id.sale")
 	List<SaleItem> itens = new ArrayList<>();
@@ -146,11 +146,11 @@ public class Sale implements Serializable {
 		this.discount = discount;
 	}
 
-	public List<Payment> getPayments() {
+	public List<RevenueList> getPayments() {
 		return payments;
 	}
 
-	public void setPayments(List<Payment> payments) {
+	public void setPayments(List<RevenueList> payments) {
 		this.payments = payments;
 	}
 

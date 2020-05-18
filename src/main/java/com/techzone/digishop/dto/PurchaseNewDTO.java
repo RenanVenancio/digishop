@@ -5,7 +5,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import com.techzone.digishop.domain.Payment;
+
+import com.techzone.digishop.domain.PaymentList;
 import com.techzone.digishop.domain.Purchase;
 import com.techzone.digishop.domain.PurchaseItem;
 import com.techzone.digishop.service.validation.utils.FormatDate;
@@ -26,7 +27,7 @@ public class PurchaseNewDTO implements Serializable {
 
 	List<PurchaseItemNewDTO> itens = new ArrayList<>();
 
-	List<PaymentDTO> payments = new ArrayList<>();
+	List<PaymentListDTO> payments = new ArrayList<>();
 
 	public PurchaseNewDTO() {
 
@@ -44,8 +45,8 @@ public class PurchaseNewDTO implements Serializable {
 			this.itens.add(new PurchaseItemNewDTO(pi));
 		}
 
-		for (Payment p : purchase.getPayments()) {
-			this.payments.add(new PaymentDTO(p));
+		for (PaymentList p : purchase.getPayments()) {
+			this.payments.add(new PaymentListDTO(p));
 		}
 	}
 
@@ -160,11 +161,11 @@ public class PurchaseNewDTO implements Serializable {
 		this.itens = itens;
 	}
 
-	public List<PaymentDTO> getPayments() {
+	public List<PaymentListDTO> getPayments() {
 		return payments;
 	}
 
-	public void setPayments(List<PaymentDTO> payments) {
+	public void setPayments(List<PaymentListDTO> payments) {
 		this.payments = payments;
 	}
 

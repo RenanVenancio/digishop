@@ -35,7 +35,7 @@ public class SaleNewDTO implements Serializable {
     private Date firstPayment;
     private Integer paymentMethod;
 
-    List<PaymentDTO> payments = new ArrayList<>();
+    List<RevenueListNewDTO> payments = new ArrayList<>();
 
     @Valid
     @NotEmpty(message = "Carrinho de compras vazio")
@@ -153,11 +153,11 @@ public class SaleNewDTO implements Serializable {
         this.paymentMethod = paymentMethod.getCod();
     }
 
-    public List<PaymentDTO> getPayments() {
+    public List<RevenueListNewDTO> getPayments() {
         return this.payments;
     }
 
-    public void setPayments(List<PaymentDTO> payments) {
+    public void setPayments(List<RevenueListNewDTO> payments) {
         this.payments = payments;
     }
 

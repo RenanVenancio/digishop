@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.techzone.digishop.domain.Company;
 import com.techzone.digishop.domain.Product;
 import com.techzone.digishop.domain.ProductCategory;
-import com.techzone.digishop.domain.SaleItem;
 import com.techzone.digishop.dto.ProductDTO;
 import com.techzone.digishop.repository.CompanyRepository;
 import com.techzone.digishop.repository.ProductCategoryRepository;

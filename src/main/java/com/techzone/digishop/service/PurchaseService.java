@@ -12,7 +12,7 @@ import com.techzone.digishop.domain.Purchase;
 import com.techzone.digishop.domain.PurchaseItem;
 import com.techzone.digishop.dto.PurchaseItemNewDTO;
 import com.techzone.digishop.dto.PurchaseNewDTO;
-import com.techzone.digishop.repository.PaymentRepository;
+import com.techzone.digishop.repository.RevenueListRepository;
 import com.techzone.digishop.repository.PurchaseItemRepository;
 import com.techzone.digishop.repository.PurchaseRepository;
 import com.techzone.digishop.service.exception.ObjectNotFoundException;
@@ -33,10 +33,10 @@ public class PurchaseService {
     PurchaseItemRepository purchaseItemRepository;
 
     @Autowired
-    PaymentRepository paymentRepository;
+    RevenueListRepository paymentRepository;
 
     @Autowired
-	PaymentService paymentService;
+	RevenueListService paymentService;
 	
 	@Autowired
 	ProviderService providerService;

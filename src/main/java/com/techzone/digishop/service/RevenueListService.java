@@ -9,16 +9,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import com.techzone.digishop.domain.Payment;
+import com.techzone.digishop.domain.Revenue;
+import com.techzone.digishop.domain.RevenueList;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.enums.PaymentMethod;
 import com.techzone.digishop.domain.enums.PaymentStatus;
-import com.techzone.digishop.domain.enums.PaymentType;
-import com.techzone.digishop.dto.PaymentDTO;
-import com.techzone.digishop.repository.PaymentRepository;
+import com.techzone.digishop.dto.RevenueListNewDTO;
+import com.techzone.digishop.repository.RevenueListRepository;
 import com.techzone.digishop.service.exception.BusinessRuleException;
 import com.techzone.digishop.service.exception.ObjectNotFoundException;
 import com.techzone.digishop.service.validation.utils.FormatDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,22 +27,25 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PaymentService {
+public class RevenueListService {
 
     @Autowired
-    PaymentRepository paymentRepository;
+    RevenueListRepository paymentRepository;
 
     @Autowired
     SaleService saleService;
 
-    public Payment findById(Integer id){
-        Optional<Payment> payment = paymentRepository.findById(id);
+    @Autowired
+    RevenueService revenueService;
+
+    public RevenueList findById(Integer id){
+        Optional<RevenueList> payment = paymentRepository.findById(id);
         return payment.orElseThrow(() -> new ObjectNotFoundException(Sale.class.getName() + " not found"));
     }
 
-    public List<Payment> generateRevenueOfSale(Sale sale){
+    public List<RevenueList> generateRevenueOfSale(Sale sale){
 
-        List<Payment> payments = new ArrayList<>();
+        List<RevenueList> payments = new ArrayList<>();
 
         Boolean paid = false;
         Integer status = PaymentStatus.PENDENT.getCod();
@@ -66,18 +70,17 @@ public class PaymentService {
         BigDecimal parcelValue = sale.getTotalValue().divide(new BigDecimal(String.valueOf(sale.getParcelNumber())).setScale(2, RoundingMode.HALF_EVEN));
 
         for (int i = 0; i < sale.getParcelNumber(); i++){
-            payments.add(new Payment(
-                null, c.getTime(), 
+            payments.add(new RevenueList(
+                null, 
+                c.getTime(), 
                 parcelValue, 
                 paid == true ? parcelValue : new BigDecimal("0.00"), 
                 paid == true ? c.getTime() : null, 
                 null, 
                 sale.getId() + "/" + (i+1), 
-                PaymentType.REVENUE,
                 null, 
                 PaymentStatus.toEnum(status),
-                sale, 
-                null
+                sale
             )
         );
             if(sale.getPaydayInterval().equalsIgnoreCase("M")){
@@ -90,11 +93,11 @@ public class PaymentService {
         return payments;
     }
 
-    public List<Payment> findRevenue(Integer clientId, PaymentStatus status){
-        return paymentRepository.findBySaleClientAndStatus(clientId, status.getCod(), PaymentType.REVENUE.getCod());
+    public List<RevenueList> findRevenue(Integer clientId, PaymentStatus status){
+        return paymentRepository.findBySaleClientIdOrRevenueClientIdAndStatus(clientId, clientId, status.getCod());
     }
 
-    public Page<Payment> search(String start, String end, Integer status, Integer paymentType, Integer page, Integer itensPerPage, String orderBy, String direction) {
+    public Page<RevenueList> search(String start, String end, Integer status, Integer page, Integer itensPerPage, String orderBy, String direction) {
 		
 		if(!(start.equals("all") && end.equals("all"))){
 			Date startDate = FormatDate.parse(start);
@@ -105,7 +108,7 @@ public class PaymentService {
 			}
 
 			PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
-			return paymentRepository.findByDueDateBetweenAndStatusAndPaymentType(startDate, endDate, status, paymentType, pageRequest);
+			return paymentRepository.findByDueDateBetweenAndStatus(startDate, endDate, status, pageRequest);
 		}
 
 		if(!(start.equals("all") || end.equals("all"))){
@@ -113,11 +116,11 @@ public class PaymentService {
 		}		
 
 		PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
-		return paymentRepository.findByStatusAndPaymentType(status, paymentType, pageRequest);
+		return paymentRepository.findByStatus(status, pageRequest);
     }
     
-    public Payment settlePayment(Payment payment){
-        Payment newPayment = payment;
+    public RevenueList settlePayment(RevenueList payment){
+        RevenueList newPayment = payment;
         payment = findById(payment.getId());
 
         if(payment.getStatus() == PaymentStatus.PAID){
@@ -130,7 +133,7 @@ public class PaymentService {
         }
 
         if(newPayment.getAmountPaid().doubleValue() < payment.getValue().doubleValue()){
-            List<Payment> payments = paymentRepository.findBySaleId(payment.getSale().getId());
+            List<RevenueList> payments = paymentRepository.findBySaleId(payment.getSale().getId());
             Long paydayInterval = 0L;
             if(payments.size() > 1){
                 Date d1 = payments.get(payments.size() - 2).getDueDate();
@@ -142,7 +145,7 @@ public class PaymentService {
 
                 BigDecimal difference = (payment.getValue().subtract(newPayment.getAmountPaid())).abs();
 
-                Payment p = new Payment(
+                RevenueList p = new RevenueList(
                     null, 
                     c.getTime(), 
                     difference, 
@@ -150,11 +153,9 @@ public class PaymentService {
                     null, 
                     payment.getBarCode(),
                     payment.getDocumentNumber() + " Diff", 
-                    PaymentType.REVENUE,
                     null, 
                     PaymentStatus.PENDENT, 
-                    payment.getSale(), 
-                    null
+                    payment.getSale()
                 );
 
                 payment.setStatus(PaymentStatus.PAID);
@@ -176,24 +177,34 @@ public class PaymentService {
         return payment;
     }
 
-    public List<Payment> findBySaleId(Integer saleId){
+    public List<RevenueList> findBySaleId(Integer saleId){
         return paymentRepository.findBySaleId(saleId);
     }
 
-    public Payment fromDTO(PaymentDTO paymentDTO){
-        return new Payment(
-            paymentDTO.getId(),
-            paymentDTO.getDueDate(),
-            paymentDTO.getValue(),
-            paymentDTO.getAmountPaid(),
-            paymentDTO.getPaydDate(),
-            paymentDTO.getBarCode(),
-            paymentDTO.getDocumentNumber(),
-            paymentDTO.getPaymentType(),
-            paymentDTO.getObservation(),
-            paymentDTO.getStatus(),
-            paymentDTO.getSale(),
-            paymentDTO.getPurchase()
+    public RevenueList fromDTO(RevenueListNewDTO revenueDTO){
+
+        Sale sale = new Sale();
+        Revenue revenue = new Revenue();
+        if(!(revenueDTO.getSale() == null)){
+            sale = saleService.findById(revenueDTO.getSale());
+        }
+
+        if(!(revenueDTO.getRevenue() == null)){
+            revenue = revenueService.findById(revenueDTO.getRevenue());
+        }
+
+        return new RevenueList(
+            revenueDTO.getId(),
+            revenueDTO.getDueDate(),
+            revenueDTO.getValue(),
+            revenueDTO.getAmountPaid(),
+            revenueDTO.getPaydDate(),
+            revenueDTO.getBarCode(),
+            revenueDTO.getDocumentNumber(),
+            revenueDTO.getObservation(),
+            revenueDTO.getStatus(),
+            sale,
+            revenue            
         );
     }
 

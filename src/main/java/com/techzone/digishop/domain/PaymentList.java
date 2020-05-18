@@ -16,7 +16,7 @@ import com.techzone.digishop.domain.enums.PaymentStatus;
 
 
 @Entity
-public class RevenueList implements Serializable {
+public class PaymentList implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -33,21 +33,21 @@ public class RevenueList implements Serializable {
 
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "sale_id")
-	private Sale sale;
+	@JoinColumn(name = "purchase_id")
+	private Purchase purchase;
 
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "revenue_id")
-	private Revenue revenue;
+	@JoinColumn(name = "payment_id")
+	private Payment payment;
 
 
-	public RevenueList() {
+	public PaymentList() {
 
 	}
 
-	public RevenueList(Integer id, Date dueDate, BigDecimal value, BigDecimal amountPaid, Date paydDate, String barCode,
-			String documentNumber, String observation, PaymentStatus status, Sale sale) {
+	public PaymentList(Integer id, Date dueDate, BigDecimal value, BigDecimal amountPaid, Date paydDate, String barCode,
+			String documentNumber, String observation, PaymentStatus status, Purchase purchase) {
 		this.id = id;
 		this.dueDate = dueDate;
 		this.value = value;
@@ -57,11 +57,12 @@ public class RevenueList implements Serializable {
 		this.documentNumber = documentNumber;
 		this.observation = observation;
 		this.status = status.getCod();
-		this.sale = sale;
+		this.purchase = purchase;
 	}
 
-	public RevenueList(Integer id, Date dueDate, BigDecimal value, BigDecimal amountPaid, Date paydDate, String barCode,
-			String documentNumber, String observation, PaymentStatus status, Sale sale, Revenue revenue) {
+
+	public PaymentList(Integer id, Date dueDate, BigDecimal value, BigDecimal amountPaid, Date paydDate, String barCode,
+			String documentNumber, String observation, PaymentStatus status, Payment payment) {
 		this.id = id;
 		this.dueDate = dueDate;
 		this.value = value;
@@ -71,22 +72,21 @@ public class RevenueList implements Serializable {
 		this.documentNumber = documentNumber;
 		this.observation = observation;
 		this.status = status.getCod();
-		this.sale = sale;
-		this.revenue = revenue;
+		this.payment = payment;
 	}
 
-	public RevenueList(RevenueList revenue) {
-		this.id = revenue.getId();
-		this.dueDate = revenue.getDueDate();
-		this.value = revenue.getValue();
-		this.amountPaid = revenue.getAmountPaid();
-		this.paydDate = revenue.getPaydDate();
-		this.barCode = revenue.getBarCode();
-		this.documentNumber = revenue.getDocumentNumber();
-		this.observation = revenue.getObservation();
-		this.status = revenue.getStatus().getCod();
-		this.sale = revenue.getSale();
-		this.revenue = revenue.getRevenue();
+	public PaymentList(PaymentList payment) {
+		this.id = payment.getId();
+		this.dueDate = payment.getDueDate();
+		this.value = payment.getValue();
+		this.amountPaid = payment.getAmountPaid();
+		this.paydDate = payment.getPaydDate();
+		this.barCode = payment.getBarCode();
+		this.documentNumber = payment.getDocumentNumber();
+		this.observation = payment.getObservation();
+		this.status = payment.getStatus().getCod();
+		this.purchase = payment.getPurchase();
+		this.payment = payment.getPayment();
 	}
 
 	public Integer getId() {
@@ -161,20 +161,20 @@ public class RevenueList implements Serializable {
 		this.status = status.getCod();
 	}
 
-	public Sale getSale() {
-		return sale;
+	public Purchase getPurchase() {
+		return purchase;
 	}
 
-	public void setSale(Sale sale) {
-		this.sale = sale;
+	public void setPurchase(Purchase purchase) {
+		this.purchase = purchase;
 	}
 
-	public Revenue getRevenue() {
-		return this.revenue;
+	public Payment getPayment() {
+		return this.payment;
 	}
 
-	public void setRevenue(Revenue revenue) {
-		this.revenue = revenue;
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 	@Override
@@ -193,7 +193,7 @@ public class RevenueList implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		RevenueList other = (RevenueList) obj;
+		PaymentList other = (PaymentList) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

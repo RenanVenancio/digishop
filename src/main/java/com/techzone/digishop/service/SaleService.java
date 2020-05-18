@@ -22,7 +22,7 @@ import com.techzone.digishop.domain.SaleItem;
 import com.techzone.digishop.domain.enums.SaleStatus;
 import com.techzone.digishop.dto.SaleItemNewDTO;
 import com.techzone.digishop.dto.SaleNewDTO;
-import com.techzone.digishop.repository.PaymentRepository;
+import com.techzone.digishop.repository.RevenueListRepository;
 import com.techzone.digishop.repository.SaleItemRepository;
 import com.techzone.digishop.repository.SaleRepository;
 import com.techzone.digishop.service.exception.BusinessRuleException;
@@ -39,7 +39,7 @@ public class SaleService {
 	SaleItemRepository saleItemRepository;
 
 	@Autowired
-	PaymentRepository paymentRepository;
+	RevenueListRepository paymentRepository;
 
 	@Autowired
 	ProductService productService;
@@ -57,7 +57,7 @@ public class SaleService {
 	ClientAddressService clientAddressService;
 
 	@Autowired 
-	PaymentService paymentService;
+	RevenueListService paymentService;
 
 	
 	public Sale findById(Integer id) {

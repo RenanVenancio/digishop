@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.techzone.digishop.domain.Payment;
+import com.techzone.digishop.domain.RevenueList;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.SaleItem;
 import com.techzone.digishop.domain.enums.PaymentMethod;
@@ -26,7 +26,7 @@ public class SaleDTO implements Serializable {
     private Date firstPayment;
     private Integer paymentMethod;
 
-	List<PaymentDTO> payments = new ArrayList<>();
+	List<RevenueListDTO> payments = new ArrayList<>();
 
 	List<SaleItemDTO> itens = new ArrayList<>();
 
@@ -46,8 +46,8 @@ public class SaleDTO implements Serializable {
             this.itens.add(new SaleItemDTO(si));
         }
 
-        for(Payment p : sale.getPayments()){
-            this.payments.add(new PaymentDTO(p));
+        for(RevenueList p : sale.getPayments()){
+            this.payments.add(new RevenueListDTO(p));
         }
     }
 
@@ -156,11 +156,11 @@ public class SaleDTO implements Serializable {
     }
 
 
-    public List<PaymentDTO> getPayments() {
+    public List<RevenueListDTO> getPayments() {
         return this.payments;
     }
 
-    public void setPayments(List<PaymentDTO> payments) {
+    public void setPayments(List<RevenueListDTO> payments) {
         this.payments = payments;
     }
 
