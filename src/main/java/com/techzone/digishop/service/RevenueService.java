@@ -71,4 +71,25 @@ public class RevenueService {
         return revenue;
     }
 
+    public void delete(Integer id){
+        findById(id);
+        repository.deleteById(id);
+    }
+
+    // private void updateData(Revenue oldObj, Revenue newObj) {
+	// 	oldObj.setName(newObj.getName());
+	// 	oldObj.setBarcode(newObj.getBarcode());
+	// 	oldObj.setReference(newObj.getReference());
+	// 	oldObj.setDescription(newObj.getDescription());
+	// 	oldObj.setPurchasePrice(newObj.getPurchasePrice());
+	// 	oldObj.setSalePrice(newObj.getSalePrice());
+	// 	oldObj.setUn(newObj.getUn());
+	// 	oldObj.setWeight(newObj.getWeight());
+	// 	oldObj.setSell(newObj.getSell());
+	// 	oldObj.setLocation(newObj.getLocation());
+	// 	oldObj.setCompany(newObj.getCompany());
+	// 	oldObj.setCategory(newObj.getCategory());
+
+	// }
+
 }
