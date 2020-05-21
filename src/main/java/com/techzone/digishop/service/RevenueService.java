@@ -1,5 +1,6 @@
 package com.techzone.digishop.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -7,6 +8,7 @@ import javax.transaction.Transactional;
 import com.techzone.digishop.domain.Client;
 import com.techzone.digishop.domain.Company;
 import com.techzone.digishop.domain.Revenue;
+import com.techzone.digishop.dto.RevenueDTO;
 import com.techzone.digishop.dto.RevenueListNewDTO;
 import com.techzone.digishop.dto.RevenueNewDTO;
 import com.techzone.digishop.repository.RevenueListRepository;
@@ -39,6 +41,10 @@ public class RevenueService {
         return revenue.orElseThrow(() -> new ObjectNotFoundException(Revenue.class.getName() + " not found"));
     }
 
+    public List<Revenue> findByClientId(Integer clientId){
+        return repository.findByClientId(clientId);
+    }
+
     @Transactional
 	public Revenue save(Revenue revenue) {
 		revenue.setId(null);
@@ -46,6 +52,17 @@ public class RevenueService {
 		revenueListRepository.saveAll(revenue.getRevenues());
 		return revenue;
 	}
+
+    public void delete(Integer id){
+        findById(id);
+        repository.deleteById(id);
+    }
+
+    public Revenue update(Revenue object){
+        Revenue newObject = findById(object.getId());
+        updateData(newObject, object);
+		return repository.save(newObject);
+    }
 
     public Revenue fromDTO(RevenueNewDTO revenueDTO){
 
@@ -71,25 +88,16 @@ public class RevenueService {
         return revenue;
     }
 
-    public void delete(Integer id){
-        findById(id);
-        repository.deleteById(id);
+    private void updateData(Revenue oldObj, Revenue newObj) {
+
+        oldObj.setId(newObj.getId());
+        oldObj.setParcelNumber(newObj.getParcelNumber());
+        oldObj.setFirstPayment(newObj.getFirstPayment());
+        oldObj.setPaydayInterval(newObj.getPaydayInterval());
+        oldObj.setAmountPaid(newObj.getAmountPaid());
+        oldObj.setDocumentNumber(newObj.getDocumentNumber());
+        oldObj.setObservation(newObj.getObservation());
+
     }
-
-    // private void updateData(Revenue oldObj, Revenue newObj) {
-	// 	oldObj.setName(newObj.getName());
-	// 	oldObj.setBarcode(newObj.getBarcode());
-	// 	oldObj.setReference(newObj.getReference());
-	// 	oldObj.setDescription(newObj.getDescription());
-	// 	oldObj.setPurchasePrice(newObj.getPurchasePrice());
-	// 	oldObj.setSalePrice(newObj.getSalePrice());
-	// 	oldObj.setUn(newObj.getUn());
-	// 	oldObj.setWeight(newObj.getWeight());
-	// 	oldObj.setSell(newObj.getSell());
-	// 	oldObj.setLocation(newObj.getLocation());
-	// 	oldObj.setCompany(newObj.getCompany());
-	// 	oldObj.setCategory(newObj.getCategory());
-
-	// }
 
 }
