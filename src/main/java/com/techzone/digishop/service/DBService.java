@@ -37,6 +37,10 @@ import com.techzone.digishop.repository.RevenueRepository;
 import com.techzone.digishop.repository.SaleItemRepository;
 import com.techzone.digishop.repository.SaleRepository;
 
+/**
+ * Instancia um banco de dados já populado para testes
+ */
+
 @Service
 public class DBService {
 
