@@ -34,6 +34,9 @@ public class SaleNewDTO implements Serializable {
     @Future(message = "Informe uma data futura")
     private Date firstPayment;
     private Integer paymentMethod;
+    private BigDecimal money;
+    private BigDecimal pendent;
+    private BigDecimal creditCard;
 
     List<PaymentDTO> payments = new ArrayList<>();
 

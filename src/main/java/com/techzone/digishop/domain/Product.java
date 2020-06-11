@@ -26,7 +26,6 @@ public class Product implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
-	@Column(unique = true)
 	private String barcode;
 	private String reference;
 	private String description;

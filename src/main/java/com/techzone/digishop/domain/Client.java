@@ -33,6 +33,10 @@ public class Client extends User {
 	@JsonIgnore
 	List<Sale> sales = new ArrayList<>();
 
+	@OneToMany(mappedBy = "client")
+	@JsonIgnore
+	List<ClientCredit> credits = new ArrayList<>();
+
 	public Double creditLimit;
 
 	public Client() {
@@ -89,6 +93,14 @@ public class Client extends User {
 
 	public void setCreditLimit(Double creditLimit) {
 		this.creditLimit = creditLimit;
+	}
+
+	public List<ClientCredit> getCredits() {
+		return this.credits;
+	}
+
+	public void setCredits(List<ClientCredit> credits) {
+		this.credits = credits;
 	}
 
 }
