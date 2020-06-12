@@ -20,19 +20,13 @@ public abstract class CompanyAbstract implements Serializable {
 
 	@NotNull
 	private String name;
-	@Column(unique = true)
+	// @Column(unique = true)
 	private String cpfCnpj;
-	@NotNull
 	private String adress;
-	@NotNull
 	private String neighborhood;
-	@NotNull
 	private String zipcode;
-	@NotNull
 	private String city;
-	@NotNull
 	private String state;
-	@NotNull
 	private String phone;
 	private String email;
 	

@@ -203,7 +203,7 @@ public class DBService {
 		// VENDA 1
 
 		Sale s1 = new Sale(null, new Date(), c, cli, cli.getAdresses().get(0), new BigDecimal("0.00"),
-				new BigDecimal("3.00"), SaleStatus.DELIVERED);
+				new BigDecimal("3.00"), SaleStatus.DELIVERED, "");
 
 		SaleItem sItem = new SaleItem(s1, prod1, new BigDecimal("0.00"), new BigDecimal("2.0"), prod1.getName(),
 				prod1.getBarcode(), prod1.getReference(), prod1.getDescription(), prod1.getPurchasePrice(),
@@ -222,7 +222,7 @@ public class DBService {
 		revenueListRepository.save(s1Payment);
 
 		Sale s2 = new Sale(null, new Date(), c, cli2, cli2.getAdresses().get(1), new BigDecimal("0.00"),
-				new BigDecimal("2.32"), SaleStatus.PENDENT);
+				new BigDecimal("2.32"), SaleStatus.PENDENT, "");
 
 		SaleItem sItem2 = new SaleItem(s2, prod5, new BigDecimal("2.50"), new BigDecimal("5.0"), prod5.getName(),
 				prod5.getBarcode(), prod5.getReference(), prod5.getDescription(), prod5.getPurchasePrice(),

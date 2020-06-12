@@ -38,125 +38,116 @@ public class RevenueListService {
     @Autowired
     RevenueService revenueService;
 
-    public RevenueList findById(Integer id){
+    public RevenueList findById(Integer id) {
         Optional<RevenueList> payment = paymentRepository.findById(id);
         return payment.orElseThrow(() -> new ObjectNotFoundException(Sale.class.getName() + " not found"));
     }
 
-    public List<RevenueList> generateRevenueOfSale(Sale sale){
-
-        List<RevenueList> payments = new ArrayList<>();
-
-        Boolean paid = false;
-        Integer status = PaymentStatus.PENDENT.getCod();
-
-        if(sale.getPaymentMethod() == PaymentMethod.CREDIT_CARD){
-            sale.setParcelNumber(1);
-            paid = true;
-            status = PaymentStatus.PAID.getCod();
-        }
-
-        if(sale.getFirstPayment() == null) {
-            sale.setFirstPayment(new Date());
-        }
-
-        if(sale.getPaydayInterval() == null){
-            sale.setPaydayInterval("15");
-
-        }
+    public List<RevenueList> generateNewRevenue(Integer parcelNumber, String paydayInterval, Date firstPayment, BigDecimal value, String barCode, String documentNumber,
+    String observation, PaymentStatus status, Sale sale, Revenue revenue) {
 
         Calendar c = Calendar.getInstance();
-        c.setTime(sale.getFirstPayment());
-        BigDecimal parcelValue = sale.getTotalValue().divide(new BigDecimal(String.valueOf(sale.getParcelNumber())).setScale(2, RoundingMode.HALF_EVEN));
+        c.setTime(firstPayment);
 
-        for (int i = 0; i < sale.getParcelNumber(); i++){
-            payments.add(new RevenueList(
-                null, 
-                c.getTime(), 
-                parcelValue, 
-                paid == true ? parcelValue : new BigDecimal("0.00"), 
-                paid == true ? c.getTime() : null, 
-                null, 
-                sale.getId() + "/" + (i+1), 
-                null, 
-                PaymentStatus.toEnum(status),
-                sale
-            )
-        );
-            if(sale.getPaydayInterval().equalsIgnoreCase("M")){
+        List<RevenueList> generatedPayments = new ArrayList<>();
+
+        for (int i = 0; i < parcelNumber; i++){
+            generatedPayments.add(
+                generateRevenueList(
+                    c.getTime(), 
+                    value.divide(new BigDecimal(Integer.toString(parcelNumber))).setScale(2, RoundingMode.HALF_EVEN), 
+                    barCode, 
+                    documentNumber + "/" + i, 
+                    observation, 
+                    status, 
+                    sale, 
+                    revenue
+                )
+            );
+
+            if(paydayInterval.equalsIgnoreCase("M")){
                 c.add(Calendar.MONTH, 1);
             }else{
-                c.add(Calendar.DATE, Integer.parseInt(sale.getPaydayInterval()));
+                c.add(Calendar.DATE, Integer.parseInt(paydayInterval));
             }
         }
-
-        return payments;
+        
+        return generatedPayments;
     }
 
-    public List<RevenueList> findRevenue(Integer clientId, PaymentStatus status){
+    public RevenueList generateRevenueList(Date dueDate, BigDecimal value, String barCode, String documentNumber,
+            String observation, PaymentStatus status, Sale sale, Revenue revenue) {
+                return new RevenueList(
+                    null, 
+                    dueDate, 
+                    value, 
+                    status.equals(PaymentStatus.PAID) ? value : new BigDecimal("0.00"),
+                    status.equals(PaymentStatus.PAID) ? new Date() : null, 
+                    barCode, 
+                    documentNumber, 
+                    observation, 
+                    status, 
+                    sale, 
+                    revenue
+                    );
+    }
+
+    public List<RevenueList> findRevenue(Integer clientId, PaymentStatus status) {
         return paymentRepository.findBySaleClientIdOrRevenueClientIdAndStatus(clientId, clientId, status.getCod());
     }
 
-    public Page<RevenueList> search(String start, String end, Integer status, Integer page, Integer itensPerPage, String orderBy, String direction) {
-		
-		if(!(start.equals("all") && end.equals("all"))){
-			Date startDate = FormatDate.parse(start);
-			Date endDate = FormatDate.parse(end);
+    public Page<RevenueList> search(String start, String end, Integer status, Integer page, Integer itensPerPage,
+            String orderBy, String direction) {
 
-			if(startDate.compareTo(endDate) > 0){
-				throw new BusinessRuleException("A data inicial deve ser menor que a final");
-			}
+        if (!(start.equals("all") && end.equals("all"))) {
+            Date startDate = FormatDate.parse(start);
+            Date endDate = FormatDate.parse(end);
 
-			PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
-			return paymentRepository.findByDueDateBetweenAndStatus(startDate, endDate, status, pageRequest);
-		}
+            if (startDate.compareTo(endDate) > 0) {
+                throw new BusinessRuleException("A data inicial deve ser menor que a final");
+            }
 
-		if(!(start.equals("all") || end.equals("all"))){
-			throw new BusinessRuleException("Informe um período de datas válido");
-		}		
+            PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
+            return paymentRepository.findByDueDateBetweenAndStatus(startDate, endDate, status, pageRequest);
+        }
 
-		PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
-		return paymentRepository.findByStatus(status, pageRequest);
+        if (!(start.equals("all") || end.equals("all"))) {
+            throw new BusinessRuleException("Informe um período de datas válido");
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
+        return paymentRepository.findByStatus(status, pageRequest);
     }
-    
-    public RevenueList settlePayment(RevenueList payment){
+
+    public RevenueList settlePayment(RevenueList payment) {
         RevenueList newPayment = payment;
         payment = findById(payment.getId());
 
-        if(payment.getStatus() == PaymentStatus.PAID){
+        if (payment.getStatus() == PaymentStatus.PAID) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             throw new BusinessRuleException("O pagamento já foi baixado em " + sdf.format(payment.getPaydDate()));
         }
 
-        if(newPayment.getAmountPaid().compareTo(payment.getValue()) == 1){
+        if (newPayment.getAmountPaid().compareTo(payment.getValue()) == 1) {
             throw new BusinessRuleException("O valor pago deve ser igual ou menor a " + payment.getValue());
         }
 
-        if(newPayment.getAmountPaid().doubleValue() < payment.getValue().doubleValue()){
+        if (newPayment.getAmountPaid().doubleValue() < payment.getValue().doubleValue()) {
             List<RevenueList> payments = paymentRepository.findBySaleId(payment.getSale().getId());
             Long paydayInterval = 0L;
-            if(payments.size() > 1){
+            if (payments.size() > 1) {
                 Date d1 = payments.get(payments.size() - 2).getDueDate();
                 Date d2 = payments.get(payments.size() - 1).getDueDate();
-                paydayInterval = Math.abs((d1.getTime()- d2.getTime()));
+                paydayInterval = Math.abs((d1.getTime() - d2.getTime()));
                 Calendar c = Calendar.getInstance();
                 c.setTime(d2);
                 c.setTimeInMillis(c.getTimeInMillis() + paydayInterval);
 
                 BigDecimal difference = (payment.getValue().subtract(newPayment.getAmountPaid())).abs();
 
-                RevenueList p = new RevenueList(
-                    null, 
-                    c.getTime(), 
-                    difference, 
-                    new BigDecimal(0.00), 
-                    null, 
-                    payment.getBarCode(),
-                    payment.getDocumentNumber() + " Diff", 
-                    null, 
-                    PaymentStatus.PENDENT, 
-                    payment.getSale()
-                );
+                RevenueList p = new RevenueList(null, c.getTime(), difference, new BigDecimal(0.00), null,
+                        payment.getBarCode(), payment.getDocumentNumber() + " Diff", null, PaymentStatus.PENDENT,
+                        payment.getSale());
 
                 payment.setStatus(PaymentStatus.PAID);
                 payment.setPaydDate(new Date());
@@ -164,7 +155,7 @@ public class RevenueListService {
 
                 paymentRepository.save(payment);
                 paymentRepository.save(p);
-            
+
                 return payment;
             }
         }
@@ -177,35 +168,25 @@ public class RevenueListService {
         return payment;
     }
 
-    public List<RevenueList> findBySaleId(Integer saleId){
+    public List<RevenueList> findBySaleId(Integer saleId) {
         return paymentRepository.findBySaleId(saleId);
     }
 
-    public RevenueList fromDTO(RevenueListNewDTO revenueDTO){
+    public RevenueList fromDTO(RevenueListNewDTO revenueDTO) {
 
         Sale sale = new Sale();
         Revenue revenue = new Revenue();
-        if(!(revenueDTO.getSale() == null)){
+        if (!(revenueDTO.getSale() == null)) {
             sale = saleService.findById(revenueDTO.getSale());
         }
 
-        if(!(revenueDTO.getRevenue() == null)){
+        if (!(revenueDTO.getRevenue() == null)) {
             revenue = revenueService.findById(revenueDTO.getRevenue());
         }
 
-        return new RevenueList(
-            revenueDTO.getId(),
-            revenueDTO.getDueDate(),
-            revenueDTO.getValue(),
-            revenueDTO.getAmountPaid(),
-            revenueDTO.getPaydDate(),
-            revenueDTO.getBarCode(),
-            revenueDTO.getDocumentNumber(),
-            revenueDTO.getObservation(),
-            revenueDTO.getStatus(),
-            sale,
-            revenue            
-        );
+        return new RevenueList(revenueDTO.getId(), revenueDTO.getDueDate(), revenueDTO.getValue(),
+                revenueDTO.getAmountPaid(), revenueDTO.getPaydDate(), revenueDTO.getBarCode(),
+                revenueDTO.getDocumentNumber(), revenueDTO.getObservation(), revenueDTO.getStatus(), sale, revenue);
     }
 
 }

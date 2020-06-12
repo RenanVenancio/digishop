@@ -62,7 +62,7 @@ public class Sale implements Serializable {
 	}
 
 	public Sale(Integer id, Date date, Company company, Client client,
-			ClientAddress address, BigDecimal discount, BigDecimal freightCost, SaleStatus status) {
+			ClientAddress address, BigDecimal discount, BigDecimal freightCost, SaleStatus status, String paydayInterval) {
 		this.id = id;
 		this.date = date;
 		this.company = company;
@@ -71,11 +71,12 @@ public class Sale implements Serializable {
 		this.discount = discount;
 		this.freightCost = freightCost;
 		this.status = status.getCod();
+		this.paydayInterval = paydayInterval;
 	}
 
 	public Sale(Integer id, Date date, Company company, Client client,
 			ClientAddress address, BigDecimal discount, BigDecimal freightCost, Integer parcelNumber, Date firstPayment,
-			PaymentMethod paymentMethod, SaleStatus status) {
+			PaymentMethod paymentMethod, SaleStatus status, String paydayInterval) {
 		this.id = id;
 		this.date = date;
 		this.company = company;
@@ -87,6 +88,7 @@ public class Sale implements Serializable {
 		this.firstPayment = firstPayment;
 		this.paymentMethod = paymentMethod.getCod();
 		this.status = status.getCod();
+		this.paydayInterval = paydayInterval;
 	}
 
 	public BigDecimal getTotalValue() {
