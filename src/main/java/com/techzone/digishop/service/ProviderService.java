@@ -6,12 +6,17 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import com.techzone.digishop.domain.Provider;
+import com.techzone.digishop.dto.ProviderDTO;
+import com.techzone.digishop.dto.ProviderNewDTO;
 import com.techzone.digishop.repository.ProviderRepository;
 import com.techzone.digishop.service.exception.DataIntegrityException;
 import com.techzone.digishop.service.exception.ObjectNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -49,7 +54,12 @@ public class ProviderService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("This client cannot be deleted because it has related data");
 		}
-    }
+	}
+	
+	public Page<Provider> search(String q, Integer page, Integer itensPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
+		return repository.findByNameContainingIgnoreCaseOrCpfCnpjContainingIgnoreCase(q, q, pageRequest);
+	}
     
     private void updateData(Provider newObject, Provider object) {
         newObject.setId(object.getId());
@@ -63,6 +73,36 @@ public class ProviderService {
         newObject.setPhone(object.getPhone());
         newObject.setEmail(object.getEmail());
 	}
+
+	public Provider fromDTO(ProviderNewDTO objDTO){
+		return new Provider(
+			objDTO.getName(), 
+			objDTO.getCpfCnpj(),
+			objDTO.getAdress(),
+			objDTO.getNeighborhood(),
+			objDTO.getZipcode(),
+			objDTO.getCity(),
+			objDTO.getState(),
+			objDTO.getPhone(),
+			objDTO.getEmail()
+		);
+	}
+
+
+	public Provider fromDTO(ProviderDTO objDTO){
+		return new Provider(
+			objDTO.getName(), 
+			objDTO.getCpfCnpj(),
+			objDTO.getAdress(),
+			objDTO.getNeighborhood(),
+			objDTO.getZipcode(),
+			objDTO.getCity(),
+			objDTO.getState(),
+			objDTO.getPhone(),
+			objDTO.getEmail()
+		);
+	}
+
 
 
 }
