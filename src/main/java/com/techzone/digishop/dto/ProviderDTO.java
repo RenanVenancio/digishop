@@ -15,9 +15,26 @@ public class ProviderDTO implements Serializable {
     private String neighborhood;
     private String zipcode;
     private String city;
+    private String state;
+    private String phone;
+    private String email;
 
-    public ProviderDTO(){
+    public ProviderDTO() {
 
+    }
+
+    public ProviderDTO(Integer id, String name, String cpfCnpj, String adress, String neighborhood, String zipcode,
+            String city, String state, String phone, String email) {
+        this.id = id;
+        this.name = name;
+        this.cpfCnpj = cpfCnpj;
+        this.adress = adress;
+        this.neighborhood = neighborhood;
+        this.zipcode = zipcode;
+        this.city = city;
+        this.state = state;
+        this.phone = phone;
+        this.email = email;
     }
 
     public ProviderDTO(Provider provider){
@@ -28,21 +45,13 @@ public class ProviderDTO implements Serializable {
         this.neighborhood = provider.getNeighborhood();
         this.zipcode = provider.getZipcode();
         this.city = provider.getCity();
-    }
-
-    public ProviderDTO(Integer id, String name, String cpfCnpj, String adress, String neighborhood, String zipcode,
-            String city) {
-        this.id = id;
-        this.name = name;
-        this.cpfCnpj = cpfCnpj;
-        this.adress = adress;
-        this.neighborhood = neighborhood;
-        this.zipcode = zipcode;
-        this.city = city;
+        this.state = provider.getState();
+        this.phone = provider.getPhone();
+        this.email = provider.getEmail();
     }
 
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Integer id) {
@@ -50,7 +59,7 @@ public class ProviderDTO implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -58,7 +67,7 @@ public class ProviderDTO implements Serializable {
     }
 
     public String getCpfCnpj() {
-        return cpfCnpj;
+        return this.cpfCnpj;
     }
 
     public void setCpfCnpj(String cpfCnpj) {
@@ -66,7 +75,7 @@ public class ProviderDTO implements Serializable {
     }
 
     public String getAdress() {
-        return adress;
+        return this.adress;
     }
 
     public void setAdress(String adress) {
@@ -74,7 +83,7 @@ public class ProviderDTO implements Serializable {
     }
 
     public String getNeighborhood() {
-        return neighborhood;
+        return this.neighborhood;
     }
 
     public void setNeighborhood(String neighborhood) {
@@ -82,7 +91,7 @@ public class ProviderDTO implements Serializable {
     }
 
     public String getZipcode() {
-        return zipcode;
+        return this.zipcode;
     }
 
     public void setZipcode(String zipcode) {
@@ -90,11 +99,35 @@ public class ProviderDTO implements Serializable {
     }
 
     public String getCity() {
-        return city;
+        return this.city;
     }
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getState() {
+        return this.state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getPhone() {
+        return this.phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }
