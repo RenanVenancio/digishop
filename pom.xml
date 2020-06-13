@@ -16,7 +16,6 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<start-class>com.techzone.digishop.DigiShopApplication</start-class>
 	</properties>
 
 	<dependencies>
@@ -65,13 +64,10 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>    
+					<mainClass>com.techzone.digishop.DigiShopApplication</mainClass>
+				</configuration>
 			</plugin>
-
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>             
-			</plugin>
-
 		</plugins>
 	</build>
 
