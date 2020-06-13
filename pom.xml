@@ -18,6 +18,16 @@
 		<java.version>11</java.version>
 	</properties>
 
+	<plugins>
+		<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+			<configuration>
+				<mainClass>com.techzone.digishop.DigiShopApplication</mainClass> 
+			</configuration>
+		</plugin>
+	</plugins>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
