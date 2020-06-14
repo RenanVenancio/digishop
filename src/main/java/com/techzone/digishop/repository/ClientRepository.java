@@ -11,6 +11,7 @@ public interface ClientRepository extends JpaRepository<Client, Integer>{
 	
 	@Transactional(readOnly = true)
 	Client findByEmail(String email);
+	Client findByCpfCnpj(String cpfCnpj);
 
 	//@Query("SELECT cli from Client cli WHERE cli.name LIKE %:q% OR cli.fantasyName LIKE %:q% OR cli.cpfCnpj LIKE %:q%")
 	//Page<Client> search(@Param("q") String q, Pageable pageRequest);
