@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import com.techzone.digishop.domain.Product;
 import com.techzone.digishop.dto.ProductDTO;
+import com.techzone.digishop.dto.ProductNewDTO;
 import com.techzone.digishop.repository.ProductRepository;
 import com.techzone.digishop.repository.PurchaseItemRepository;
 import com.techzone.digishop.resource.util.URL;
@@ -46,7 +47,7 @@ public class ProductResource {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> save(@Valid @RequestBody ProductDTO productDTO) {
+	public ResponseEntity<Void> save(@Valid @RequestBody ProductNewDTO productDTO) {
 		Product category = productService.fromDTO(productDTO);
 		productService.save(category);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(category.getId())
