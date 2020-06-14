@@ -1,4 +1,5 @@
 package com.techzone.digishop.service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import com.techzone.digishop.domain.Company;
 import com.techzone.digishop.domain.Product;
 import com.techzone.digishop.domain.ProductCategory;
 import com.techzone.digishop.dto.ProductDTO;
+import com.techzone.digishop.dto.ProductNewDTO;
 import com.techzone.digishop.repository.CompanyRepository;
 import com.techzone.digishop.repository.ProductCategoryRepository;
 import com.techzone.digishop.repository.ProductRepository;
@@ -58,9 +60,10 @@ public class ProductService {
 		return repository.findAll();
 	}
 
-	public Page<Product> search(String name, List<Integer> ids, Integer page, Integer itensPerPage, String orderBy, String direction) {
+	public Page<Product> search(String name, List<Integer> ids, Integer page, Integer itensPerPage, String orderBy,
+			String direction) {
 		PageRequest pageRequest = PageRequest.of(page, itensPerPage, Direction.valueOf(direction), orderBy);
-		if(ids.isEmpty()){
+		if (ids.isEmpty()) {
 			return repository.findDistinctByNameContainingIgnoreCase(name, pageRequest);
 		}
 		List<ProductCategory> categories = categoryRepository.findAllById(ids);
@@ -77,8 +80,18 @@ public class ProductService {
 				object.getLocation(), company.get(), productCategory.get());
 	}
 
+	public Product fromDTO(ProductNewDTO object) {
+
+		Optional<ProductCategory> productCategory = categoryRepository.findById(object.getCategory());
+		Optional<Company> company = companyRepository.findById(object.getCompany());
+
+		return new Product(null, object.getName(), object.getBarcode(), object.getReference(), object.getDescription(),
+				object.getPurchasePrice(), object.getSalePrice(), object.getUn(), object.getWeight(), object.getSell(),
+				object.getLocation(), company.get(), productCategory.get());
+	}
+
 	// TODO: Melhorar as contagens
-	public void countStock(){
+	public void countStock() {
 		repository.sumPurchases();
 		repository.sumSales();
 	}
