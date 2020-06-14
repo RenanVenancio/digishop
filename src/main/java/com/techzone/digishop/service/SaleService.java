@@ -71,7 +71,6 @@ public class SaleService {
 
 		// Pegando os valores dos metodos de pagamento da venda
 		BigDecimal moneyValue = saleDTO.getMoneyValue();
-		BigDecimal pendentValue = saleDTO.getPendentValue();
 		BigDecimal creditCardValue = saleDTO.getCreditCardValue();
 		BigDecimal paymentsValue;
 		
@@ -127,6 +126,8 @@ public class SaleService {
 		paymentRepository.saveAll(sale.getPayments());
 
 		productService.countStock();
+		
+		System.out.println(sale);
 
 		return sale;
 
