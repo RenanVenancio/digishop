@@ -54,15 +54,15 @@ public class Sale implements Serializable {
 		this.paymentMethod = PaymentMethod.PENDENT.getCod();
 		this.paydayInterval = "15";
 		this.date = new Date();
-		
+
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(this.date);
 		calendar.add(Calendar.DATE, 15);
 		this.setFirstPayment(calendar.getTime());
 	}
 
-	public Sale(Integer id, Date date, Company company, Client client,
-			ClientAddress address, BigDecimal discount, BigDecimal freightCost, SaleStatus status, String paydayInterval) {
+	public Sale(Integer id, Date date, Company company, Client client, ClientAddress address, BigDecimal discount,
+			BigDecimal freightCost, SaleStatus status, String paydayInterval) {
 		this.id = id;
 		this.date = date;
 		this.company = company;
@@ -74,9 +74,9 @@ public class Sale implements Serializable {
 		this.paydayInterval = paydayInterval;
 	}
 
-	public Sale(Integer id, Date date, Company company, Client client,
-			ClientAddress address, BigDecimal discount, BigDecimal freightCost, Integer parcelNumber, Date firstPayment,
-			PaymentMethod paymentMethod, SaleStatus status, String paydayInterval) {
+	public Sale(Integer id, Date date, Company company, Client client, ClientAddress address, BigDecimal discount,
+			BigDecimal freightCost, Integer parcelNumber, Date firstPayment, PaymentMethod paymentMethod,
+			SaleStatus status, String paydayInterval) {
 		this.id = id;
 		this.date = date;
 		this.company = company;
@@ -204,7 +204,6 @@ public class Sale implements Serializable {
 		this.paydayInterval = paydayInterval;
 	}
 
-
 	public SaleStatus getStatus() {
 		return SaleStatus.toEnum(this.status);
 	}
@@ -212,7 +211,6 @@ public class Sale implements Serializable {
 	public void setStatus(SaleStatus status) {
 		this.status = status.getCod();
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -238,5 +236,26 @@ public class Sale implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Pedido N°: ");
+		builder.append(getId());
+		builder.append(", Cliente: ");
+		builder.append(getClient().getName());
+		
+		builder.append("\n ITENS DO PEDIDO \n");
+		
+		for(SaleItem si : getItens()) {
+			builder.append(si.toString());
+		}
+		
+		builder.append("\n\n Total: ");
+		builder.append(getTotalValue());
+		return builder.toString();
+	}
+	
+	
 
 }

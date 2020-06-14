@@ -197,10 +197,18 @@ public class SaleItem implements Serializable {
 
 	@Override
 	public String toString() {
-		return "{" + " id='" + id + "'" + ", discount='" + discount + "'" + ", quantity='" + quantity + "'" + ", name='"
-				+ name + "'" + ", barcode='" + barcode + "'" + ", reference='" + reference + "'" + ", description='"
-				+ description + "'" + ", purchasePrice='" + purchasePrice + "'" + ", salePrice='" + salePrice + "'"
-				+ ", un='" + un + "'" + ", weight='" + weight + "'" + ", location='" + location + "'" + "}";
+		StringBuilder builder = new StringBuilder();
+		builder.append(getDescription());
+		builder.append(", Qtde: ");
+		builder.append(getQuantity());
+		builder.append(", Valor Unitário: ");
+		builder.append(getSalePrice());
+		builder.append(", Subtotal: ");
+		builder.append(getSubtotal());
+		builder.append("\n");
+		return builder.toString();
 	}
+
+
 
 }
