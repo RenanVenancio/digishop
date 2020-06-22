@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 
 import com.techzone.digishop.domain.Product;
 
@@ -17,9 +18,9 @@ public class ProductNewDTO implements Serializable {
 	private String barcode;
 	private String reference;
 	private String description;
-	@NotEmpty(message = "Campo obrigatório")
+	@Positive(message = "O valor deve ser maior que zero")
 	private BigDecimal purchasePrice;
-	@NotEmpty(message = "Campo obrigatório")
+	@Positive(message = "O valor deve ser maior que zero")
 	private BigDecimal salePrice;
 	@NotEmpty(message = "Campo obrigatório")
 	private String un;

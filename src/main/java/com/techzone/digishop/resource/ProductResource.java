@@ -56,7 +56,7 @@ public class ProductResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@PathVariable Integer id, @Valid @RequestBody ProductDTO productDTO) {
+	public ResponseEntity<Void> update(@PathVariable Integer id, @Valid @RequestBody ProductNewDTO productDTO) {
 		Product product = productService.fromDTO(productDTO);
 		product.setId(id);
 		productService.update(product);
