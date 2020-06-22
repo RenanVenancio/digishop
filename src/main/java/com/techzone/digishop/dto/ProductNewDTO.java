@@ -3,6 +3,8 @@ package com.techzone.digishop.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import javax.validation.constraints.NotEmpty;
+
 import com.techzone.digishop.domain.Product;
 
 public class ProductNewDTO implements Serializable {
@@ -10,12 +12,16 @@ public class ProductNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
+	@NotEmpty(message = "Campo obrigatório")
 	private String name;
 	private String barcode;
 	private String reference;
 	private String description;
+	@NotEmpty(message = "Campo obrigatório")
 	private BigDecimal purchasePrice;
+	@NotEmpty(message = "Campo obrigatório")
 	private BigDecimal salePrice;
+	@NotEmpty(message = "Campo obrigatório")
 	private String un;
 	private BigDecimal weight;
 	private Boolean sell = true;
