@@ -3,6 +3,7 @@ package com.techzone.digishop.config;
 import com.techzone.digishop.service.DBService;
 import com.techzone.digishop.service.EmailService;
 import com.techzone.digishop.service.MockEmailService;
+import com.techzone.digishop.service.SmtpEmailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,8 +24,13 @@ public class TestConfig {
         return true;
     }
 
+    // @Bean
+    // public EmailService emailService(){
+    //     return new MockEmailService();
+    // }
+
     @Bean
     public EmailService emailService(){
-        return new MockEmailService();
+        return new SmtpEmailService();
     }
 }

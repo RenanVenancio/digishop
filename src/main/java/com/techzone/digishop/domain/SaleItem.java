@@ -201,7 +201,7 @@ public class SaleItem implements Serializable {
 	public String toString() {
 		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 		StringBuilder builder = new StringBuilder();
-		builder.append(getDescription());
+		builder.append(getName());
 		builder.append(", Qtde: ");
 		builder.append(getQuantity());
 		builder.append(", Valor Unitário: ");

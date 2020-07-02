@@ -2,6 +2,8 @@ package com.techzone.digishop.config;
 
 
 import com.techzone.digishop.service.DBService;
+import com.techzone.digishop.service.EmailService;
+import com.techzone.digishop.service.SmtpEmailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,4 +32,8 @@ public class DevConfig {
         return true;
     }
 
+    @Bean
+    public EmailService emailService(){
+        return new SmtpEmailService();
+    }
 }
