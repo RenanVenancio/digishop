@@ -60,6 +60,9 @@ public class SaleService {
 	@Autowired 
 	RevenueListService paymentService;
 
+	@Autowired
+	EmailService emailService;
+
 	
 	public Sale findById(Integer id) {
 		Optional<Sale> sale = saleRepository.findById(id);
@@ -127,7 +130,7 @@ public class SaleService {
 
 		productService.countStock();
 		
-		System.out.println(sale);
+		emailService.sendSaleConfirmationEmail(sale);
 
 		return sale;
 

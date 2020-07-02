@@ -1,6 +1,8 @@
 package com.techzone.digishop.config;
 
 import com.techzone.digishop.service.DBService;
+import com.techzone.digishop.service.EmailService;
+import com.techzone.digishop.service.MockEmailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,5 +21,10 @@ public class TestConfig {
         System.out.println("Perfil de desenvolvimento ativado");
     	dbService.instantiateDatabase();
         return true;
+    }
+
+    @Bean
+    public EmailService emailService(){
+        return new MockEmailService();
     }
 }
