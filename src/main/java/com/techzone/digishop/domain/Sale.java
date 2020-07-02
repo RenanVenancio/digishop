@@ -2,10 +2,12 @@ package com.techzone.digishop.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +19,7 @@ import javax.persistence.OneToMany;
 
 import com.techzone.digishop.domain.enums.PaymentMethod;
 import com.techzone.digishop.domain.enums.SaleStatus;
+import com.techzone.digishop.service.validation.utils.FormatDate;
 
 @Entity
 public class Sale implements Serializable {
@@ -239,9 +242,13 @@ public class Sale implements Serializable {
 
 	@Override
 	public String toString() {
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
 		StringBuilder builder = new StringBuilder();
 		builder.append("Pedido N°: ");
 		builder.append(getId());
+		builder.append("\tData: ");
+		builder.append(FormatDate.parse(getDate()));
 		builder.append(", Cliente: ");
 		builder.append(getClient().getName());
 		
@@ -252,7 +259,7 @@ public class Sale implements Serializable {
 		}
 		
 		builder.append("\n\n Total: ");
-		builder.append(getTotalValue());
+		builder.append(nf.format(getTotalValue()));
 		return builder.toString();
 	}
 	
