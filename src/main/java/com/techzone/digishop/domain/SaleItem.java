@@ -2,6 +2,8 @@ package com.techzone.digishop.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -197,14 +199,15 @@ public class SaleItem implements Serializable {
 
 	@Override
 	public String toString() {
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 		StringBuilder builder = new StringBuilder();
 		builder.append(getDescription());
 		builder.append(", Qtde: ");
 		builder.append(getQuantity());
 		builder.append(", Valor Unitário: ");
-		builder.append(getSalePrice());
+		builder.append(nf.format(getSalePrice()));
 		builder.append(", Subtotal: ");
-		builder.append(getSubtotal());
+		builder.append(nf.format(getSubtotal()));
 		builder.append("\n");
 		return builder.toString();
 	}
