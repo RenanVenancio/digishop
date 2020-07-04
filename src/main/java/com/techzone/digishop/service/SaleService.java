@@ -130,7 +130,7 @@ public class SaleService {
 
 		productService.countStock();
 		
-		emailService.sendSaleConfirmationEmail(sale);
+		emailService.sendSaleConfirmationHtmlEmail(sale);
 
 		return sale;
 
