@@ -19,7 +19,7 @@ public class TestConfig {
 	
     @Bean
     public boolean initDatabase(){
-        System.out.println("Perfil de desenvolvimento ativado");
+        System.out.println("Perfil de Testes Ativado!");
     	dbService.instantiateDatabase();
         return true;
     }

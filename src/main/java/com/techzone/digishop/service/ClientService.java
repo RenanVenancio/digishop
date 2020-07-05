@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,13 +27,16 @@ import com.techzone.digishop.service.exception.ObjectNotFoundException;
 public class ClientService {
 
 	@Autowired
-	ClientRepository repository;
+	private ClientRepository repository;
 
 	@Autowired
-	CompanyRepository companyRepository;
+	private CompanyRepository companyRepository;
 
 	@Autowired
-	ClientAddressRepository addressRepository;
+	private ClientAddressRepository addressRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder passEncoder;
 
 	public Client findById(Integer id) {
 		Optional<Client> object = repository.findById(id);
@@ -79,7 +83,7 @@ public class ClientService {
 		Optional<Company> company = companyRepository.findById(objectDTO.getCompany());
 		
 		Client client = new Client(null, objectDTO.getName(), objectDTO.getCpfCnpj(), objectDTO.getEmail(),
-				objectDTO.getPassword(), objectDTO.getBirthDate(), objectDTO.getType(), company.get());
+			passEncoder.encode(objectDTO.getPassword()), objectDTO.getBirthDate(), objectDTO.getType(), company.get());
 		ClientAddress address = new ClientAddress(null, objectDTO.getDescription(), objectDTO.getAddress(),
 				objectDTO.getNumber(), objectDTO.getAdditional(), objectDTO.getNeightbohood(), objectDTO.getZipcode(),
 				objectDTO.getCity(), objectDTO.getUf(), client);

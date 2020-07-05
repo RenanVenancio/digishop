@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.techzone.digishop.domain.Client;
@@ -45,43 +46,46 @@ import com.techzone.digishop.repository.SaleRepository;
 public class DBService {
 
 	@Autowired
-	CompanyRepository companyRepository;
+	private CompanyRepository companyRepository;
 
 	@Autowired
-	ProviderRepository providerRepository;
+	private ProviderRepository providerRepository;
 
 	@Autowired
-	ClientRepository clientRepository;
+	private ClientRepository clientRepository;
 
 	@Autowired
-	ClientAddressRepository clientAddressRepository;
+	private ClientAddressRepository clientAddressRepository;
 
 	@Autowired
-	ProductRepository productRepository;
+	private ProductRepository productRepository;
 
 	@Autowired
-	SaleRepository saleRepository;
+	private SaleRepository saleRepository;
 
 	@Autowired
-	SaleItemRepository saleItemRepository;
+	private SaleItemRepository saleItemRepository;
 
 	@Autowired
-	RevenueListRepository revenueListRepository;
+	private RevenueListRepository revenueListRepository;
 
 	@Autowired
-	RevenueRepository revenueRepository;
+	private RevenueRepository revenueRepository;
 
 	@Autowired
-	EmployeeRepository employeeRepository;
+	private EmployeeRepository employeeRepository;
 
 	@Autowired
-	ProductCategoryRepository productCategoryRepository;
+	private ProductCategoryRepository productCategoryRepository;
 
 	@Autowired
-	PurchaseRepository purchaseRepository;
+	private PurchaseRepository purchaseRepository;
 
 	@Autowired
-	PurchaseItemRepository purchaseItemRepository;
+	private PurchaseItemRepository purchaseItemRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder passEncoder;
 
 	public void instantiateDatabase() {
 		// CRIANDO CATEGORIAS
@@ -117,13 +121,13 @@ public class DBService {
 
 		// CRIANDO CLIENTES
 
-		Client cli = new Client(null, "RENAN VENANCIO", "1067429289", "renan_1419@hotmail.com", "%#2&&%", new Date(),
+		Client cli = new Client(null, "RENAN VENANCIO", "1067429289", "renan_1419@hotmail.com", passEncoder.encode("%#2&&%"), new Date(),
 				ClientType.PESSOA_FISICA, c);
 
-		Client cli1 = new Client(null, "MURILO BENICIO", "8045429282", "moriloo@bol.com.br", "moo8f99fd", new Date(),
+		Client cli1 = new Client(null, "MURILO BENICIO", "8045429282", "moriloo@bol.com.br", passEncoder.encode("moo8f99fd"), new Date(),
 				ClientType.PESSOA_FISICA, c, "MORILO");
 
-		Client cli2 = new Client(null, "MARCUS VINICIUS", "9067425283", "mvpb33@gmail.com", "8899s09d6", new Date(),
+		Client cli2 = new Client(null, "MARCUS VINICIUS", "9067425283", "mvpb33@gmail.com", passEncoder.encode("8899s09d6"), new Date(),
 				ClientType.PESSOA_FISICA, c);
 
 		cli.getPhones().addAll(Arrays.asList("9929392000", "8839300299"));
