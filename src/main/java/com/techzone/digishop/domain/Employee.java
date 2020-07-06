@@ -11,32 +11,20 @@ import javax.persistence.Entity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import com.sun.istack.NotNull;
-
 @Entity
 public class Employee extends User{
 
 	private static final long serialVersionUID = 1L;
 	
-	@NotNull
 	private String address;
-	@NotNull
 	private String number;
-	@NotNull
 	private String additional;
-	@NotNull
 	private String neightbohood;
-	@NotNull
 	private String zipcode;
-	@NotNull
 	private String city;
-	@NotNull
 	private String uf;
-	@NotNull
-	private Date admissionDate;
-	
-	private Boolean isActive = true;
-	
+	private Date admissionDate;	
+	private Boolean isActive;	
     @CreatedDate
     private Date creationDate;
 
@@ -52,9 +40,9 @@ public class Employee extends User{
 		super();
 	}
 
-	public Employee(Integer id, @NotNull String name,
-			@NotNull String cpfCnpj, @NotNull String email,
-			@NotNull String password, Date birthDate, Company company,
+	public Employee(Integer id, String name,
+			String cpfCnpj, String email,
+			String password, Date birthDate, Company company,
 			String address, String number, String additional, String neightbohood, String zipcode, String city,
 			String uf, Date admissionDate, Boolean isActive) {
 		super(id, name, cpfCnpj, email, password, birthDate, company);
