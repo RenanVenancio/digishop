@@ -13,7 +13,7 @@ public class UserSS implements UserDetails {
     private String email;
     private String password;
 
-    public UserSS(){
+    public UserSS() {
 
     }
 
@@ -23,8 +23,20 @@ public class UserSS implements UserDetails {
         this.password = password;
     }
 
-    public Integer getId(){
+    public Integer getId() {
         return id;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -68,5 +80,5 @@ public class UserSS implements UserDetails {
         // TODO Auto-generated method stub
         return true;
     }
-    
+
 }
