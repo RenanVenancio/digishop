@@ -17,41 +17,40 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
+public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
 
-    private JWTUtil JWTUtil;
+    private JWTUtil jwtUtil;
 
-
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil JWTUtil) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
-        this.JWTUtil = JWTUtil;
+        this.jwtUtil = jwtUtil;
     }
 
-
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response){
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         try {
-            CredentialsDTO credentials = new ObjectMapper().readValue(
-                request.getInputStream(), CredentialsDTO.class);
+            CredentialsDTO credentials = new ObjectMapper().readValue(request.getInputStream(), CredentialsDTO.class);
 
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(credentials.getEmail(), credentials.getPassword(), new ArrayList<>());
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    credentials.getEmail(), credentials.getPassword(), new ArrayList<>());
 
-            Authentication auth
-            // TODO: CONTINUAR
-
+            Authentication auth = authenticationManager.authenticate(authToken);
+            return auth;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-  
+
     }
-    
+
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
             Authentication authResult) throws IOException, ServletException {
-        // TODO Auto-generated method stub
-        super.successfulAuthentication(request, response, chain, authResult);
-    }
+        String username = ((UserSS) authResult.getPrincipal()).getUsername();
+        String token = jwtUtil.generateToken(username);
 
+        response.addHeader("Authorization", "Bearer" + token);
+
+    }
 }

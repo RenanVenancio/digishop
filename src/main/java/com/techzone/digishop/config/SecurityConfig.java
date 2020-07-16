@@ -2,6 +2,9 @@ package com.techzone.digishop.config;
 
 import java.util.Arrays;
 
+import com.techzone.digishop.security.JWTAuthenticationFilter;
+import com.techzone.digishop.security.JWTUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +28,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private JWTUtil jwtUtil;
+
     private static final String[] PUBLIC_MATCHES = {
         "/h2-console/**",
     };
@@ -45,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         .antMatchers(HttpMethod.GET, PUBLIC_MATCHES_GET).permitAll()
         .antMatchers(PUBLIC_MATCHES).permitAll()
         .anyRequest().authenticated();
+        http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 
         http.csrf().disable();
     }

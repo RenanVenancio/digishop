@@ -10,6 +10,10 @@ public class CredentialsDTO implements Serializable{
     private String email;
     private String password;
 
+    public CredentialsDTO(){
+        
+    }
+
 
     public CredentialsDTO(Integer id, String email, String password) {
         this.id = id;

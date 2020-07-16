@@ -24,7 +24,7 @@ public class ClientDetailsServiceImpl implements UserDetailsService {
         if(cli == null) {
             throw new UsernameNotFoundException(email);
         }
-
+        System.out.println("CLIENTE LOCALIZADO" + cli);
         return new UserSS(cli.getId(), cli.getEmail(), cli.getPassword());
     }
     
