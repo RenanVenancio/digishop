@@ -24,4 +24,9 @@ public class FormatDate {
 		}
     }
 
+    public static String parse(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        return sdf.format(date);
+    }
+
 }

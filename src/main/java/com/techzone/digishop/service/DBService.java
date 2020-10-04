@@ -1,86 +1,94 @@
 package com.techzone.digishop.service;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.techzone.digishop.domain.Client;
 import com.techzone.digishop.domain.ClientAddress;
-import com.techzone.digishop.domain.ClientCredit;
 import com.techzone.digishop.domain.Company;
 import com.techzone.digishop.domain.Employee;
-import com.techzone.digishop.domain.Payment;
 import com.techzone.digishop.domain.Product;
 import com.techzone.digishop.domain.ProductCategory;
 import com.techzone.digishop.domain.Provider;
 import com.techzone.digishop.domain.Purchase;
 import com.techzone.digishop.domain.PurchaseItem;
+import com.techzone.digishop.domain.Revenue;
+import com.techzone.digishop.domain.RevenueList;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.SaleItem;
 import com.techzone.digishop.domain.enums.ClientType;
 import com.techzone.digishop.domain.enums.PaymentStatus;
-import com.techzone.digishop.domain.enums.PaymentType;
 import com.techzone.digishop.domain.enums.SaleStatus;
 import com.techzone.digishop.repository.ClientAddressRepository;
-import com.techzone.digishop.repository.ClientCreditRepository;
 import com.techzone.digishop.repository.ClientRepository;
 import com.techzone.digishop.repository.CompanyRepository;
 import com.techzone.digishop.repository.EmployeeRepository;
-import com.techzone.digishop.repository.PaymentRepository;
 import com.techzone.digishop.repository.ProductCategoryRepository;
 import com.techzone.digishop.repository.ProductRepository;
 import com.techzone.digishop.repository.ProviderRepository;
 import com.techzone.digishop.repository.PurchaseItemRepository;
 import com.techzone.digishop.repository.PurchaseRepository;
+import com.techzone.digishop.repository.RevenueListRepository;
+import com.techzone.digishop.repository.RevenueRepository;
 import com.techzone.digishop.repository.SaleItemRepository;
 import com.techzone.digishop.repository.SaleRepository;
 
+/**
+ * Instancia um banco de dados já populado para testes
+ */
+
 @Service
 public class DBService {
-    @Autowired
-	CompanyRepository companyRepository;
 
 	@Autowired
-	ProviderRepository providerRepository;
+	private CompanyRepository companyRepository;
 
 	@Autowired
-	ClientRepository clientRepository;
+	private ProviderRepository providerRepository;
 
 	@Autowired
-	ClientAddressRepository clientAddressRepository;
+	private ClientRepository clientRepository;
 
 	@Autowired
-	ProductRepository productRepository;
+	private ClientAddressRepository clientAddressRepository;
 
 	@Autowired
-	SaleRepository saleRepository;
+	private ProductRepository productRepository;
 
 	@Autowired
-	SaleItemRepository saleItemRepository;
+	private SaleRepository saleRepository;
 
 	@Autowired
-	PaymentRepository salePaymentRepository;
+	private SaleItemRepository saleItemRepository;
 
 	@Autowired
-	EmployeeRepository employeeRepository;
+	private RevenueListRepository revenueListRepository;
 
 	@Autowired
-	ProductCategoryRepository productCategoryRepository;
+	private RevenueRepository revenueRepository;
 
 	@Autowired
-	PurchaseRepository purchaseRepository;
+	private EmployeeRepository employeeRepository;
 
 	@Autowired
-	PurchaseItemRepository purchaseItemRepository;
+	private ProductCategoryRepository productCategoryRepository;
 
 	@Autowired
-	ClientCreditRepository clientCreditRepository;
+	private PurchaseRepository purchaseRepository;
 
+	@Autowired
+	private PurchaseItemRepository purchaseItemRepository;
 
-    public void instantiateDatabase(){
-        		// CRIANDO CATEGORIAS
+	@Autowired
+	private BCryptPasswordEncoder passEncoder;
+
+	public void instantiateDatabase() {
+		// CRIANDO CATEGORIAS
 
 		ProductCategory cat1 = new ProductCategory(null, "Alvenaria");
 		ProductCategory cat2 = new ProductCategory(null, "Eletrico");
@@ -113,13 +121,13 @@ public class DBService {
 
 		// CRIANDO CLIENTES
 
-		Client cli = new Client(null, "RENAN VENANCIO", "1067429289", "renan_1419@hotmail.com", "%#2&&%", new Date(),
+		Client cli = new Client(null, "RENAN VENANCIO", "1067429289", "renan_1419@hotmail.com", passEncoder.encode("%#2&&%"), new Date(),
 				ClientType.PESSOA_FISICA, c);
 
-		Client cli1 = new Client(null, "MURILO BENICIO", "8045429282", "moriloo@bol.com.br", "moo8f99fd", new Date(),
+		Client cli1 = new Client(null, "MURILO BENICIO", "8045429282", "moriloo@bol.com.br", passEncoder.encode("moo8f99fd"), new Date(),
 				ClientType.PESSOA_FISICA, c, "MORILO");
 
-		Client cli2 = new Client(null, "MARCUS VINICIUS", "9067425283", "mvpb33@gmail.com", "8899s09d6", new Date(),
+		Client cli2 = new Client(null, "MARCUS VINICIUS", "9067425283", "mvpb33@gmail.com", passEncoder.encode("8899s09d6"), new Date(),
 				ClientType.PESSOA_FISICA, c);
 
 		cli.getPhones().addAll(Arrays.asList("9929392000", "8839300299"));
@@ -133,14 +141,9 @@ public class DBService {
 		ClientAddress addr2 = new ClientAddress(null, "Alternativo", "Rua Pç com Jose matias sobrinho", "130",
 				"Lado ao antigo restaurante", "Abel Cavalcanti", "58340000", "Sape", "PB", cli);
 
-		// GERANDO CREDITOS
-		ClientCredit credit = new ClientCredit(null, new BigDecimal("100.00"), new Date(), "DEVOLUÇÃO", cli);
-		
-		cli.getCredits().addAll(Arrays.asList(credit));
 		cli.getAdresses().addAll(Arrays.asList(addr, addr2));
 		clientRepository.save(cli);
 		clientAddressRepository.saveAll(Arrays.asList(addr, addr2));
-		clientCreditRepository.save(credit);
 
 		// MURILO BENICIO
 		ClientAddress addr3 = new ClientAddress(null, "Residencial", "Av. Napoleao Laureano", "666", "Ladeira u2",
@@ -168,46 +171,43 @@ public class DBService {
 		// CRIANDO PRODUTOS
 
 		Product prod1 = new Product(null, "CIMENTO 50KG", "789866657904", "", "Cimento CP II", new BigDecimal("15.49"),
-				new BigDecimal("20.00"), "SC", new BigDecimal("50.00"), true, "Preateleira 3",
-				c, cat2);
+				new BigDecimal("20.00"), "SC", new BigDecimal("50.00"), true, "Preateleira 3", c, cat2);
 
 		Product prod2 = new Product(null, "ARGAMASSA COLA FORTE AC I", "789866657902", "", "Argamassa colante comum",
-				new BigDecimal("5.49"), new BigDecimal("7.00"), "UN", new BigDecimal("15.00"), true,
-				"Preateleira 3", c, cat5);
+				new BigDecimal("5.49"), new BigDecimal("7.00"), "UN", new BigDecimal("15.00"), true, "Preateleira 3", c,
+				cat5);
 
 		Product prod3 = new Product(null, "TUBO ESGOTO 100MM", "789866657955", "", "Tubo para ligação predial esgoto",
-				new BigDecimal("43.49"), new BigDecimal("60.0"), "UN", new BigDecimal("8.334"), true, "Galpão 3", c, cat5);
+				new BigDecimal("43.49"), new BigDecimal("60.0"), "UN", new BigDecimal("8.334"), true, "Galpão 3", c,
+				cat5);
 
 		Product prod4 = new Product(null, "TIJOLO 20X20 8 FUROS", "789866653434", "", "Tijolo de barro comum",
-				new BigDecimal("0.35"), new BigDecimal("0.40"), "UN", new BigDecimal("0.340"), true, "Container 94", c, cat5);
+				new BigDecimal("0.35"), new BigDecimal("0.40"), "UN", new BigDecimal("0.340"), true, "Container 94", c,
+				cat5);
 
 		Product prod5 = new Product(null, "SUPERCAL EM PÓ 10KG", "723234554688", "", "Cal em pó branco para pintura",
-				new BigDecimal("10.25"), new BigDecimal("12.00"), "UN", new BigDecimal("10.00"), true, "Preateleira 3", c, cat2);
+				new BigDecimal("10.25"), new BigDecimal("12.00"), "UN", new BigDecimal("10.00"), true, "Preateleira 3",
+				c, cat2);
 
 		Product prod6 = new Product(null, "CARRINHO DE MÃO 50L", "0887890999", "P003", "Carrinho de mão galvonizado",
-				new BigDecimal("83.45"), new BigDecimal("120.00"), "UN", new BigDecimal("20.00"), true, "Interior", c, cat4);
+				new BigDecimal("83.45"), new BigDecimal("120.00"), "UN", new BigDecimal("20.00"), true, "Interior", c,
+				cat4);
 
 		Product prod7 = new Product(null, "AREIA LAVADA", "78889790000", "P00$", "Areia lavada para construção",
-				new BigDecimal("33.00"), new BigDecimal("40.00"), "MT", new BigDecimal("0.00"), true, "Galpão", c, cat2);
+				new BigDecimal("33.00"), new BigDecimal("40.00"), "MT", new BigDecimal("0.00"), true, "Galpão", c,
+				cat2);
 
 		Product prod8 = new Product(null, "BRITA 19", "", "P003", "Brita tamanho 19", new BigDecimal("84.56"),
-				new BigDecimal("120.00"), "UN", new BigDecimal("0.00"), true, "Galpão", c,
-				cat5);
+				new BigDecimal("120.00"), "UN", new BigDecimal("0.00"), true, "Galpão", c, cat5);
 
-
-		Product prod9 = new Product(null, "PIA COZINHA 150mm", "", "PS003", "PIA UNOXXX", new BigDecimal("184.56"),
-				new BigDecimal("120.00"), "UN", new BigDecimal("0.00"), true, "Galpão", c,
-				cat5);
-	
-
-		productRepository.saveAll(Arrays.asList(prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8, prod9));
+		productRepository.saveAll(Arrays.asList(prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8));
 
 		// CRIANDO VENDAS
 
 		// VENDA 1
 
 		Sale s1 = new Sale(null, new Date(), c, cli, cli.getAdresses().get(0), new BigDecimal("0.00"),
-				new BigDecimal("3.00"), SaleStatus.DELIVERED);
+				new BigDecimal("3.00"), SaleStatus.DELIVERED, "");
 
 		SaleItem sItem = new SaleItem(s1, prod1, new BigDecimal("0.00"), new BigDecimal("2.0"), prod1.getName(),
 				prod1.getBarcode(), prod1.getReference(), prod1.getDescription(), prod1.getPurchasePrice(),
@@ -217,16 +217,16 @@ public class DBService {
 				prod2.getBarcode(), prod2.getReference(), prod2.getDescription(), prod2.getPurchasePrice(),
 				prod2.getSalePrice(), prod2.getUn(), prod2.getWeight(), prod2.getLocation());
 
-		Payment s1Payment = new Payment(null, new Date(), new BigDecimal("2.05"), new BigDecimal("0.00"), null, null,
-				"78982/2", PaymentType.REVENUE, "Troco pra 50", PaymentStatus.toEnum(1), s1, null);
+		RevenueList s1Payment = new RevenueList(null, new Date(), new BigDecimal("2.05"), new BigDecimal("0.00"), null,
+				null, "78982/2", "Troco pra 50", PaymentStatus.toEnum(1), s1, null);
 		s1.getItens().addAll(Arrays.asList(sItem, sItem1));
 		s1.getPayments().add(s1Payment);
 		saleRepository.save(s1);
 		saleItemRepository.saveAll(Arrays.asList(sItem, sItem1));
-		salePaymentRepository.save(s1Payment);
+		revenueListRepository.save(s1Payment);
 
 		Sale s2 = new Sale(null, new Date(), c, cli2, cli2.getAdresses().get(1), new BigDecimal("0.00"),
-				new BigDecimal("2.32"), SaleStatus.PENDENT);
+				new BigDecimal("2.32"), SaleStatus.PENDENT, "");
 
 		SaleItem sItem2 = new SaleItem(s2, prod5, new BigDecimal("2.50"), new BigDecimal("5.0"), prod5.getName(),
 				prod5.getBarcode(), prod5.getReference(), prod5.getDescription(), prod5.getPurchasePrice(),
@@ -248,7 +248,8 @@ public class DBService {
 
 		// CRIANDO COMPRAS
 
-		Purchase purchase = new Purchase(null, "16/03/2009", "562007", false, true, c, p, new BigDecimal("0.00"), new BigDecimal("0.00"));
+		Purchase purchase = new Purchase(null, "16/03/2009", "562007", false, true, c, p, new BigDecimal("0.00"),
+				new BigDecimal("0.00"));
 		PurchaseItem purchaseItem = new PurchaseItem(prod1);
 		purchaseItem.setQuantity(new BigDecimal("120.00"));
 		purchaseItem.setPurchase(purchase);
@@ -261,6 +262,16 @@ public class DBService {
 		purchaseRepository.save(purchase);
 		purchaseItemRepository.saveAll(Arrays.asList(purchaseItem, purchaseItem1));
 
-    }
+		// RECEITAS AVULSAS
+		Revenue r = new Revenue(null, 4, new Date(), "3", new BigDecimal("0.00"), "4434/5", null, c, cli2);
+		RevenueList pay = new RevenueList(null, new Date(), new BigDecimal("88.00"), null, null, null, "33222/1", "",
+				PaymentStatus.PENDENT, null, r);
+		RevenueList pay2 = new RevenueList(null, new Date(), new BigDecimal("67.00"), null, null, null, "33222/2", "",
+				PaymentStatus.PENDENT, null, r);
+		r.getRevenues().addAll(Arrays.asList(pay, pay2));
+
+		revenueRepository.save(r);
+		revenueListRepository.saveAll(r.getRevenues());
+	}
 
 }

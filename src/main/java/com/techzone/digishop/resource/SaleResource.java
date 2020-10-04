@@ -44,9 +44,8 @@ public class SaleResource {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> save(@Valid @RequestBody SaleNewDTO saleDTO) {		
-		Sale sale = saleService.fromDTO(saleDTO);
-		saleService.save(sale);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(sale.getId())
+		//Sale sale = saleService.fromDTO(saleDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saleService.save(saleDTO).getId())
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}

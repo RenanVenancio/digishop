@@ -29,7 +29,7 @@ public abstract class User implements Serializable {
 	@NotNull
 	private String cpfCnpj;
 	@NotNull
-	@Column(unique = true)
+	// @Column(unique = true)
 	private String email;
 	@NotNull
 	private String password;

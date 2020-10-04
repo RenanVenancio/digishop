@@ -41,7 +41,7 @@ public class Purchase implements Serializable {
 	List<PurchaseItem> itens = new ArrayList<>();
 
 	@OneToMany(mappedBy = "purchase")
-	List<Payment> payments = new ArrayList<>();
+	List<PaymentList> payments = new ArrayList<>();
 
 	public Purchase() {
 		this.freightCost = new BigDecimal("0.00");
@@ -165,11 +165,11 @@ public class Purchase implements Serializable {
 		this.itens = itens;
 	}
 
-	public List<Payment> getPayments() {
+	public List<PaymentList> getPayments() {
 		return payments;
 	}
 
-	public void setPayments(List<Payment> payments) {
+	public void setPayments(List<PaymentList> payments) {
 		this.payments = payments;
 	}
 

@@ -43,6 +43,12 @@ public class ClientInsertValidator implements ConstraintValidator<ClientInsert, 
 		if (aux != null) {
 			list.add(new FieldMessage("email", "Email já cadastrado"));
 		}
+		
+		Client auxCpfCnpj = clientRepository.findByCpfCnpj(objectDTO.getCpfCnpj());
+		
+		if (auxCpfCnpj != null) {
+			list.add(new FieldMessage("cpfCnpj", "CPF|CNPJ já cadastrado"));
+		}
 
 		for (FieldMessage e : list) {
 			context.disableDefaultConstraintViolation();

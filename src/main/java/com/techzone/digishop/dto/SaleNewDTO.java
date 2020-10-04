@@ -15,6 +15,10 @@ import javax.validation.constraints.PositiveOrZero;
 import com.techzone.digishop.domain.enums.PaymentMethod;
 import com.techzone.digishop.service.validation.utils.FormatDate;
 
+/**
+ * Classe para registro de vendas através dos endpoints
+ */
+
 public class SaleNewDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,22 +38,28 @@ public class SaleNewDTO implements Serializable {
     @Future(message = "Informe uma data futura")
     private Date firstPayment;
     private Integer paymentMethod;
-    private BigDecimal money;
-    private BigDecimal pendent;
-    private BigDecimal creditCard;
+    private BigDecimal moneyValue;
+    private BigDecimal pendentValue;
+    private BigDecimal creditCardValue;
+    private String paydayInterval;
 
-    List<PaymentDTO> payments = new ArrayList<>();
+
+    List<RevenueListNewDTO> payments = new ArrayList<>();
 
     @Valid
     @NotEmpty(message = "Carrinho de compras vazio")
     List<SaleItemNewDTO> itens = new ArrayList<>();
 
-    public SaleNewDTO(){
-        
+    public SaleNewDTO() {
+        this.moneyValue = new BigDecimal("0.00");
+        this.pendentValue = new BigDecimal("0.00");
+        this.creditCardValue = new BigDecimal("0.00");
+
     }
 
     public SaleNewDTO(Integer id, Date date, Integer company, Integer client, Integer address, BigDecimal discount,
-            BigDecimal freightCost, Integer parcelNumber, String firstPayment, Integer paymentMethod) {
+            BigDecimal freightCost, Integer parcelNumber, String firstPayment, Integer paymentMethod,
+            BigDecimal moneyValue, BigDecimal pendentValue, BigDecimal creditCardValue, String paydayInterval) {
         this.id = id;
         this.date = date;
         this.company = company;
@@ -60,10 +70,15 @@ public class SaleNewDTO implements Serializable {
         this.parcelNumber = parcelNumber;
         this.firstPayment = FormatDate.parse(firstPayment);
         this.paymentMethod = paymentMethod;
+        this.moneyValue = moneyValue;
+        this.pendentValue = pendentValue;
+        this.creditCardValue = creditCardValue;
+        this.paydayInterval = paydayInterval;
     }
 
     public SaleNewDTO(Integer id, Date date, Integer company, Integer client, Integer address, BigDecimal discount,
-            BigDecimal freightCost, Integer parcelNumber, Date firstPayment, Integer paymentMethod) {
+            BigDecimal freightCost, Integer parcelNumber, Date firstPayment, Integer paymentMethod,
+            BigDecimal moneyValue, BigDecimal pendentValue, BigDecimal creditCardValue) {
         this.id = id;
         this.date = date;
         this.company = company;
@@ -74,6 +89,10 @@ public class SaleNewDTO implements Serializable {
         this.parcelNumber = parcelNumber;
         this.firstPayment = firstPayment;
         this.paymentMethod = paymentMethod;
+        this.moneyValue = moneyValue;
+        this.pendentValue = pendentValue;
+        this.creditCardValue = creditCardValue;
+        this.paydayInterval = paydayInterval;
     }
 
     public Integer getId() {
@@ -156,11 +175,11 @@ public class SaleNewDTO implements Serializable {
         this.paymentMethod = paymentMethod.getCod();
     }
 
-    public List<PaymentDTO> getPayments() {
+    public List<RevenueListNewDTO> getPayments() {
         return this.payments;
     }
 
-    public void setPayments(List<PaymentDTO> payments) {
+    public void setPayments(List<RevenueListNewDTO> payments) {
         this.payments = payments;
     }
 
@@ -171,5 +190,39 @@ public class SaleNewDTO implements Serializable {
     public void setItens(List<SaleItemNewDTO> itens) {
         this.itens = itens;
     }
+
+    public BigDecimal getMoneyValue() {
+        return this.moneyValue;
+    }
+
+    public void setMoneyValue(BigDecimal moneyValue) {
+        this.moneyValue = moneyValue;
+    }
+
+    public BigDecimal getPendentValue() {
+        return this.pendentValue;
+    }
+
+    public void setPendentValue(BigDecimal pendentValue) {
+        this.pendentValue = pendentValue;
+    }
+
+    public BigDecimal getCreditCardValue() {
+        return this.creditCardValue;
+    }
+
+    public void setCreditCardValue(BigDecimal creditCardValue) {
+        this.creditCardValue = creditCardValue;
+    }
+
+
+    public String getPaydayInterval() {
+        return this.paydayInterval;
+    }
+
+    public void setPaydayInterval(String paydayInterval) {
+        this.paydayInterval = paydayInterval;
+    }
+
 
 }

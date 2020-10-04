@@ -2,7 +2,10 @@ package com.techzone.digishop.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,197 +13,209 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.techzone.digishop.domain.enums.PaymentStatus;
-import com.techzone.digishop.domain.enums.PaymentType;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Payment implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private Date dueDate;
-	private BigDecimal value;
-	private BigDecimal amountPaid;
-	private Date paydDate;
-	private String barCode;
-	private String documentNumber;
-	private Integer paymentType;
-	private String observation;
-	private Integer status;
+    private static final long serialVersionUID = 1L;
 
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "sale_id")
-	private Sale sale;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private Integer parcelNumber;
+    private Date firstPayment;
+    private String paydayInterval;
+    private BigDecimal amountPaid;
+    private String documentNumber;
+    private Integer paymentType;
+    private String observation;
 
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "purchase_id")
-	private Purchase purchase;
+    @JoinColumn(name = "company_id")
+    private Company company;
 
-	public Payment(){
-		
-	}
+    @ManyToOne
+    @JoinColumn(name = "provider_id")
+    private Provider provider;
 
-	public Payment(Integer integer, Date date, BigDecimal bigDecimal, BigDecimal bigDecimal2, Date date2, String string, String string2, Integer integer2, String string3, PaymentStatus paymentStatus, Integer integer3, Integer integer4) {
+    @OneToMany(mappedBy = "payment")
+    List<PaymentList> payments = new ArrayList<>();
 
-	}
+    public Payment() {
+    }
 
-	public Payment(Integer id, Date dueDate, BigDecimal value, BigDecimal amountPaid, Date paydDate, String barCode,
-			String documentNumber, PaymentType paymentType, String observation, PaymentStatus status, Sale sale,
-			Purchase purchase) {
-		this.id = id;
-		this.dueDate = dueDate;
-		this.value = value;
-		this.amountPaid = amountPaid;
-		this.paydDate = paydDate;
-		this.barCode = barCode;
-		this.documentNumber = documentNumber;
-		this.paymentType = paymentType.getCod();
-		this.observation = observation;
-		this.status = status.getCod();
-		this.sale = sale;
-		this.purchase = purchase;
-	}
+    public Payment(Integer id, Integer parcelNumber, Date firstPayment, String paydayInterval, BigDecimal amountPaid,
+            String documentNumber, Integer paymentType, String observation, Company company, Provider provider) {
+        this.id = id;
+        this.parcelNumber = parcelNumber;
+        this.firstPayment = firstPayment;
+        this.paydayInterval = paydayInterval;
+        this.amountPaid = amountPaid;
+        this.documentNumber = documentNumber;
+        this.paymentType = paymentType;
+        this.observation = observation;
+        this.company = company;
+        this.provider = provider;
 
-	public Payment(Payment payment) {
-		this.id = payment.getId();
-		this.dueDate = payment.getDueDate();
-		this.value = payment.getValue();
-		this.amountPaid = payment.getAmountPaid();
-		this.paydDate = payment.getPaydDate();
-		this.barCode = payment.getBarCode();
-		this.documentNumber = payment.getDocumentNumber();
-		this.paymentType = payment.getPaymentType().getCod();
-		this.observation = payment.getObservation();
-		this.status = payment.getStatus().getCod();
-		this.sale = payment.getSale();
-		this.purchase = payment.getPurchase();
-	}
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Date getDueDate() {
-		return dueDate;
-	}
+    public Integer getParcelNumber() {
+        return this.parcelNumber;
+    }
 
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
-	}
+    public void setParcelNumber(Integer parcelNumber) {
+        this.parcelNumber = parcelNumber;
+    }
 
-	public BigDecimal getValue() {
-		return value;
-	}
+    public Date getFirstPayment() {
+        return this.firstPayment;
+    }
 
-	public void setValue(BigDecimal value) {
-		this.value = value;
-	}
+    public void setFirstPayment(Date firstPayment) {
+        this.firstPayment = firstPayment;
+    }
 
-	public BigDecimal getAmountPaid() {
-		return amountPaid;
-	}
+    public String getPaydayInterval() {
+        return this.paydayInterval;
+    }
 
-	public void setAmountPaid(BigDecimal amountPaid) {
-		this.amountPaid = amountPaid;
-	}
+    public void setPaydayInterval(String paydayInterval) {
+        this.paydayInterval = paydayInterval;
+    }
 
-	public Date getPaydDate() {
-		return paydDate;
-	}
+    public BigDecimal getAmountPaid() {
+        return this.amountPaid;
+    }
 
-	public void setPaydDate(Date paydDate) {
-		this.paydDate = paydDate;
-	}
+    public void setAmountPaid(BigDecimal amountPaid) {
+        this.amountPaid = amountPaid;
+    }
 
-	public String getBarCode() {
-		return barCode;
-	}
+    public String getDocumentNumber() {
+        return this.documentNumber;
+    }
 
-	public void setBarCode(String barCode) {
-		this.barCode = barCode;
-	}
+    public void setDocumentNumber(String documentNumber) {
+        this.documentNumber = documentNumber;
+    }
 
-	public String getDocumentNumber() {
-		return documentNumber;
-	}
+    public Integer getPaymentType() {
+        return this.paymentType;
+    }
 
-	public void setDocumentNumber(String documentNumber) {
-		this.documentNumber = documentNumber;
-	}
+    public void setPaymentType(Integer paymentType) {
+        this.paymentType = paymentType;
+    }
 
-	public PaymentType getPaymentType() {
-		return PaymentType.toEnum(this.paymentType);
-	}
+    public String getObservation() {
+        return this.observation;
+    }
 
-	public void setPaymentType(PaymentType paymentType) {
-		this.paymentType = paymentType.getCod();
-	}
+    public void setObservation(String observation) {
+        this.observation = observation;
+    }
 
-	public String getObservation() {
-		return observation;
-	}
+    public Company getCompany() {
+        return this.company;
+    }
 
-	public void setObservation(String observation) {
-		this.observation = observation;
-	}
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 
-	public PaymentStatus getStatus() {
-		return PaymentStatus.toEnum(this.status);
-	}
+    public Provider getProvider() {
+        return this.provider;
+    }
 
-	public void setStatus(PaymentStatus status) {
-		this.status = status.getCod();
-	}
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
 
-	public Sale getSale() {
-		return sale;
-	}
+    public List<PaymentList> paymentsayments() {
+        return this.payments;
+    }
 
-	public void setSale(Sale sale) {
-		this.sale = sale;
-	}
+    public void setPayments(List<PaymentList> payments) {
+        this.payments = payments;
+    }
 
-	public Purchase getPurchase() {
-		return purchase;
-	}
+    public Payment id(Integer id) {
+        this.id = id;
+        return this;
+    }
 
-	public void setPurchase(Purchase purchase) {
-		this.purchase = purchase;
-	}
+    public Payment parcelNumber(Integer parcelNumber) {
+        this.parcelNumber = parcelNumber;
+        return this;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
+    public Payment firstPayment(Date firstPayment) {
+        this.firstPayment = firstPayment;
+        return this;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Payment other = (Payment) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
+    public Payment paydayInterval(String paydayInterval) {
+        this.paydayInterval = paydayInterval;
+        return this;
+    }
+
+    public Payment amountPaid(BigDecimal amountPaid) {
+        this.amountPaid = amountPaid;
+        return this;
+    }
+
+    public Payment documentNumber(String documentNumber) {
+        this.documentNumber = documentNumber;
+        return this;
+    }
+
+    public Payment paymentType(Integer paymentType) {
+        this.paymentType = paymentType;
+        return this;
+    }
+
+    public Payment observation(String observation) {
+        this.observation = observation;
+        return this;
+    }
+
+    public Payment company(Company company) {
+        this.company = company;
+        return this;
+    }
+
+    public Payment provider(Provider provider) {
+        this.provider = provider;
+        return this;
+    }
+
+    public Payment payments(List<PaymentList> payments) {
+        this.payments = payments;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Payment)) {
+            return false;
+        }
+        Payment revenue = (Payment) o;
+        return Objects.equals(id, revenue.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 
 }

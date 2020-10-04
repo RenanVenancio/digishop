@@ -3,12 +3,10 @@ package com.techzone.digishop.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.techzone.digishop.domain.Payment;
+import com.techzone.digishop.domain.RevenueList;
 import com.techzone.digishop.domain.enums.PaymentStatus;
 
-public class PaymentDTO implements Serializable {
+public class RevenueListNewDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,13 +17,12 @@ public class PaymentDTO implements Serializable {
     private Date paydDate;
     private String barCode;
     private String documentNumber;
-    private Integer paymentType;
     private String observation;
     private Integer sale;
-    private Integer purchase;
+    private Integer revenue;
     private Integer status;
 
-    public PaymentDTO(Payment payment) {
+    public RevenueListNewDTO(RevenueList payment) {
         this.id = payment.getId();
         this.dueDate = payment.getDueDate();
         this.value = payment.getValue();
@@ -33,27 +30,10 @@ public class PaymentDTO implements Serializable {
         this.paydDate = payment.getPaydDate();
         this.barCode = payment.getBarCode();
         this.documentNumber = payment.getDocumentNumber();
-        this.paymentType = payment.getPaymentType().getCod();
         this.observation = payment.getObservation();
         this.sale = payment.getSale().getId();
-        this.purchase = payment.getPurchase() == null ? null : payment.getPurchase().getId();
+        this.revenue = payment.getRevenue() == null ? null : payment.getRevenue().getId();
         this.status = payment.getStatus().getCod();
-    }
-
-    public PaymentDTO(Integer id, Date dueDate, BigDecimal value, BigDecimal amountPaid, Date paydDate, String barCode,
-            String documentNumber, Integer paymentType, String observation, Integer sale, Integer purchase, Integer status) {
-        this.id = id;
-        this.dueDate = dueDate;
-        this.value = value;
-        this.amountPaid = amountPaid;
-        this.paydDate = paydDate;
-        this.barCode = barCode;
-        this.documentNumber = documentNumber;
-        this.paymentType = paymentType;
-        this.observation = observation;
-        this.sale = sale;
-        this.purchase = purchase;
-        this.status = status;
     }
 
     public Integer getId() {
@@ -112,15 +92,6 @@ public class PaymentDTO implements Serializable {
         this.documentNumber = documentNumber;
     }
 
-    @JsonIgnore
-    public Integer getPaymentType() {
-        return this.paymentType;
-    }
-
-    public void setPaymentType(Integer paymentType) {
-        this.paymentType = paymentType;
-    }
-
     public String getObservation() {
         return this.observation;
     }
@@ -137,12 +108,12 @@ public class PaymentDTO implements Serializable {
         this.sale = sale;
     }
 
-    public Integer getPurchase() {
-        return this.purchase;
+    public Integer getRevenue() {
+        return this.revenue;
     }
 
-    public void setPurchase(Integer purchase) {
-        this.purchase = purchase;
+    public void setRevenue(Integer revenue) {
+        this.revenue = revenue;
     }
 
     public PaymentStatus getStatus() {
@@ -152,6 +123,5 @@ public class PaymentDTO implements Serializable {
     public void setStatus(PaymentStatus status) {
         this.status = status.getCod();
     }
-
 
 }

@@ -2,10 +2,10 @@ package com.techzone.digishop.resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.techzone.digishop.domain.Payment;
+import com.techzone.digishop.domain.RevenueList;
 import com.techzone.digishop.domain.enums.PaymentStatus;
-import com.techzone.digishop.dto.PaymentDTO;
-import com.techzone.digishop.service.PaymentService;
+import com.techzone.digishop.dto.RevenueListDTO;
+import com.techzone.digishop.service.RevenueListService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,23 +18,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/payments")
-public class PaymentResource {
+@RequestMapping(value = "/finances/revenues")
+public class RevenueListResource {
     
     @Autowired
-    PaymentService service;
+    RevenueListService service;
     
-	@RequestMapping(value = "revenues/client/{id}",  method = RequestMethod.GET)
-    public ResponseEntity<List<PaymentDTO>> findRevenue(@PathVariable Integer id, @RequestParam(value = "status", defaultValue = "0") Integer status){
-        List<Payment> payments = service.findRevenue(id, PaymentStatus.toEnum(status));
-        List<PaymentDTO> paymentDTOs = payments.stream().map((x) -> new PaymentDTO(x)).collect(Collectors.toList());
+	@RequestMapping(value = "client/{id}",  method = RequestMethod.GET)
+    public ResponseEntity<List<RevenueListDTO>> findRevenue(@PathVariable Integer id, @RequestParam(value = "status", defaultValue = "0") Integer status){
+        List<RevenueList> payments = service.findRevenue(id, PaymentStatus.toEnum(status));
+        List<RevenueListDTO> paymentDTOs = payments.stream().map((x) -> new RevenueListDTO(x)).collect(Collectors.toList());
         return ResponseEntity.ok().body(paymentDTOs);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Page<PaymentDTO>> findPage(
+	public ResponseEntity<Page<RevenueListDTO>> findPage(
             @RequestParam(value = "status", defaultValue = "") Integer status,
-            @RequestParam(value = "paymentType", defaultValue = "") Integer paymentType,
 			@RequestParam(value = "start", defaultValue = "all") String start, 
 			@RequestParam(value = "end", defaultValue = "all") String end, 
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
@@ -42,20 +41,20 @@ public class PaymentResource {
 			@RequestParam(value = "orderBy" ,defaultValue = "id") String orderBy, 
 			@RequestParam(value = "direction" ,defaultValue = "ASC") String direction){
 
-		Page<Payment> paymentList = service.search(start, end, status, paymentType, page, itensPerPage, orderBy, direction);
-		Page<PaymentDTO> listDto = paymentList.map((obj) -> new PaymentDTO(obj));
+		Page<RevenueList> paymentList = service.search(start, end, status, page, itensPerPage, orderBy, direction);
+		Page<RevenueListDTO> listDto = paymentList.map((obj) -> new RevenueListDTO(obj));
 		return ResponseEntity.ok().body(listDto);
 	}
 
 	@RequestMapping(value="settle/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Payment> settlePayment(@PathVariable Integer id, @RequestBody Payment payment){
+	public ResponseEntity<RevenueList> settlePayment(@PathVariable Integer id, @RequestBody RevenueList payment){
 		payment.setId(id);
 		return ResponseEntity.ok().body(service.settlePayment(payment));
 
 	}
 
 	@RequestMapping(value="sale/{id}", method=RequestMethod.GET)
-	public ResponseEntity<List<Payment>> findBySaleId(@PathVariable Integer id){
+	public ResponseEntity<List<RevenueList>> findBySaleId(@PathVariable Integer id){
 		return ResponseEntity.ok().body(service.findBySaleId(id));
 
 	}

@@ -19,10 +19,11 @@ import com.techzone.digishop.domain.ClientAddress;
 import com.techzone.digishop.domain.Company;
 import com.techzone.digishop.domain.Sale;
 import com.techzone.digishop.domain.SaleItem;
+import com.techzone.digishop.domain.enums.PaymentStatus;
 import com.techzone.digishop.domain.enums.SaleStatus;
 import com.techzone.digishop.dto.SaleItemNewDTO;
 import com.techzone.digishop.dto.SaleNewDTO;
-import com.techzone.digishop.repository.PaymentRepository;
+import com.techzone.digishop.repository.RevenueListRepository;
 import com.techzone.digishop.repository.SaleItemRepository;
 import com.techzone.digishop.repository.SaleRepository;
 import com.techzone.digishop.service.exception.BusinessRuleException;
@@ -39,7 +40,7 @@ public class SaleService {
 	SaleItemRepository saleItemRepository;
 
 	@Autowired
-	PaymentRepository paymentRepository;
+	RevenueListRepository paymentRepository;
 
 	@Autowired
 	ProductService productService;
@@ -57,7 +58,10 @@ public class SaleService {
 	ClientAddressService clientAddressService;
 
 	@Autowired 
-	PaymentService paymentService;
+	RevenueListService paymentService;
+
+	@Autowired
+	EmailService emailService;
 
 	
 	public Sale findById(Integer id) {
@@ -66,7 +70,15 @@ public class SaleService {
 	}
 
 	@Transactional
-	public Sale save(Sale sale) {
+	public Sale save(SaleNewDTO saleDTO) {
+
+		// Pegando os valores dos metodos de pagamento da venda
+		BigDecimal moneyValue = saleDTO.getMoneyValue();
+		BigDecimal creditCardValue = saleDTO.getCreditCardValue();
+		BigDecimal paymentsValue;
+		
+
+		Sale sale = fromDTO(saleDTO);
 		sale.setId(null);
 		sale.setDate(new Date());
 
@@ -93,13 +105,32 @@ public class SaleService {
 		}
 
 		sale.setItens(items);
-		sale.setPayments(paymentService.generateRevenueOfSale(sale));
+
+		// if(!(moneyValue.add(pendentValue).add(creditCardValue).compareTo(sale.getTotalValue()) == 0)){
+		// 	throw new BusinessRuleException("Os valores dos pagamentos informados são diferentes do total da venda");
+		// }
+
+		paymentsValue = sale.getTotalValue().subtract(creditCardValue).subtract(moneyValue);
+
+		if(moneyValue.compareTo(new BigDecimal("0.00")) == 1){
+			sale.getPayments().addAll(paymentService.generateNewRevenue(1, "1", sale.getDate(), moneyValue, "", sale.getId().toString(), "DINHEIRO", PaymentStatus.PAID, sale, null));
+		}
+
+		if(creditCardValue.compareTo(new BigDecimal("0.00")) == 1){
+			sale.getPayments().addAll(paymentService.generateNewRevenue(1, "1", sale.getDate(), creditCardValue, "", sale.getId().toString(), "CARTÃO", PaymentStatus.PAID, sale, null));
+		}
+
+		if(paymentsValue.compareTo(new BigDecimal("0.00")) == 1){
+			sale.getPayments().addAll(paymentService.generateNewRevenue(sale.getParcelNumber(), sale.getPaydayInterval(), sale.getFirstPayment(), paymentsValue, "", sale.getId().toString(), "", PaymentStatus.PENDENT, sale, null));
+		}
 		
 		saleItemRepository.saveAll(sale.getItens());
 
 		paymentRepository.saveAll(sale.getPayments());
 
 		productService.countStock();
+		
+		emailService.sendSaleConfirmationHtmlEmail(sale);
 
 		return sale;
 
@@ -122,7 +153,8 @@ public class SaleService {
 			itemDTO.getParcelNumber(), 
 			itemDTO.getFirstPayment(), 
 			itemDTO.getPaymentMethod(), 
-			SaleStatus.PENDENT
+			SaleStatus.PENDENT,
+			itemDTO.getPaydayInterval()
 		);
 
 		if (itemDTO.getItens().size() > 1){
